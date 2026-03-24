@@ -1,0 +1,106 @@
+card:
+  id: hyundai-zero-up
+  issuer: hyundai
+  name: ZERO Up
+  nameKo: 현대카드 ZERO Up
+  type: credit
+  annualFee:
+    domestic: 30000
+    international: 30000
+  url: https://card.hyundaicard.com/card/%EC%8B%A4%EC%A0%81%EC%A1%B0%EA%B1%B4%EC%97%86%EC%9D%B4%EC%A0%81%EB%A6%BD%ED%95%A0%EC%9D%B8.hdc
+  lastUpdated: "2026-03-25"
+  source: manual
+
+performanceTiers:
+  - id: tier0
+    label: 무실적
+    minSpending: 0
+    maxSpending: null
+
+performanceExclusions:
+  - tax_payment
+  - gift_card_purchase
+
+rewards:
+  - category: uncategorized
+    type: discount
+    tiers:
+      - performanceTier: tier0
+        rate: 0.8
+        monthlyCap: null
+        perTransactionCap: null
+
+  - category: online_shopping
+    type: discount
+    tiers:
+      - performanceTier: tier0
+        rate: 1.6
+        monthlyCap: null
+        perTransactionCap: null
+    conditions:
+      minTransaction: 100000
+      excludeOnline: false
+      specificMerchants:
+        - 네이버플러스스토어
+        - 쿠팡
+        - SSG.COM
+        - G마켓
+        - 옥션
+
+  - category: supermarket
+    type: discount
+    tiers:
+      - performanceTier: tier0
+        rate: 1.6
+        monthlyCap: null
+        perTransactionCap: null
+    conditions:
+      minTransaction: 100000
+      excludeOnline: false
+      specificMerchants:
+        - 이마트
+        - 농협하나로마트
+        - 롯데마트
+
+  - category: education
+    type: discount
+    tiers:
+      - performanceTier: tier0
+        rate: 1.6
+        monthlyCap: null
+        perTransactionCap: null
+    conditions:
+      minTransaction: 100000
+      excludeOnline: false
+      specificMerchants: []
+
+  - category: fuel
+    type: discount
+    tiers:
+      - performanceTier: tier0
+        rate: 1.6
+        monthlyCap: null
+        perTransactionCap: null
+    conditions:
+      minTransaction: 100000
+      excludeOnline: false
+      specificMerchants: []
+
+  - category: telecom
+    type: discount
+    tiers:
+      - performanceTier: tier0
+        rate: 1.6
+        monthlyCap: null
+        perTransactionCap: null
+    conditions:
+      minTransaction: 100000
+      excludeOnline: false
+      specificMerchants:
+        - SKT
+        - KT
+        - LG U+
+
+globalConstraints:
+  monthlyTotalDiscountCap: null
+  minimumAnnualSpending: null

@@ -1,0 +1,76 @@
+card:
+  id: hyundai-alphabet-t
+  issuer: hyundai
+  name: Alphabet Card T
+  nameKo: 현대카드 T
+  type: credit
+  annualFee:
+    domestic: 15000
+    international: 15000
+  url: https://card.hyundaicard.com/
+  lastUpdated: "2026-03-25"
+  source: manual
+
+performanceTiers:
+  - id: tier0
+    label: 무실적
+    minSpending: 0
+    maxSpending: null
+
+performanceExclusions:
+  - tax_payment
+  - gift_card_purchase
+
+rewards:
+  - category: travel
+    type: discount
+    tiers:
+      - performanceTier: tier0
+        rate: 10.0
+        monthlyCap: 50000
+        perTransactionCap: null
+    conditions:
+      minTransaction: null
+      excludeOnline: false
+      specificMerchants: []
+
+  - category: airline
+    type: discount
+    tiers:
+      - performanceTier: tier0
+        rate: 10.0
+        monthlyCap: 50000
+        perTransactionCap: null
+    conditions:
+      minTransaction: null
+      excludeOnline: false
+      specificMerchants: []
+
+  - category: hotel
+    type: discount
+    tiers:
+      - performanceTier: tier0
+        rate: 10.0
+        monthlyCap: 50000
+        perTransactionCap: null
+    conditions:
+      minTransaction: null
+      excludeOnline: false
+      specificMerchants: []
+
+  - category: uncategorized
+    label: "해외 전 가맹점"
+    type: discount
+    tiers:
+      - performanceTier: tier0
+        rate: 2.0
+        monthlyCap: null
+        perTransactionCap: null
+    conditions:
+      minTransaction: null
+      excludeOnline: false
+      specificMerchants: []
+
+globalConstraints:
+  monthlyTotalDiscountCap: 50000
+  minimumAnnualSpending: null

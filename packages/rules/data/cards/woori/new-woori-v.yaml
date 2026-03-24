@@ -1,0 +1,145 @@
+card:
+  id: woori-new-woori-v
+  issuer: woori
+  name: NEW Woori V Card
+  nameKo: 카드의정석 NEW우리V카드
+  type: credit
+  annualFee:
+    domestic: 15000
+    international: 17000
+  url: https://www.banksalad.com/product/cards/CARD004043
+  lastUpdated: "2026-03-25"
+  source: manual
+
+performanceTiers:
+  - id: tier0
+    label: 무실적
+    minSpending: 0
+    maxSpending: 299999
+
+  - id: tier1
+    label: 전월 30만원 이상
+    minSpending: 300000
+    maxSpending: 599999
+
+  - id: tier2
+    label: 전월 60만원 이상
+    minSpending: 600000
+    maxSpending: null
+
+performanceExclusions:
+  - tax_payment
+  - utility_bills
+  - apartment_mgmt
+  - tuition
+  - gift_card
+
+rewards:
+  - category: grocery
+    label: "대형마트 5% 할인"
+    type: discount
+    tiers:
+      - performanceTier: tier0
+        rate: 0
+        monthlyCap: null
+        perTransactionCap: null
+      - performanceTier: tier1
+        rate: 5.0
+        monthlyCap: 10000
+        perTransactionCap: null
+      - performanceTier: tier2
+        rate: 5.0
+        monthlyCap: 15000
+        perTransactionCap: null
+    conditions:
+      specificMerchants:
+        - 이마트
+        - 홈플러스
+        - 롯데마트
+        - 코스트코
+
+  - category: transportation
+    subcategory: fuel
+    label: "주유소 5% 할인"
+    type: discount
+    tiers:
+      - performanceTier: tier0
+        rate: 0
+        monthlyCap: null
+        perTransactionCap: null
+      - performanceTier: tier1
+        rate: 5.0
+        monthlyCap: 10000
+        perTransactionCap: null
+      - performanceTier: tier2
+        rate: 5.0
+        monthlyCap: 15000
+        perTransactionCap: null
+
+  - category: offline_shopping
+    label: "백화점 5% 할인"
+    type: discount
+    tiers:
+      - performanceTier: tier0
+        rate: 0
+        monthlyCap: null
+        perTransactionCap: null
+      - performanceTier: tier1
+        rate: 5.0
+        monthlyCap: 10000
+        perTransactionCap: null
+      - performanceTier: tier2
+        rate: 5.0
+        monthlyCap: 15000
+        perTransactionCap: null
+    conditions:
+      specificMerchants:
+        - 롯데백화점
+        - 현대백화점
+        - 신세계백화점
+        - 갤러리아백화점
+
+  - category: dining
+    label: "아웃백 25% 할인"
+    type: discount
+    tiers:
+      - performanceTier: tier0
+        rate: 0
+        monthlyCap: null
+        perTransactionCap: null
+      - performanceTier: tier1
+        rate: 25.0
+        monthlyCap: 10000
+        perTransactionCap: null
+      - performanceTier: tier2
+        rate: 25.0
+        monthlyCap: 10000
+        perTransactionCap: null
+    conditions:
+      specificMerchants:
+        - 아웃백스테이크하우스
+
+  - category: entertainment
+    subcategory: movie
+    label: "CGV 6,000원 할인"
+    type: discount
+    tiers:
+      - performanceTier: tier0
+        rate: 0
+        monthlyCap: null
+        perTransactionCap: null
+      - performanceTier: tier1
+        rate: 0
+        monthlyCap: null
+        perTransactionCap: 6000
+      - performanceTier: tier2
+        rate: 0
+        monthlyCap: null
+        perTransactionCap: 6000
+    conditions:
+      specificMerchants:
+        - CGV
+
+globalConstraints:
+  monthlyTotalDiscountCap: 30000
+  minimumAnnualSpending: null

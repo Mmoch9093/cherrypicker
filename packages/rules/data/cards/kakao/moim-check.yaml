@@ -1,0 +1,39 @@
+card:
+  id: kakao-moim-check
+  issuer: kakao
+  name: Moim Check Card
+  nameKo: 카카오뱅크 모임 체크카드
+  type: check
+  annualFee:
+    domestic: 0
+    international: 0
+  url: https://www.kakaobank.com/products/moimcheckcard
+  lastUpdated: "2026-03-25"
+  source: manual
+
+performanceTiers:
+  - id: tier0
+    label: 무실적
+    minSpending: 0
+    maxSpending: null
+
+performanceExclusions: []
+
+rewards:
+  - category: uncategorized
+    type: cashback
+    tiers:
+      - performanceTier: tier0
+        rate: null
+        monthlyCap: null
+        perTransactionCap: 3000
+    conditions:
+      minTransaction: 50000
+      excludeOnline: false
+      specificMerchants: []
+      note: "국내외 5만원 이상 결제 시 건당 300원 또는 3,000원 랜덤 캐시백. 가맹점별 1일 1회. 실적/한도 제한 없음"
+
+globalConstraints:
+  monthlyTotalDiscountCap: null
+  minimumAnnualSpending: null
+  note: "모임통장 보유 고객 전용. 모임통장 유지 시에만 카드 사용 가능. 랜덤 캐시백 구조(300원 또는 3,000원)."

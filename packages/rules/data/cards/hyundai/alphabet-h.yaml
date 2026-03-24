@@ -1,0 +1,51 @@
+card:
+  id: hyundai-alphabet-h
+  issuer: hyundai
+  name: Alphabet Card H
+  nameKo: 현대카드 H
+  type: credit
+  annualFee:
+    domestic: 15000
+    international: 15000
+  url: https://card.hyundaicard.com/
+  lastUpdated: "2026-03-25"
+  source: manual
+
+performanceTiers:
+  - id: tier0
+    label: 무실적
+    minSpending: 0
+    maxSpending: null
+
+performanceExclusions:
+  - tax_payment
+  - gift_card_purchase
+
+rewards:
+  - category: education
+    type: discount
+    tiers:
+      - performanceTier: tier0
+        rate: 10.0
+        monthlyCap: 50000
+        perTransactionCap: null
+    conditions:
+      minTransaction: null
+      excludeOnline: false
+      specificMerchants: []
+
+  - category: medical
+    type: discount
+    tiers:
+      - performanceTier: tier0
+        rate: 10.0
+        monthlyCap: 50000
+        perTransactionCap: null
+    conditions:
+      minTransaction: null
+      excludeOnline: false
+      specificMerchants: []
+
+globalConstraints:
+  monthlyTotalDiscountCap: 50000
+  minimumAnnualSpending: null

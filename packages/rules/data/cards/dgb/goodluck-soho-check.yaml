@@ -1,0 +1,139 @@
+card:
+  id: dgb-goodluck-soho-check
+  issuer: dgb
+  name: GoodLuck Soho Check Card
+  nameKo: iM뱅크 굿럭 소호 체크카드
+  type: check
+  annualFee:
+    domestic: 0
+    international: 0
+  url: https://www.imbank.co.kr/fnc_ebz_sm_11010_card.act
+  lastUpdated: "2026-03-25"
+  source: manual
+
+performanceTiers:
+  - id: tier0
+    label: 무실적
+    minSpending: 0
+    maxSpending: 299999
+
+  - id: tier1
+    label: 전월 30만원 이상
+    minSpending: 300000
+    maxSpending: null
+
+performanceExclusions: []
+
+rewards:
+  - category: uncategorized
+    type: points
+    tiers:
+      - performanceTier: tier0
+        rate: 0
+        monthlyCap: null
+        perTransactionCap: null
+      - performanceTier: tier1
+        rate: 0.1
+        monthlyCap: null
+        perTransactionCap: null
+    conditions:
+      minTransaction: null
+      excludeOnline: false
+      specificMerchants: []
+      note: "전월 30만원 이상 시 전 업종 0.1% 포인트 적립"
+
+  - category: offline_shopping
+    type: points
+    tiers:
+      - performanceTier: tier0
+        rate: 0
+        monthlyCap: null
+        perTransactionCap: null
+      - performanceTier: tier1
+        rate: 0.7
+        monthlyCap: null
+        perTransactionCap: null
+    conditions:
+      minTransaction: null
+      excludeOnline: false
+      specificMerchants:
+        - 이마트
+        - 롯데마트
+        - 홈플러스
+        - 다이소
+        - 백화점
+      note: "대형마트/다이소/백화점 0.7% 포인트 적립"
+
+  - category: online_shopping
+    type: points
+    tiers:
+      - performanceTier: tier0
+        rate: 0
+        monthlyCap: null
+        perTransactionCap: null
+      - performanceTier: tier1
+        rate: 0.7
+        monthlyCap: null
+        perTransactionCap: null
+    conditions:
+      minTransaction: null
+      excludeOnline: false
+      specificMerchants: []
+      note: "온라인 쇼핑 0.7% 포인트 적립"
+
+  - category: dining
+    type: points
+    tiers:
+      - performanceTier: tier0
+        rate: 0
+        monthlyCap: null
+        perTransactionCap: null
+      - performanceTier: tier1
+        rate: 0.5
+        monthlyCap: null
+        perTransactionCap: null
+    conditions:
+      minTransaction: null
+      excludeOnline: false
+      specificMerchants:
+        - 배달앱
+      note: "배달앱 0.5% 포인트 적립"
+
+  - category: grocery
+    type: points
+    tiers:
+      - performanceTier: tier0
+        rate: 0
+        monthlyCap: null
+        perTransactionCap: null
+      - performanceTier: tier1
+        rate: 0.5
+        monthlyCap: null
+        perTransactionCap: null
+    conditions:
+      minTransaction: null
+      excludeOnline: false
+      specificMerchants: []
+      note: "슈퍼마켓 0.5% 포인트 적립"
+
+  - category: utilities
+    type: points
+    tiers:
+      - performanceTier: tier0
+        rate: 0
+        monthlyCap: null
+        perTransactionCap: null
+      - performanceTier: tier1
+        rate: 0.5
+        monthlyCap: null
+        perTransactionCap: null
+    conditions:
+      minTransaction: null
+      excludeOnline: false
+      specificMerchants: []
+      note: "국세/4대보험 납부 0.5% 포인트 적립"
+
+globalConstraints:
+  monthlyTotalDiscountCap: null
+  minimumAnnualSpending: null
+  note: "개인사업자 전용 체크카드. 2025년 2월 출시. BC카드 브랜드. 전월 30만원 이상 시 사업필수업종 0.5~0.7% 포인트 적립, 그 외 0.1%. 행운 디자인 테마."

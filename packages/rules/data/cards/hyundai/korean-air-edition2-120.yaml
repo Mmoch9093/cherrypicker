@@ -1,0 +1,61 @@
+card:
+  id: hyundai-korean-air-edition2-120
+  issuer: hyundai
+  name: Korean Air Card Edition2 120
+  nameKo: 대한항공카드 Edition2 120
+  type: credit
+  annualFee:
+    domestic: 120000
+    international: 120000
+  url: https://www.hyundaicard.com/koreanair/m/html/hub_kal1.html
+  lastUpdated: "2026-03-25"
+  source: manual
+
+performanceTiers:
+  - id: tier0
+    label: 무실적
+    minSpending: 0
+    maxSpending: 499999
+
+  - id: tier1
+    label: 전월 50만원 이상
+    minSpending: 500000
+    maxSpending: null
+
+performanceExclusions:
+  - tax_payment
+  - utility_bills
+  - apartment_mgmt
+  - tuition
+  - gift_card
+
+rewards:
+  - category: travel
+    label: 대한항공 항공권/해외 가맹점 (1,000원당 2마일)
+    type: mileage
+    tiers:
+      - performanceTier: tier0
+        rate: 0.2
+        monthlyCap: null
+        perTransactionCap: null
+      - performanceTier: tier1
+        rate: 0.2
+        monthlyCap: null
+        perTransactionCap: null
+
+  - category: uncategorized
+    label: 국내 전 가맹점 (1,000원당 1마일)
+    type: mileage
+    tiers:
+      - performanceTier: tier0
+        rate: 0.1
+        monthlyCap: null
+        perTransactionCap: null
+      - performanceTier: tier1
+        rate: 0.1
+        monthlyCap: null
+        perTransactionCap: null
+
+globalConstraints:
+  monthlyTotalDiscountCap: null
+  minimumAnnualSpending: null

@@ -1,0 +1,43 @@
+card:
+  id: kb-asiana-ollim
+  issuer: kb
+  name: Asiana Ollim Card
+  nameKo: KB국민 아시아나 올림카드
+  type: credit
+  annualFee:
+    domestic: 28000
+    international: 30000
+  url: https://m.kbcard.com/CRD/DVIEW/MCAMCXHIACRC0002?mainCC=b&allianceCode=00909
+  lastUpdated: "2026-03-25"
+  source: manual
+
+performanceTiers:
+  - id: tier0
+    label: 무실적
+    minSpending: 0
+    maxSpending: null
+
+performanceExclusions: []
+
+rewards:
+  - category: travel
+    label: 해외 가맹점/면세점 (1,500원당 3마일)
+    type: mileage
+    tiers:
+      - performanceTier: tier0
+        rate: 0.2
+        monthlyCap: null
+        perTransactionCap: null
+
+  - category: uncategorized
+    label: 국내 전 가맹점 (1,500원당 2마일)
+    type: mileage
+    tiers:
+      - performanceTier: tier0
+        rate: 0.13
+        monthlyCap: null
+        perTransactionCap: null
+
+globalConstraints:
+  monthlyTotalDiscountCap: null
+  minimumAnnualSpending: null

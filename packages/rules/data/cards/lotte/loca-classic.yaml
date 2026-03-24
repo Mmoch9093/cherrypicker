@@ -1,0 +1,47 @@
+card:
+  id: lotte-loca-classic
+  issuer: lotte
+  name: LOCA Classic
+  nameKo: 롯데카드 LOCA Classic
+  type: credit
+  annualFee:
+    domestic: 20000
+    international: 20000
+  url: https://www.lottecard.co.kr/app/LPCDXAA_V001.lc
+  lastUpdated: "2026-03-25"
+  source: manual
+
+performanceTiers:
+  - id: tier0
+    label: 무실적
+    minSpending: 0
+    maxSpending: 1499999
+
+  - id: tier1
+    label: 전월 LOCA 시리즈 150만원 이상
+    minSpending: 1500000
+    maxSpending: null
+
+performanceExclusions:
+  - tax_payment
+  - gift_card
+  - apartment_mgmt
+  - tuition
+
+rewards:
+  - category: uncategorized
+    label: "전 가맹점 0.5% 할인 (무실적)"
+    type: discount
+    tiers:
+      - performanceTier: tier0
+        rate: 0.5
+        monthlyCap: null
+        perTransactionCap: null
+      - performanceTier: tier1
+        rate: 1.0
+        monthlyCap: null
+        perTransactionCap: null
+
+globalConstraints:
+  monthlyTotalDiscountCap: null
+  minimumAnnualSpending: null

@@ -1,0 +1,125 @@
+card:
+  id: shinhan-discount-plan-plus
+  issuer: shinhan
+  name: Discount Plan+
+  nameKo: 디스카운트 플랜 플러스
+  type: credit
+  annualFee:
+    domestic: 50000
+    international: 50000
+  url: https://www.shinhancard.com/pconts/html/card/apply/credit/1232390_2207.html
+  lastUpdated: "2026-03-25"
+  source: manual
+
+performanceTiers:
+  - id: tier0
+    label: 무실적
+    minSpending: 0
+    maxSpending: 299999
+
+  - id: tier1
+    label: 전월 30만원 이상
+    minSpending: 300000
+    maxSpending: 599999
+
+  - id: tier2
+    label: 전월 60만원 이상
+    minSpending: 600000
+    maxSpending: 999999
+
+  - id: tier3
+    label: 전월 100만원 이상
+    minSpending: 1000000
+    maxSpending: 1499999
+
+  - id: tier4
+    label: 전월 150만원 이상
+    minSpending: 1500000
+    maxSpending: null
+
+performanceExclusions:
+  - tax_payment
+  - short_term_loan
+  - long_term_loan
+  - annual_fee
+  - gift_card_purchase
+
+rewards:
+  - category: dining
+    label: 음식점/배달앱/편의점/카페 할인
+    type: discount
+    tiers:
+      - performanceTier: tier0
+        rate: 0
+        monthlyCap: null
+        perTransactionCap: null
+      - performanceTier: tier1
+        rate: 10.0
+        monthlyCap: 15000
+        perTransactionCap: null
+      - performanceTier: tier2
+        rate: 10.0
+        monthlyCap: 25000
+        perTransactionCap: null
+      - performanceTier: tier3
+        rate: 10.0
+        monthlyCap: 40000
+        perTransactionCap: null
+      - performanceTier: tier4
+        rate: 10.0
+        monthlyCap: 50000
+        perTransactionCap: null
+
+  - category: online_shopping
+    label: 온라인쇼핑/쿠팡 할인
+    type: discount
+    tiers:
+      - performanceTier: tier0
+        rate: 0
+        monthlyCap: null
+        perTransactionCap: null
+      - performanceTier: tier1
+        rate: 10.0
+        monthlyCap: 15000
+        perTransactionCap: null
+      - performanceTier: tier2
+        rate: 10.0
+        monthlyCap: 25000
+        perTransactionCap: null
+      - performanceTier: tier3
+        rate: 10.0
+        monthlyCap: 40000
+        perTransactionCap: null
+      - performanceTier: tier4
+        rate: 10.0
+        monthlyCap: 50000
+        perTransactionCap: null
+
+  - category: convenience_store
+    label: 편의점 할인
+    type: discount
+    tiers:
+      - performanceTier: tier0
+        rate: 0
+        monthlyCap: null
+        perTransactionCap: null
+      - performanceTier: tier1
+        rate: 10.0
+        monthlyCap: 15000
+        perTransactionCap: null
+      - performanceTier: tier2
+        rate: 10.0
+        monthlyCap: 25000
+        perTransactionCap: null
+      - performanceTier: tier3
+        rate: 10.0
+        monthlyCap: 40000
+        perTransactionCap: null
+      - performanceTier: tier4
+        rate: 10.0
+        monthlyCap: 50000
+        perTransactionCap: null
+
+globalConstraints:
+  monthlyTotalDiscountCap: 50000
+  minimumAnnualSpending: null

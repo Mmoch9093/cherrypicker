@@ -1,0 +1,122 @@
+card:
+  id: kb-our-wesh
+  issuer: kb
+  name: Our WE:SH
+  nameKo: KB국민 Our WE:SH 카드
+  type: credit
+  annualFee:
+    domestic: 15000
+    international: 15000
+  url: https://card.kbcard.com/CRD/DVIEW/HCAMCXPRICAC0076?mainCC=a&cooperationcode=09124
+  lastUpdated: "2026-03-25"
+  source: manual
+
+performanceTiers:
+  - id: tier0
+    label: 무실적
+    minSpending: 0
+    maxSpending: 399999
+
+  - id: tier1
+    label: 전월 40만원 이상
+    minSpending: 400000
+    maxSpending: 799999
+
+  - id: tier2
+    label: 전월 80만원 이상
+    minSpending: 800000
+    maxSpending: 1199999
+
+  - id: tier3
+    label: 전월 120만원 이상
+    minSpending: 1200000
+    maxSpending: 1999999
+
+  - id: tier4
+    label: 전월 200만원 이상
+    minSpending: 2000000
+    maxSpending: null
+
+performanceExclusions:
+  - tax_payment
+  - gift_card_purchase
+
+rewards:
+  - category: grocery
+    label: "우리 서비스 (대형마트/음식점/주유 중 선택)"
+    type: discount
+    tiers:
+      - performanceTier: tier0
+        rate: 0
+        monthlyCap: null
+        perTransactionCap: null
+      - performanceTier: tier1
+        rate: 5.0
+        monthlyCap: 8000
+        perTransactionCap: null
+      - performanceTier: tier2
+        rate: 5.0
+        monthlyCap: 11000
+        perTransactionCap: null
+      - performanceTier: tier3
+        rate: 5.0
+        monthlyCap: 13000
+        perTransactionCap: null
+      - performanceTier: tier4
+        rate: 5.0
+        monthlyCap: 30000
+        perTransactionCap: null
+
+  - category: entertainment
+    label: "두리 서비스 (영화/커피/학원/병원 중 선택) 10% 할인"
+    type: discount
+    tiers:
+      - performanceTier: tier0
+        rate: 0
+        monthlyCap: null
+        perTransactionCap: null
+      - performanceTier: tier1
+        rate: 10.0
+        monthlyCap: 7000
+        perTransactionCap: null
+      - performanceTier: tier2
+        rate: 10.0
+        monthlyCap: 9000
+        perTransactionCap: null
+      - performanceTier: tier3
+        rate: 10.0
+        monthlyCap: 12000
+        perTransactionCap: null
+      - performanceTier: tier4
+        rate: 10.0
+        monthlyCap: 15000
+        perTransactionCap: null
+
+  - category: telecom
+    label: "이동통신 자동납부 10% 할인"
+    type: discount
+    tiers:
+      - performanceTier: tier0
+        rate: 0
+        monthlyCap: null
+        perTransactionCap: null
+      - performanceTier: tier1
+        rate: 10.0
+        monthlyCap: 5000
+        perTransactionCap: null
+      - performanceTier: tier2
+        rate: 10.0
+        monthlyCap: 5000
+        perTransactionCap: null
+      - performanceTier: tier3
+        rate: 10.0
+        monthlyCap: 5000
+        perTransactionCap: null
+      - performanceTier: tier4
+        rate: 10.0
+        monthlyCap: 5000
+        perTransactionCap: null
+
+globalConstraints:
+  monthlyTotalDiscountCap: 20000
+  minimumAnnualSpending: null

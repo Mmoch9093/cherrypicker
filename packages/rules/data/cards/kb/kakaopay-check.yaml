@@ -1,0 +1,66 @@
+card:
+  id: kb-kakaopay-check
+  issuer: kb
+  name: KakaoPay KB Kookmin Check Card
+  nameKo: 카카오페이 KB국민 체크카드
+  type: check
+  annualFee:
+    domestic: 0
+    international: 0
+  url: https://m.kbcard.com/CRD/DVIEW/MCAMCXHIACRC0002?allianceCode=01782&mainCC=b
+  lastUpdated: "2026-03-25"
+  source: manual
+
+performanceTiers:
+  - id: tier0
+    label: 무실적
+    minSpending: 0
+    maxSpending: null
+
+performanceExclusions:
+  - tax_payment
+  - gift_card
+
+rewards:
+  - category: online_shopping
+    label: 카카오페이 결제 (2% 적립)
+    type: points
+    tiers:
+      - performanceTier: tier0
+        rate: 2.0
+        monthlyCap: null
+        perTransactionCap: null
+    conditions:
+      specificMerchants:
+        - 카카오페이
+
+  - category: dining
+    label: 커피전문점 (1% 적립)
+    type: points
+    tiers:
+      - performanceTier: tier0
+        rate: 1.0
+        monthlyCap: null
+        perTransactionCap: null
+    conditions:
+      specificMerchants:
+        - 스타벅스
+        - 이디야
+        - 투썸플레이스
+        - 커피빈
+
+  - category: convenience_store
+    label: CU편의점 (1% 적립)
+    type: points
+    tiers:
+      - performanceTier: tier0
+        rate: 1.0
+        monthlyCap: null
+        perTransactionCap: null
+    conditions:
+      specificMerchants:
+        - CU
+
+globalConstraints:
+  monthlyTotalDiscountCap: null
+  minimumAnnualSpending: null

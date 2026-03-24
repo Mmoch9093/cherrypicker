@@ -1,0 +1,39 @@
+card:
+  id: kakao-soho-check
+  issuer: kakao
+  name: Soho Check Card
+  nameKo: 카카오뱅크 개인사업자 체크카드
+  type: check
+  annualFee:
+    domestic: 0
+    international: 0
+  url: https://www.kakaobank.com/products/sohoCheckCard
+  lastUpdated: "2026-03-25"
+  source: manual
+
+performanceTiers:
+  - id: tier0
+    label: 무실적 (첫 달)
+    minSpending: 0
+    maxSpending: null
+
+performanceExclusions: []
+
+rewards:
+  - category: uncategorized
+    type: cashback
+    tiers:
+      - performanceTier: tier0
+        rate: null
+        monthlyCap: 20000
+        perTransactionCap: null
+    conditions:
+      minTransaction: null
+      excludeOnline: false
+      specificMerchants: []
+      note: "전월 이용실적에 따라 월 통합 캐시백 한도 제공. 최초 발급 후 다음 달 말일까지는 실적 무관 월 한도 2만원. 업종별 캐시백 적립. 세금 신고 기간(1월/5월/7월) 부가세 이용내역 자동 제공"
+
+globalConstraints:
+  monthlyTotalDiscountCap: 20000
+  minimumAnnualSpending: null
+  note: "개인사업자(소호) 전용 체크카드. 전월 실적에 따라 월 통합 캐시백 한도 변동. 세금계산서 기능 내장."

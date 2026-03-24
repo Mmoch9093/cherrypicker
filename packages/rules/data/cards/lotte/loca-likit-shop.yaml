@@ -1,0 +1,94 @@
+card:
+  id: lotte-loca-likit-shop
+  issuer: lotte
+  name: LOCA LIKIT Shop
+  nameKo: 롯데카드 LOCA LIKIT Shop
+  type: credit
+  annualFee:
+    domestic: 10000
+    international: 10000
+  url: https://www.lottecard.co.kr/app/LPCDXAA_V014.lc
+  lastUpdated: "2026-03-25"
+  source: manual
+
+performanceTiers:
+  - id: tier0
+    label: 무실적
+    minSpending: 0
+    maxSpending: 399999
+
+  - id: tier1
+    label: 전월 40만원 이상
+    minSpending: 400000
+    maxSpending: null
+
+performanceExclusions:
+  - tax_payment
+  - gift_card
+
+rewards:
+  - category: online_shopping
+    type: discount
+    tiers:
+      - performanceTier: tier0
+        rate: 0
+        monthlyCap: null
+        perTransactionCap: null
+      - performanceTier: tier1
+        rate: 60.0
+        monthlyCap: 13000
+        perTransactionCap: null
+    conditions:
+      specificMerchants:
+        - 쿠팡
+        - 위메프
+        - 티몬
+
+  - category: offline_shopping
+    subcategory: beauty
+    label: "미용실 60% 할인"
+    type: discount
+    tiers:
+      - performanceTier: tier0
+        rate: 0
+        monthlyCap: null
+        perTransactionCap: null
+      - performanceTier: tier1
+        rate: 60.0
+        monthlyCap: 13000
+        perTransactionCap: null
+    conditions:
+      note: "미용실 업종 등록 가맹점 (백화점/할인점/쇼핑몰 입점 매장 제외)"
+
+  - category: convenience_store
+    type: discount
+    tiers:
+      - performanceTier: tier0
+        rate: 0
+        monthlyCap: null
+        perTransactionCap: null
+      - performanceTier: tier1
+        rate: 60.0
+        monthlyCap: 13000
+        perTransactionCap: null
+
+  - category: subscription
+    label: "디지털구독 60% 할인"
+    type: discount
+    tiers:
+      - performanceTier: tier0
+        rate: 0
+        monthlyCap: null
+        perTransactionCap: null
+      - performanceTier: tier1
+        rate: 60.0
+        monthlyCap: 13000
+        perTransactionCap: null
+    conditions:
+      specificMerchants:
+        - 쿠팡로켓와우
+        - 네이버플러스
+
+globalConstraints:
+  monthlyTotalDiscountCap: 13000
+  minimumAnnualSpending: null

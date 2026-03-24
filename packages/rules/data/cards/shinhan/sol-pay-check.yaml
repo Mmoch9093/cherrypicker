@@ -1,0 +1,72 @@
+card:
+  id: "shinhan-sol-pay-check"
+  issuer: "shinhan"
+  name: "SOL Pay Check"
+  nameKo: "SOL페이 체크카드"
+  type: check
+  annualFee:
+    domestic: 0
+    international: 0
+  url: "https://www.shinhancard.com/pconts/html/card/apply/check/1188314_2206.html"
+  lastUpdated: "2026-03-25"
+  source: manual
+
+performanceTiers:
+  - id: tier0
+    label: "무실적"
+    minSpending: 0
+    maxSpending: 199999
+  - id: tier1
+    label: "전월 20만원 이상"
+    minSpending: 200000
+    maxSpending: 399999
+  - id: tier2
+    label: "전월 40만원 이상"
+    minSpending: 400000
+    maxSpending: null
+
+performanceExclusions:
+  - tax_payment
+  - gift_card_purchase
+
+rewards:
+  - category: "uncategorized"
+    label: "SOL Pay 결제 시 캐시백"
+    type: discount
+    tiers:
+      - performanceTier: tier0
+        rate: 0
+        monthlyCap: null
+        perTransactionCap: null
+      - performanceTier: tier1
+        rate: 0.9
+        monthlyCap: 3000
+        perTransactionCap: null
+      - performanceTier: tier2
+        rate: 0.9
+        monthlyCap: 5000
+        perTransactionCap: null
+    conditions:
+      specificMerchants:
+        - SOL페이
+
+  - category: "uncategorized"
+    label: "전 가맹점 기본 캐시백"
+    type: discount
+    tiers:
+      - performanceTier: tier0
+        rate: 0.4
+        monthlyCap: null
+        perTransactionCap: null
+      - performanceTier: tier1
+        rate: 0.4
+        monthlyCap: null
+        perTransactionCap: null
+      - performanceTier: tier2
+        rate: 0.4
+        monthlyCap: null
+        perTransactionCap: null
+
+globalConstraints:
+  monthlyTotalDiscountCap: 5000
+  minimumAnnualSpending: null

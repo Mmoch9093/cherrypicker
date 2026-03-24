@@ -1,0 +1,43 @@
+card:
+  id: kb-mileage-gaon-asiana
+  issuer: kb
+  name: Mileage Gaon Card (Asiana)
+  nameKo: KB국민 마일리지 가온카드 (아시아나)
+  type: credit
+  annualFee:
+    domestic: 15000
+    international: 17000
+  url: https://m.kbcard.com/CXHIACRC0002.cms?mainCC=b&allianceCode=09154
+  lastUpdated: "2026-03-25"
+  source: manual
+
+performanceTiers:
+  - id: tier0
+    label: 무실적
+    minSpending: 0
+    maxSpending: null
+
+performanceExclusions: []
+
+rewards:
+  - category: travel
+    label: 해외 가맹점/면세점 (1,000원당 2마일)
+    type: mileage
+    tiers:
+      - performanceTier: tier0
+        rate: 0.2
+        monthlyCap: null
+        perTransactionCap: null
+
+  - category: uncategorized
+    label: 국내 전 가맹점 (1,000원당 1마일)
+    type: mileage
+    tiers:
+      - performanceTier: tier0
+        rate: 0.1
+        monthlyCap: null
+        perTransactionCap: null
+
+globalConstraints:
+  monthlyTotalDiscountCap: null
+  minimumAnnualSpending: null

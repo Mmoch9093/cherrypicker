@@ -1,0 +1,53 @@
+card:
+  id: kb-coupang-wow
+  issuer: kb
+  name: Coupang Wow Card
+  nameKo: KB국민 쿠팡 와우 카드
+  type: credit
+  annualFee:
+    domestic: 20000
+    international: 20000
+  url: https://card.kbcard.com/CRD/DVIEW/HCAMCXPRICAC0076?mainCC=a&cooperationcode=09292
+  lastUpdated: "2026-03-25"
+  source: manual
+
+performanceTiers:
+  - id: tier0
+    label: 무실적
+    minSpending: 0
+    maxSpending: null
+
+performanceExclusions:
+  - tax_payment
+  - gift_card
+  - short_term_loan
+  - long_term_loan
+  - annual_fee
+
+rewards:
+  - category: online_shopping
+    label: 쿠팡/쿠팡이츠/쿠팡플레이 (2% 쿠팡캐시 적립)
+    type: points
+    tiers:
+      - performanceTier: tier0
+        rate: 2.0
+        monthlyCap: 20000
+        perTransactionCap: null
+    conditions:
+      specificMerchants:
+        - 쿠팡
+        - 쿠팡이츠
+        - 쿠팡플레이
+
+  - category: uncategorized
+    label: 쿠팡 외 국내외 가맹점 (0.2% 쿠팡캐시 적립)
+    type: points
+    tiers:
+      - performanceTier: tier0
+        rate: 0.2
+        monthlyCap: 2000
+        perTransactionCap: null
+
+globalConstraints:
+  monthlyTotalDiscountCap: null
+  minimumAnnualSpending: null

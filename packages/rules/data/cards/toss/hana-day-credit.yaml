@@ -1,0 +1,219 @@
+card:
+  id: toss-hana-day-credit
+  issuer: toss
+  name: Toss Bank Hana Card Day
+  nameKo: 토스뱅크 하나카드 Day
+  type: credit
+  annualFee:
+    domestic: 20000
+    international: 20000
+  url: https://www.tossbank.com/product-service/card/day-card
+  lastUpdated: "2026-03-25"
+  source: manual
+
+performanceTiers:
+  - id: tier0
+    label: 무실적
+    minSpending: 0
+    maxSpending: 499999
+
+  - id: tier1
+    label: 전월 50만원 이상
+    minSpending: 500000
+    maxSpending: 999999
+
+  - id: tier2
+    label: 전월 100만원 이상
+    minSpending: 1000000
+    maxSpending: null
+
+performanceExclusions: []
+
+rewards:
+  - category: telecom
+    type: discount
+    tiers:
+      - performanceTier: tier0
+        rate: 0
+        monthlyCap: null
+        perTransactionCap: null
+      - performanceTier: tier1
+        rate: 10.0
+        monthlyCap: 5000
+        perTransactionCap: null
+      - performanceTier: tier2
+        rate: 10.0
+        monthlyCap: 10000
+        perTransactionCap: null
+    conditions:
+      minTransaction: null
+      excludeOnline: false
+      specificMerchants:
+        - SKT
+        - KT
+        - LGU+
+        - 알뜰폰
+      note: "통신요금(SKT, KT, LGU+, 알뜰폰) 자동납부 10% 청구할인"
+
+  - category: utilities
+    type: discount
+    tiers:
+      - performanceTier: tier0
+        rate: 0
+        monthlyCap: null
+        perTransactionCap: null
+      - performanceTier: tier1
+        rate: 10.0
+        monthlyCap: 5000
+        perTransactionCap: null
+      - performanceTier: tier2
+        rate: 10.0
+        monthlyCap: 10000
+        perTransactionCap: null
+    conditions:
+      minTransaction: null
+      excludeOnline: false
+      specificMerchants: []
+      note: "아파트 관리비 자동납부 10% 청구할인"
+
+  - category: education
+    type: discount
+    tiers:
+      - performanceTier: tier0
+        rate: 0
+        monthlyCap: null
+        perTransactionCap: null
+      - performanceTier: tier1
+        rate: 10.0
+        monthlyCap: 5000
+        perTransactionCap: null
+      - performanceTier: tier2
+        rate: 10.0
+        monthlyCap: 10000
+        perTransactionCap: null
+    conditions:
+      minTransaction: null
+      excludeOnline: false
+      specificMerchants: []
+      note: "학원비(외국어, 입시/보습, 운전면허, 예체능, 기술/직업훈련, 무술도장) 10% 청구할인"
+
+  - category: medical
+    type: discount
+    tiers:
+      - performanceTier: tier0
+        rate: 0
+        monthlyCap: null
+        perTransactionCap: null
+      - performanceTier: tier1
+        rate: 10.0
+        monthlyCap: 5000
+        perTransactionCap: null
+      - performanceTier: tier2
+        rate: 10.0
+        monthlyCap: 10000
+        perTransactionCap: null
+    conditions:
+      minTransaction: null
+      excludeOnline: false
+      specificMerchants: []
+      note: "병원 10% 청구할인"
+
+  - category: dining
+    type: discount
+    tiers:
+      - performanceTier: tier0
+        rate: 0
+        monthlyCap: null
+        perTransactionCap: null
+      - performanceTier: tier1
+        rate: 10.0
+        monthlyCap: 5000
+        perTransactionCap: null
+      - performanceTier: tier2
+        rate: 10.0
+        monthlyCap: 10000
+        perTransactionCap: null
+    conditions:
+      minTransaction: null
+      excludeOnline: false
+      specificMerchants:
+        - 스타벅스
+        - 커피빈
+        - 이디야
+        - 투썸플레이스
+        - 할리스
+      note: "커피전문점(스타벅스, 커피빈, 이디야, 투썸플레이스, 할리스) 10% 청구할인"
+
+  - category: offline_shopping
+    type: discount
+    tiers:
+      - performanceTier: tier0
+        rate: 0
+        monthlyCap: null
+        perTransactionCap: null
+      - performanceTier: tier1
+        rate: 10.0
+        monthlyCap: 5000
+        perTransactionCap: null
+      - performanceTier: tier2
+        rate: 10.0
+        monthlyCap: 10000
+        perTransactionCap: null
+    conditions:
+      minTransaction: null
+      excludeOnline: false
+      specificMerchants:
+        - 이마트
+        - 롯데마트
+        - 홈플러스
+        - 토스쇼핑
+      note: "쇼핑(이마트, 롯데마트, 홈플러스, 토스쇼핑) 10% 청구할인"
+
+  - category: insurance
+    type: discount
+    tiers:
+      - performanceTier: tier0
+        rate: 0
+        monthlyCap: null
+        perTransactionCap: null
+      - performanceTier: tier1
+        rate: 10.0
+        monthlyCap: 5000
+        perTransactionCap: null
+      - performanceTier: tier2
+        rate: 10.0
+        monthlyCap: 10000
+        perTransactionCap: null
+    conditions:
+      minTransaction: null
+      excludeOnline: false
+      specificMerchants: []
+      note: "손해보험, 건강보험/고용보험/산재보험/국민연금 자동납부 10% 청구할인"
+
+  - category: entertainment
+    type: discount
+    tiers:
+      - performanceTier: tier0
+        rate: 0
+        monthlyCap: null
+        perTransactionCap: null
+      - performanceTier: tier1
+        rate: 10.0
+        monthlyCap: 5000
+        perTransactionCap: null
+      - performanceTier: tier2
+        rate: 10.0
+        monthlyCap: 10000
+        perTransactionCap: null
+    conditions:
+      minTransaction: null
+      excludeOnline: false
+      specificMerchants:
+        - 골프장
+        - 골프연습장
+      note: "골프장/골프연습장 10% 청구할인"
+
+globalConstraints:
+  monthlyTotalDiscountCap: 50000
+  minimumAnnualSpending: null
+  note: "하나카드 PLCC. 8대 업종(통신/아파트관리비/학원/병원/커피/쇼핑/보험/골프) 10% 청구할인. 전월 50만 이상: 업종별 5,000원 한도/월 통합 3만원, 전월 100만 이상: 업종별 1만원 한도/월 통합 5만원. 최초 사용등록일로부터 다음달 말일까지는 전월실적 무관하게 tier1 혜택 제공."

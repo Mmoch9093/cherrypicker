@@ -1,0 +1,110 @@
+card:
+  id: bnk-bujadoseyo-mileage-check
+  issuer: bnk
+  name: Bujadoseyo The Mileage Check Card
+  nameKo: BNK부산은행 부자되세요 더 마일리지 체크카드
+  type: check
+  annualFee:
+    domestic: 0
+    international: 0
+  url: https://www.busanbank.co.kr/ib20/mnu/FPMPDTDT0000001?FPCD=0010500110
+  lastUpdated: "2026-03-25"
+  source: manual
+
+performanceTiers:
+  - id: tier0
+    label: 무실적
+    minSpending: 0
+    maxSpending: 299999
+
+  - id: tier1
+    label: 전월 30만원 이상
+    minSpending: 300000
+    maxSpending: null
+
+performanceExclusions: []
+
+rewards:
+  - category: travel
+    type: points
+    tiers:
+      - performanceTier: tier0
+        rate: 0
+        monthlyCap: null
+        perTransactionCap: null
+      - performanceTier: tier1
+        rate: null
+        monthlyCap: null
+        perTransactionCap: null
+    conditions:
+      minTransaction: 30000
+      excludeOnline: false
+      specificMerchants: []
+      note: "전월 30만원 이상 시 3만원 이상 결제 시 3,000원당 대한항공 스카이패스 1마일 적립. 온라인 쇼핑몰(SSG닷컴, 롯데닷컴, AK몰, 갤러리아몰 등)에서 1,000원당 1마일 적립"
+
+  - category: online_shopping
+    type: cashback
+    tiers:
+      - performanceTier: tier0
+        rate: 0
+        monthlyCap: null
+        perTransactionCap: null
+      - performanceTier: tier1
+        rate: null
+        monthlyCap: 10000
+        perTransactionCap: 10000
+    conditions:
+      minTransaction: 30000
+      excludeOnline: false
+      specificMerchants:
+        - SSG닷컴
+        - 롯데닷컴
+        - AK몰
+        - 갤러리아몰
+      note: "온라인 쇼핑몰 3만원 이상 월 1회 캐시백, 월 1만원 한도"
+
+  - category: dining
+    type: discount
+    tiers:
+      - performanceTier: tier0
+        rate: 0
+        monthlyCap: null
+        perTransactionCap: null
+      - performanceTier: tier1
+        rate: null
+        monthlyCap: 2000
+        perTransactionCap: 500
+    conditions:
+      minTransaction: null
+      excludeOnline: false
+      specificMerchants:
+        - 커피빈
+        - 스타벅스
+        - 파스쿠찌
+        - 엔제리너스
+        - 카페베네
+      note: "커피전문점 건당 500원 할인, 월 4회 한도(월 2,000원)"
+
+  - category: entertainment
+    type: discount
+    tiers:
+      - performanceTier: tier0
+        rate: 0
+        monthlyCap: null
+        perTransactionCap: null
+      - performanceTier: tier1
+        rate: null
+        monthlyCap: 2000
+        perTransactionCap: 1000
+    conditions:
+      minTransaction: 10000
+      excludeOnline: false
+      specificMerchants:
+        - CGV
+        - 롯데시네마
+      note: "CGV/롯데시네마 1만원 이상 시 1,000원 할인, 월 2회 한도(월 2,000원)"
+
+globalConstraints:
+  monthlyTotalDiscountCap: null
+  minimumAnnualSpending: null
+  note: "BC카드 브랜드. 대한항공 스카이패스 마일리지 적립 체크카드. 전월 30만원 이상 시 3만원 이상 결제 시 마일리지 적립."

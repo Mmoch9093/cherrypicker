@@ -1,0 +1,78 @@
+card:
+  id: woori-d4
+  issuer: woori
+  name: D4 Card of Rules
+  nameKo: D4@카드의정석
+  type: credit
+  annualFee:
+    domestic: 12000
+    international: 12000
+  url: https://www.banksalad.com/product/cards/CARD003995
+  lastUpdated: "2026-03-25"
+  source: manual
+
+performanceTiers:
+  - id: tier0
+    label: 무실적
+    minSpending: 0
+    maxSpending: 299999
+
+  - id: tier1
+    label: 전월 30만원 이상
+    minSpending: 300000
+    maxSpending: null
+
+performanceExclusions:
+  - tax_payment
+  - utility_bills
+  - apartment_mgmt
+  - tuition
+  - gift_card
+
+rewards:
+  - category: public_transit
+    label: "대중교통 33% 할인"
+    type: discount
+    tiers:
+      - performanceTier: tier0
+        rate: 0
+        monthlyCap: null
+        perTransactionCap: null
+      - performanceTier: tier1
+        rate: 33.0
+        monthlyCap: 11000
+        perTransactionCap: 3300
+
+  - category: dining
+    subcategory: cafe
+    label: "커피전문점 55% 할인"
+    type: discount
+    tiers:
+      - performanceTier: tier0
+        rate: 0
+        monthlyCap: null
+        perTransactionCap: null
+      - performanceTier: tier1
+        rate: 55.0
+        monthlyCap: 11000
+        perTransactionCap: 3300
+
+  - category: entertainment
+    subcategory: movie
+    label: "영화관 5,500원 할인"
+    type: discount
+    tiers:
+      - performanceTier: tier0
+        rate: 0
+        monthlyCap: null
+        perTransactionCap: null
+      - performanceTier: tier1
+        rate: 0
+        monthlyCap: null
+        perTransactionCap: 5500
+    conditions:
+      note: "영화관 이용 시 건당 5,500원 할인"
+
+globalConstraints:
+  monthlyTotalDiscountCap: 22000
+  minimumAnnualSpending: null
