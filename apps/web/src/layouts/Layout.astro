@@ -6,9 +6,10 @@ interface Props {
 
 const { title, description = '신용카드 혜택 최적화 도구' } = Astro.props;
 const pathname = Astro.url.pathname;
+const base = import.meta.env.BASE_URL;
 
 function isActive(href: string) {
-  if (href === '/') return pathname === '/';
+  if (href === base) return pathname === base || pathname === base.replace(/\/$/, '');
   return pathname.startsWith(href);
 }
 ---
@@ -19,7 +20,9 @@ function isActive(href: string) {
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content={description} />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' blob:; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; worker-src 'self' blob:; connect-src 'self';" />
+    <meta name="referrer" content="strict-origin-when-cross-origin" />
+    <link rel="icon" type="image/svg+xml" href={`${base}favicon.svg`} />
     <title>{title} | CherryPicker</title>
     <script is:inline>
       (function () {
@@ -35,27 +38,27 @@ function isActive(href: string) {
   <body class="min-h-screen bg-[var(--color-bg)] text-[var(--color-text)] transition-colors duration-200">
     <nav class="sticky top-0 z-50 border-b border-[var(--color-border)] bg-[var(--color-surface)]/95 backdrop-blur-sm">
       <div class="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
-        <a href="/" class="text-xl font-bold text-[var(--color-primary)] hover:opacity-80 transition-opacity">
+        <a href={`${base}`} class="text-xl font-bold text-[var(--color-primary)] hover:opacity-80 transition-opacity">
           🍒 CherryPicker
         </a>
 
         <!-- Desktop nav -->
         <div class="hidden md:flex items-center gap-6 text-sm">
           <a
-            href="/"
-            class={`transition-colors hover:text-[var(--color-primary)] ${isActive('/') ? 'font-semibold text-[var(--color-primary)]' : 'text-[var(--color-text-muted)]'}`}
+            href={`${base}`}
+            class={`transition-colors hover:text-[var(--color-primary)] ${isActive(base) ? 'font-semibold text-[var(--color-primary)]' : 'text-[var(--color-text-muted)]'}`}
           >홈</a>
           <a
-            href="/dashboard"
-            class={`transition-colors hover:text-[var(--color-primary)] ${isActive('/dashboard') ? 'font-semibold text-[var(--color-primary)]' : 'text-[var(--color-text-muted)]'}`}
+            href={`${base}dashboard`}
+            class={`transition-colors hover:text-[var(--color-primary)] ${isActive(`${base}dashboard`) ? 'font-semibold text-[var(--color-primary)]' : 'text-[var(--color-text-muted)]'}`}
           >대시보드</a>
           <a
-            href="/cards"
-            class={`transition-colors hover:text-[var(--color-primary)] ${isActive('/cards') ? 'font-semibold text-[var(--color-primary)]' : 'text-[var(--color-text-muted)]'}`}
+            href={`${base}cards`}
+            class={`transition-colors hover:text-[var(--color-primary)] ${isActive(`${base}cards`) ? 'font-semibold text-[var(--color-primary)]' : 'text-[var(--color-text-muted)]'}`}
           >카드 목록</a>
           <a
-            href="/results"
-            class={`transition-colors hover:text-[var(--color-primary)] ${isActive('/results') ? 'font-semibold text-[var(--color-primary)]' : 'text-[var(--color-text-muted)]'}`}
+            href={`${base}results`}
+            class={`transition-colors hover:text-[var(--color-primary)] ${isActive(`${base}results`) ? 'font-semibold text-[var(--color-primary)]' : 'text-[var(--color-text-muted)]'}`}
           >최적화 결과</a>
 
           <!-- Dark mode toggle -->
@@ -98,20 +101,20 @@ function isActive(href: string) {
       >
         <div class="flex flex-col px-6 py-4 gap-1">
           <a
-            href="/"
-            class={`rounded-lg px-3 py-2.5 text-sm transition-colors hover:bg-[var(--color-primary-light)] hover:text-[var(--color-primary)] ${isActive('/') ? 'bg-[var(--color-primary-light)] font-semibold text-[var(--color-primary)]' : 'text-[var(--color-text-muted)]'}`}
+            href={`${base}`}
+            class={`rounded-lg px-3 py-2.5 text-sm transition-colors hover:bg-[var(--color-primary-light)] hover:text-[var(--color-primary)] ${isActive(base) ? 'bg-[var(--color-primary-light)] font-semibold text-[var(--color-primary)]' : 'text-[var(--color-text-muted)]'}`}
           >홈</a>
           <a
-            href="/dashboard"
-            class={`rounded-lg px-3 py-2.5 text-sm transition-colors hover:bg-[var(--color-primary-light)] hover:text-[var(--color-primary)] ${isActive('/dashboard') ? 'bg-[var(--color-primary-light)] font-semibold text-[var(--color-primary)]' : 'text-[var(--color-text-muted)]'}`}
+            href={`${base}dashboard`}
+            class={`rounded-lg px-3 py-2.5 text-sm transition-colors hover:bg-[var(--color-primary-light)] hover:text-[var(--color-primary)] ${isActive(`${base}dashboard`) ? 'bg-[var(--color-primary-light)] font-semibold text-[var(--color-primary)]' : 'text-[var(--color-text-muted)]'}`}
           >대시보드</a>
           <a
-            href="/cards"
-            class={`rounded-lg px-3 py-2.5 text-sm transition-colors hover:bg-[var(--color-primary-light)] hover:text-[var(--color-primary)] ${isActive('/cards') ? 'bg-[var(--color-primary-light)] font-semibold text-[var(--color-primary)]' : 'text-[var(--color-text-muted)]'}`}
+            href={`${base}cards`}
+            class={`rounded-lg px-3 py-2.5 text-sm transition-colors hover:bg-[var(--color-primary-light)] hover:text-[var(--color-primary)] ${isActive(`${base}cards`) ? 'bg-[var(--color-primary-light)] font-semibold text-[var(--color-primary)]' : 'text-[var(--color-text-muted)]'}`}
           >카드 목록</a>
           <a
-            href="/results"
-            class={`rounded-lg px-3 py-2.5 text-sm transition-colors hover:bg-[var(--color-primary-light)] hover:text-[var(--color-primary)] ${isActive('/results') ? 'bg-[var(--color-primary-light)] font-semibold text-[var(--color-primary)]' : 'text-[var(--color-text-muted)]'}`}
+            href={`${base}results`}
+            class={`rounded-lg px-3 py-2.5 text-sm transition-colors hover:bg-[var(--color-primary-light)] hover:text-[var(--color-primary)] ${isActive(`${base}results`) ? 'bg-[var(--color-primary-light)] font-semibold text-[var(--color-primary)]' : 'text-[var(--color-text-muted)]'}`}
           >최적화 결과</a>
         </div>
       </div>
@@ -129,14 +132,14 @@ function isActive(href: string) {
             <p class="mt-1 text-sm text-[var(--color-text-muted)]">카드 혜택 체리피킹 최적화</p>
           </div>
           <div class="text-center text-sm text-[var(--color-text-muted)]">
-            <span class="font-semibold text-[var(--color-text)]">172+</span> 카드 혜택 데이터 수록 &nbsp;·&nbsp;
-            <span class="font-semibold text-[var(--color-text)]">18</span>개 카드사 &nbsp;·&nbsp;
+            <span class="font-semibold text-[var(--color-text)]">319+</span> 카드 혜택 데이터 수록 &nbsp;·&nbsp;
+            <span class="font-semibold text-[var(--color-text)]">20</span>개 카드사 &nbsp;·&nbsp;
             <span class="font-semibold text-[var(--color-text)]">16</span>개 카테고리
           </div>
           <div class="flex gap-4 text-sm text-[var(--color-text-muted)]">
-            <a href="/" class="hover:text-[var(--color-primary)] transition-colors">홈</a>
-            <a href="/cards" class="hover:text-[var(--color-primary)] transition-colors">카드 목록</a>
-            <a href="/dashboard" class="hover:text-[var(--color-primary)] transition-colors">대시보드</a>
+            <a href={`${base}`} class="hover:text-[var(--color-primary)] transition-colors">홈</a>
+            <a href={`${base}cards`} class="hover:text-[var(--color-primary)] transition-colors">카드 목록</a>
+            <a href={`${base}dashboard`} class="hover:text-[var(--color-primary)] transition-colors">대시보드</a>
           </div>
         </div>
         <div class="mt-6 border-t border-[var(--color-border)] pt-6 text-center text-xs text-[var(--color-text-muted)]">

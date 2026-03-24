@@ -379,4 +379,15 @@ const compactPath = join(OUTPUT_DIR, 'cards-compact.json');
 await writeFile(compactPath, JSON.stringify(compactOutput, null, 2), 'utf-8');
 console.log(`   ${compactPath} (compact index)`);
 
+// Copy to web app's public directory for static serving
+const webPublicDir = join(ROOT, 'apps/web/public/data');
+await mkdir(webPublicDir, { recursive: true });
+await writeFile(join(webPublicDir, 'cards.json'), JSON.stringify(output, null, 2), 'utf-8');
+
+// Also write categories as JSON
+const categoriesJsonPath = join(webPublicDir, 'categories.json');
+await writeFile(categoriesJsonPath, JSON.stringify(categoriesRaw, null, 2), 'utf-8');
+console.log(`   ${join(webPublicDir, 'cards.json')} (web public)`);
+console.log(`   ${categoriesJsonPath} (web public)`);
+
 console.log('\n✨ Done!');

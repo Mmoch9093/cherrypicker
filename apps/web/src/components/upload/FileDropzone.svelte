@@ -7,7 +7,6 @@
   let uploadStatus = $state<'idle' | 'uploading' | 'success' | 'error'>('idle');
   let errorMessage = $state('');
   let bank = $state('');
-  let abortController: AbortController | null = null;
 
   // Step 1=파일선택, 2=카드사선택, 3=분석중, 4=완료
   let currentStep = $derived.by(() => {
@@ -89,46 +88,21 @@
 
   async function handleUpload() {
     if (!uploadedFile) return;
-    abortController?.abort();
-    abortController = new AbortController();
-    const signal = abortController.signal;
     uploadStatus = 'uploading';
     errorMessage = '';
 
     try {
-      const formData = new FormData();
-      formData.append('file', uploadedFile);
-
-      const res = await fetch('/api/upload', { method: 'POST', body: formData, signal });
-      const data = await res.json() as { fileName?: string; error?: string };
-
-      if (!res.ok) throw new Error(data.error ?? '업로드 실패');
-
-      const analyzeRes = await fetch('/api/analyze', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          fileName: data.fileName,
-          bank: bank || undefined,
-        }),
-        signal,
+      await analysisStore.analyze(uploadedFile, {
+        bank: bank || undefined,
       });
 
-      const analyzeData = await analyzeRes.json();
-
-      if (!analyzeRes.ok) {
-        throw new Error((analyzeData as { error?: string }).error ?? '분석 실패');
-      }
-
-      analysisStore.setResult(analyzeData);
       uploadStatus = 'success';
 
       setTimeout(() => {
-        window.location.href = '/dashboard';
+        window.location.href = import.meta.env.BASE_URL + 'dashboard';
       }, 1200);
     } catch (e) {
-      if (e instanceof DOMException && e.name === 'AbortError') return;
-      errorMessage = e instanceof Error ? e.message : '업로드 실패';
+      errorMessage = e instanceof Error ? e.message : '분석 실패';
       uploadStatus = 'error';
     }
   }
@@ -213,7 +187,7 @@
         <p class="text-sm text-[var(--color-text-muted)]">{formatFileSize(uploadedFile.size)}</p>
         <button
           class="mt-1 text-sm text-[var(--color-primary)] hover:underline"
-          onclick={() => { abortController?.abort(); uploadedFile = null; uploadStatus = 'idle'; errorMessage = ''; }}
+          onclick={() => { uploadedFile = null; uploadStatus = 'idle'; errorMessage = ''; }}
         >
           다른 파일 선택
         </button>

@@ -7,7 +7,7 @@ import SavingsComparison from '../components/dashboard/SavingsComparison.svelte'
   <!-- Back link -->
   <div class="mb-6">
     <a
-      href="/"
+      href={`${import.meta.env.BASE_URL}`}
       class="inline-flex items-center gap-1.5 text-sm text-[var(--color-text-muted)] transition-colors hover:text-[var(--color-primary)]"
     >
       ← 다시 분석하기
@@ -53,7 +53,7 @@ import SavingsComparison from '../components/dashboard/SavingsComparison.svelte'
     style="opacity:0;animation-fill-mode:forwards;"
   >
     <a
-      href="/report"
+      href={`${import.meta.env.BASE_URL}report`}
       class="inline-flex items-center gap-2 rounded-xl bg-[var(--color-primary)] px-6 py-3 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-[var(--color-primary-dark)]"
     >
       📄 HTML 리포트 보기
@@ -65,7 +65,7 @@ import SavingsComparison from '../components/dashboard/SavingsComparison.svelte'
       ⬇️ 리포트 다운로드
     </button>
     <a
-      href="/"
+      href={`${import.meta.env.BASE_URL}`}
       class="inline-flex items-center gap-2 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] px-6 py-3 text-sm font-semibold text-[var(--color-text-muted)] shadow-sm transition-colors hover:text-[var(--color-primary)]"
     >
       🔄 다시 분석하기

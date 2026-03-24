@@ -1,0 +1,261 @@
+import type { BankId, ParseError, ParseResult, RawTransaction } from './types.js';
+import { detectBank } from './detect.js';
+
+// ---------------------------------------------------------------------------
+// Table parser (ported from packages/parser/src/pdf/table-parser.ts)
+// ---------------------------------------------------------------------------
+
+const DATE_PATTERN = /\d{4}[.\-\/]\d{2}[.\-\/]\d{2}/;
+const AMOUNT_PATTERN = /[\d,]+원?/;
+const STRICT_DATE_PATTERN = /(\d{4})[.\-\/](\d{2})[.\-\/](\d{2})/;
+const STRICT_AMOUNT_PATTERN = /^-?[\d,]+원?$/;
+
+interface Column {
+  start: number;
+  end: number;
+}
+
+function detectColumnBoundaries(lines: string[]): Column[] {
+  if (lines.length === 0) return [];
+
+  const maxLen = Math.max(...lines.map((l) => l.length));
+  const charCount = new Array<number>(maxLen).fill(0);
+
+  for (const line of lines) {
+    for (let i = 0; i < line.length; i++) {
+      if (line[i] !== ' ') charCount[i] = (charCount[i] ?? 0) + 1;
+    }
+  }
+
+  const threshold = lines.length * 0.3;
+  const boundaries: number[] = [0];
+
+  for (let i = 1; i < maxLen - 1; i++) {
+    const count = charCount[i] ?? 0;
+    const prevCount = charCount[i - 1] ?? 0;
+
+    if (prevCount > threshold && count <= threshold) {
+      boundaries.push(i);
+    }
+  }
+  boundaries.push(maxLen);
+
+  const columns: Column[] = [];
+  for (let i = 0; i < boundaries.length - 1; i++) {
+    const start = boundaries[i] ?? 0;
+    const end = boundaries[i + 1] ?? maxLen;
+    if (end - start > 1) {
+      columns.push({ start, end });
+    }
+  }
+
+  return columns;
+}
+
+function splitByColumns(line: string, columns: Column[]): string[] {
+  return columns.map((col) => line.slice(col.start, col.end).trim());
+}
+
+function parseTable(text: string): string[][] {
+  const lines = text.split('\n');
+  const result: string[][] = [];
+
+  const tableLines: string[] = [];
+  let inTable = false;
+
+  for (const line of lines) {
+    const hasDate = DATE_PATTERN.test(line);
+    const hasAmount = AMOUNT_PATTERN.test(line);
+
+    if (hasDate || hasAmount) {
+      inTable = true;
+    }
+
+    if (inTable && line.trim()) {
+      tableLines.push(line);
+    }
+
+    if (inTable && !line.trim()) {
+      if (tableLines.length > 3) break;
+    }
+  }
+
+  if (tableLines.length === 0) {
+    for (const line of lines) {
+      if (!line.trim()) continue;
+      const cells = line.split(/\s{2,}/).map((s) => s.trim()).filter(Boolean);
+      if (cells.length > 1) result.push(cells);
+    }
+    return result;
+  }
+
+  const columns = detectColumnBoundaries(tableLines);
+
+  if (columns.length <= 1) {
+    for (const line of tableLines) {
+      const cells = line.split(/\s{2,}/).map((s) => s.trim()).filter(Boolean);
+      if (cells.length > 0) result.push(cells);
+    }
+    return result;
+  }
+
+  for (const line of tableLines) {
+    const cells = splitByColumns(line, columns);
+    if (cells.some((c) => c.length > 0)) {
+      result.push(cells);
+    }
+  }
+
+  return result;
+}
+
+function filterTransactionRows(rows: string[][]): string[][] {
+  return rows.filter((row) => {
+    const hasDate = row.some((cell) => DATE_PATTERN.test(cell));
+    const hasAmount = row.some((cell) => AMOUNT_PATTERN.test(cell));
+    return hasDate && hasAmount;
+  });
+}
+
+// ---------------------------------------------------------------------------
+// Structured parser (ported from packages/parser/src/pdf/index.ts)
+// ---------------------------------------------------------------------------
+
+function parseDateToISO(raw: string): string {
+  const match = raw.match(STRICT_DATE_PATTERN);
+  if (match) return `${match[1]}-${match[2]}-${match[3]}`;
+  return raw;
+}
+
+function parseAmount(raw: string): number {
+  return parseInt(raw.replace(/원$/, '').replace(/,/g, ''), 10) || 0;
+}
+
+function findDateCell(row: string[]): { idx: number; value: string } | null {
+  for (let i = 0; i < row.length; i++) {
+    if (STRICT_DATE_PATTERN.test(row[i] ?? '')) return { idx: i, value: row[i] ?? '' };
+  }
+  return null;
+}
+
+function findAmountCell(row: string[]): { idx: number; value: string } | null {
+  for (let i = row.length - 1; i >= 0; i--) {
+    if (STRICT_AMOUNT_PATTERN.test((row[i] ?? '').trim())) return { idx: i, value: row[i] ?? '' };
+  }
+  return null;
+}
+
+function tryStructuredParse(text: string, bank: BankId | null): RawTransaction[] | null {
+  try {
+    const rows = parseTable(text);
+    const txRows = filterTransactionRows(rows);
+
+    if (txRows.length === 0) return null;
+
+    const transactions: RawTransaction[] = [];
+
+    for (const row of txRows) {
+      const dateCell = findDateCell(row);
+      const amountCell = findAmountCell(row);
+
+      if (!dateCell || !amountCell) continue;
+
+      let merchantIdx = -1;
+      for (let i = dateCell.idx + 1; i < amountCell.idx; i++) {
+        if ((row[i] ?? '').trim()) {
+          merchantIdx = i;
+          break;
+        }
+      }
+
+      const merchant = merchantIdx !== -1 ? (row[merchantIdx] ?? '').trim() : '';
+      const amount = parseAmount(amountCell.value);
+
+      if (!merchant && amount === 0) continue;
+
+      const tx: RawTransaction = {
+        date: parseDateToISO(dateCell.value),
+        merchant,
+        amount,
+      };
+
+      for (let i = 0; i < row.length; i++) {
+        if (i === dateCell.idx || i === amountCell.idx || i === merchantIdx) continue;
+        const cell = (row[i] ?? '').trim();
+        const instMatch = cell.match(/^(\d+)개?월?$/);
+        if (instMatch) {
+          const inst = parseInt(instMatch[1] ?? '', 10);
+          if (inst > 1) tx.installments = inst;
+        }
+      }
+
+      transactions.push(tx);
+    }
+
+    return transactions.length > 0 ? transactions : null;
+  } catch {
+    return null;
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Main PDF parser (browser: uses pdfjs-dist)
+// ---------------------------------------------------------------------------
+
+export async function parsePDF(buffer: ArrayBuffer, bank?: BankId): Promise<ParseResult> {
+  const errors: ParseError[] = [];
+  let text: string;
+
+  // Extract text using pdfjs-dist (dynamic import to avoid SSR issues)
+  try {
+    const pdfjsLib = await import('pdfjs-dist');
+
+    // Set worker source (use CDN for compatibility)
+    pdfjsLib.GlobalWorkerOptions.workerSrc =
+      `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjsLib.version}/pdf.worker.min.mjs`;
+
+    const doc = await pdfjsLib.getDocument({ data: new Uint8Array(buffer) }).promise;
+
+    let fullText = '';
+    for (let i = 1; i <= doc.numPages; i++) {
+      const page = await doc.getPage(i);
+      const content = await page.getTextContent();
+      const pageText = content.items
+        .map((item: any) => ('str' in item ? item.str : ''))
+        .join(' ');
+      fullText += pageText + '\n';
+    }
+    text = fullText;
+  } catch (err) {
+    return {
+      bank: bank ?? null,
+      format: 'pdf',
+      transactions: [],
+      errors: [{ message: `PDF 텍스트 추출 실패: ${err instanceof Error ? err.message : String(err)}` }],
+    };
+  }
+
+  // Detect bank if not provided
+  const resolvedBank: BankId | null = bank ?? detectBank(text).bank;
+
+  // Try structured table parsing
+  const structured = tryStructuredParse(text, resolvedBank);
+  if (structured && structured.length > 0) {
+    return {
+      bank: resolvedBank,
+      format: 'pdf',
+      transactions: structured,
+      errors,
+    };
+  }
+
+  // No LLM fallback in browser — return empty with error
+  errors.push({ message: '구조화된 파싱 실패: PDF에서 거래 내역을 추출할 수 없습니다.' });
+
+  return {
+    bank: resolvedBank,
+    format: 'pdf',
+    transactions: [],
+    errors,
+  };
+}

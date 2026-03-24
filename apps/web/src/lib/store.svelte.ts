@@ -1,6 +1,8 @@
 // Shared Svelte 5 state store for analysis results across dashboard components
 // Must be .svelte.ts so that $state runes are compiled properly
 
+import { analyzeFile } from './analyzer.js';
+
 // --- Types matching the API response shape ---
 
 export interface CategoryReward {
@@ -156,30 +158,16 @@ function createAnalysisStore() {
       persistToStorage(r);
     },
 
-    async analyze(fileName: string, options?: AnalyzeOptions): Promise<void> {
+    async analyze(file: File, options?: AnalyzeOptions): Promise<void> {
       loading = true;
       error = null;
 
       try {
-        const res = await fetch('/api/analyze', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ fileName, ...options }),
-        });
-
-        if (!res.ok) {
-          let message = res.statusText || '분석 실패';
-          try {
-            const err = (await res.json()) as { error?: string };
-            if (err.error) message = err.error;
-          } catch { /* non-JSON response */ }
-          throw new Error(message);
-        }
-
-        result = (await res.json()) as AnalysisResult;
-        persistToStorage(result);
+        const analysisResult = await analyzeFile(file, options);
+        result = analysisResult;
+        persistToStorage(analysisResult);
       } catch (e) {
-        error = e instanceof Error ? e.message : '알 수 없는 오류가 발생했습니다';
+        error = e instanceof Error ? e.message : '분석 중 오류가 발생했습니다';
         result = null;
       } finally {
         loading = false;

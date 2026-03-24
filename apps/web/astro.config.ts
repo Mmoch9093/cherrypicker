@@ -1,12 +1,12 @@
 import { defineConfig } from 'astro/config';
 import svelte from '@astrojs/svelte';
 import tailwindcss from '@tailwindcss/vite';
-import node from '@astrojs/node';
 
 export default defineConfig({
   integrations: [svelte()],
-  output: 'server',
-  adapter: node({ mode: 'standalone' }),
+  output: 'static',
+  site: 'https://hletrd.github.io',
+  base: '/cherrypicker',
   vite: {
     plugins: [tailwindcss()],
   },
