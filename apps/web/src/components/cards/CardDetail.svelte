@@ -11,6 +11,7 @@
   let loading = $state(true);
   let error = $state<string | null>(null);
   let card = $state<CardDetail | null>(null);
+  let fetchGeneration = 0;
 
   function rateColorClass(rate: number): string {
     const pct = rate * 100;
@@ -54,21 +55,19 @@
   });
 
   $effect(() => {
-    if (!cardId) {
-      loading = false;
-      return;
-    }
+    if (!cardId) { loading = false; return; }
     loading = true;
     error = null;
+    const gen = ++fetchGeneration;
     getCardDetail(cardId)
       .then((result) => {
-        card = result;
+        if (gen === fetchGeneration) card = result;
       })
       .catch((e) => {
-        error = e instanceof Error ? e.message : '카드 정보 로드 실패';
+        if (gen === fetchGeneration) error = e instanceof Error ? e.message : '카드 정보 로드 실패';
       })
       .finally(() => {
-        loading = false;
+        if (gen === fetchGeneration) loading = false;
       });
   });
 </script>

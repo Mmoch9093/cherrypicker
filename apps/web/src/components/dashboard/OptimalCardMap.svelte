@@ -1,39 +1,6 @@
 <script lang="ts">
   import { analysisStore } from '../../lib/store.svelte.js';
-
-  function formatWon(amount: number): string {
-    return amount.toLocaleString('ko-KR') + '원';
-  }
-
-  function formatRate(rate: number): string {
-    return (rate * 100).toFixed(1) + '%';
-  }
-
-  const issuerColors: Record<string, string> = {
-    hyundai: '#1a1a1a',
-    kb: '#ffb800',
-    samsung: '#1428a0',
-    shinhan: '#0046ff',
-    lotte: '#ed1c24',
-    hana: '#009490',
-    woori: '#0066b3',
-    ibk: '#004ea2',
-    nh: '#03674b',
-    bc: '#f04e3e',
-  };
-
-  const issuerNamesKo: Record<string, string> = {
-    hyundai: '현대카드',
-    kb: 'KB국민카드',
-    samsung: '삼성카드',
-    shinhan: '신한카드',
-    lotte: '롯데카드',
-    hana: '하나카드',
-    woori: '우리카드',
-    ibk: 'IBK기업은행',
-    nh: 'NH농협카드',
-    bc: 'BC카드',
-  };
+  import { formatWon, formatRate, getIssuerColor, formatIssuerNameKo } from '../../lib/formatters.js';
 
   function getIssuerFromCardId(cardId: string): string {
     return cardId.split('-')[0] ?? 'unknown';
@@ -121,8 +88,8 @@
       <tbody>
         {#each sortedAssignments as a}
           {@const issuer = getIssuerFromCardId(a.assignedCardId)}
-          {@const issuerColor = issuerColors[issuer] ?? '#6b7280'}
-          {@const issuerName = issuerNamesKo[issuer] ?? issuer}
+          {@const issuerColor = getIssuerColor(issuer)}
+          {@const issuerName = formatIssuerNameKo(issuer)}
           {@const isExpanded = expandedRows.has(a.category)}
           {@const rateBarWidth = Math.round((a.rate / maxRate) * 100)}
           <tr
@@ -176,7 +143,7 @@
                 <div class="flex flex-wrap gap-2">
                   {#each a.alternatives as alt}
                     {@const altIssuer = getIssuerFromCardId(alt.cardId)}
-                    {@const altColor = issuerColors[altIssuer] ?? '#6b7280'}
+                    {@const altColor = getIssuerColor(altIssuer)}
                     <div class="flex items-center gap-1.5 rounded-lg border border-[var(--color-border)] bg-white px-2.5 py-1.5 text-xs">
                       <span
                         class="inline-block h-2 w-2 rounded-full"

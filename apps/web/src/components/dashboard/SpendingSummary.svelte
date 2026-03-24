@@ -1,9 +1,6 @@
 <script lang="ts">
   import { analysisStore } from '../../lib/store.svelte.js';
-
-  function formatWon(amount: number): string {
-    return amount.toLocaleString('ko-KR') + '원';
-  }
+  import { formatWon } from '../../lib/formatters.js';
 
   function formatPeriod(period: { start: string; end: string } | undefined): string {
     if (!period) return '-';

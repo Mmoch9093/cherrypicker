@@ -1,5 +1,6 @@
 <script lang="ts">
   import { analysisStore } from '../../lib/store.svelte.js';
+  import { formatWon } from '../../lib/formatters.js';
 
   const CATEGORY_COLORS: Record<string, string> = {
     dining: '#ef4444',
@@ -47,10 +48,6 @@
   };
 
   const OTHER_COLOR = '#cbd5e1';
-
-  function formatWon(amount: number): string {
-    return amount.toLocaleString('ko-KR') + '원';
-  }
 
   interface CategoryData {
     category: string;
@@ -113,7 +110,7 @@
   });
 
   let topCategoryName = $derived(categories.length > 0 ? categories[0].labelKo : '-');
-  let maxPercentage = $derived(categories.length > 0 ? categories[0].percentage : 100);
+  let maxPercentage = $derived(categories.length > 0 ? (categories[0].percentage || 100) : 100);
 </script>
 
 {#if analysisStore.loading}

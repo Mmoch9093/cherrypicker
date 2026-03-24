@@ -1,7 +1,7 @@
 <script lang="ts">
   import { getCards } from '../../lib/api.js';
   import type { CardSummary } from '../../lib/api.js';
-  import { getIssuerColor, formatIssuerNameKo } from '../../lib/formatters.js';
+  import { formatWon, getIssuerColor, formatIssuerNameKo } from '../../lib/formatters.js';
 
   let cards = $state<CardSummary[]>([]);
   let loading = $state(true);
@@ -9,10 +9,6 @@
   let searchQuery = $state('');
   let typeFilter = $state<'all' | 'credit' | 'check'>('all');
   let sortOrder = $state<'name' | 'fee-asc' | 'fee-desc' | 'rewards'>('name');
-
-  function formatWon(amount: number): string {
-    return amount.toLocaleString('ko-KR') + '원';
-  }
 
   let filteredCards = $derived.by(() => {
     let result = cards.slice();
@@ -49,17 +45,14 @@
     return result;
   });
 
+  let hasFetched = false;
   $effect(() => {
+    if (hasFetched) return;
+    hasFetched = true;
     getCards()
-      .then((result) => {
-        cards = result;
-      })
-      .catch((e) => {
-        error = e instanceof Error ? e.message : '카드 목록 로드 실패';
-      })
-      .finally(() => {
-        loading = false;
-      });
+      .then((result) => { cards = result; })
+      .catch((e) => { error = e instanceof Error ? e.message : '카드 목록 로드 실패'; })
+      .finally(() => { loading = false; });
   });
 </script>
 

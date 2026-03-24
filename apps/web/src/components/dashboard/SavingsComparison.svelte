@@ -1,9 +1,6 @@
 <script lang="ts">
   import { analysisStore } from '../../lib/store.svelte.js';
-
-  function formatWon(amount: number): string {
-    return amount.toLocaleString('ko-KR') + '원';
-  }
+  import { formatWon, getIssuerColor } from '../../lib/formatters.js';
 
   let opt = $derived(analysisStore.optimization);
   let assignments = $derived(analysisStore.assignments);
@@ -41,7 +38,10 @@
         });
       }
     }
-    return [...map.values()].sort((a, b) => b.reward - a.reward);
+    return [...map.values()].map(entry => ({
+      ...entry,
+      rate: entry.spending > 0 ? entry.reward / entry.spending : 0,
+    })).sort((a, b) => b.reward - a.reward);
   });
 
   let showBreakdown = $state(false);
@@ -73,7 +73,7 @@
   });
 
   let savingsPct = $derived.by(() => {
-    if (!opt || opt.bestSingleCard.totalReward === 0) return 0;
+    if (!opt || !opt.bestSingleCard || opt.bestSingleCard.totalReward === 0) return 0;
     return Math.round((opt.savingsVsSingleCard / opt.bestSingleCard.totalReward) * 100);
   });
 
@@ -83,19 +83,6 @@
     const ratio = opt.bestSingleCard.totalReward / opt.totalReward;
     return Math.min(Math.round(ratio * 100), 100);
   });
-
-  const issuerColors: Record<string, string> = {
-    hyundai: '#1a1a1a',
-    kb: '#ffb800',
-    samsung: '#1428a0',
-    shinhan: '#0046ff',
-    lotte: '#ed1c24',
-    hana: '#009490',
-    woori: '#0066b3',
-    ibk: '#004ea2',
-    nh: '#03674b',
-    bc: '#f04e3e',
-  };
 
   function getIssuerFromCardId(cardId: string): string {
     return cardId.split('-')[0] ?? 'unknown';
@@ -156,7 +143,7 @@
           {@const issuer = getIssuerFromCardId(opt.bestSingleCard.cardId)}
           <span
             class="rounded-full px-2 py-0.5 text-xs text-white"
-            style="background-color: {issuerColors[issuer] ?? '#6b7280'}"
+            style="background-color: {getIssuerColor(issuer)}"
           >
             {issuer.toUpperCase()}
           </span>
@@ -223,7 +210,7 @@
           <tbody>
             {#each cardBreakdown as card}
               {@const issuer = getIssuerFromCardId(card.cardId)}
-              {@const issuerColor = issuerColors[issuer] ?? '#6b7280'}
+              {@const issuerColor = getIssuerColor(issuer)}
               <tr class="border-b border-[var(--color-border)] last:border-0 hover:bg-gray-50">
                 <td class="px-4 py-3">
                   <span
