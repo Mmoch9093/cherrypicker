@@ -1,5 +1,6 @@
 import type { APIRoute } from 'astro';
-import { join } from 'path';
+import { join, resolve } from 'path';
+import { access } from 'fs/promises';
 import { parseStatement } from '@cherrypicker/parser';
 import { MerchantMatcher, buildConstraints, greedyOptimize } from '@cherrypicker/core';
 import { loadCategories, loadAllCardRules } from '@cherrypicker/rules';
@@ -7,9 +8,16 @@ import type { BankId } from '@cherrypicker/parser';
 import type { CategorizedTransaction } from '@cherrypicker/core';
 import type { RawTransaction } from '@cherrypicker/parser';
 
+const UPLOAD_DIR = resolve(join(process.cwd(), 'uploads'));
 const RULES_DIR = join(process.cwd(), '../../packages/rules/data');
 const CARDS_DIR = join(RULES_DIR, 'cards');
 const CATEGORIES_FILE = join(RULES_DIR, 'categories.yaml');
+
+const VALID_BANK_IDS = new Set([
+  'hyundai', 'kb', 'samsung', 'shinhan', 'lotte', 'hana', 'woori',
+  'ibk', 'nh', 'bc', 'kakao', 'toss', 'kbank', 'bnk', 'dgb',
+  'suhyup', 'jb', 'kwangju',
+]);
 
 // Cache card rules and categories so we don't reload on every request
 let cardRulesCache: Awaited<ReturnType<typeof loadAllCardRules>> | null = null;
@@ -32,23 +40,50 @@ async function getCategoryNodes() {
 export const POST: APIRoute = async ({ request }) => {
   try {
     const body = await request.json() as {
-      filePath?: string;
+      fileName?: string;
       bank?: string;
       previousMonthSpending?: number;
       cardIds?: string[];
     };
 
-    const { filePath, bank, previousMonthSpending = 500000, cardIds } = body;
+    const { fileName, bank, previousMonthSpending = 500000, cardIds } = body;
 
-    if (!filePath) {
-      return new Response(JSON.stringify({ error: '파일 경로가 필요합니다' }), {
+    if (!fileName) {
+      return new Response(JSON.stringify({ error: '파일 이름이 필요합니다' }), {
+        status: 400,
+        headers: { 'Content-Type': 'application/json' },
+      });
+    }
+
+    // C1 - Path traversal prevention: reconstruct path from filename only
+    const resolvedPath = resolve(join(UPLOAD_DIR, fileName));
+    if (!resolvedPath.startsWith(UPLOAD_DIR + '/') && resolvedPath !== UPLOAD_DIR) {
+      return new Response(JSON.stringify({ error: '잘못된 파일 경로입니다' }), {
+        status: 400,
+        headers: { 'Content-Type': 'application/json' },
+      });
+    }
+
+    // Check the file exists before trying to parse it
+    try {
+      await access(resolvedPath);
+    } catch {
+      return new Response(JSON.stringify({ error: '파일을 찾을 수 없습니다' }), {
+        status: 404,
+        headers: { 'Content-Type': 'application/json' },
+      });
+    }
+
+    // H7 - Validate bank parameter against whitelist
+    if (bank !== undefined && !VALID_BANK_IDS.has(bank)) {
+      return new Response(JSON.stringify({ error: '유효하지 않은 은행/카드사입니다' }), {
         status: 400,
         headers: { 'Content-Type': 'application/json' },
       });
     }
 
     // 1. Parse the statement file
-    const parseResult = await parseStatement(filePath, {
+    const parseResult = await parseStatement(resolvedPath, {
       bank: bank as BankId | undefined,
     });
 

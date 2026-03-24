@@ -44,13 +44,23 @@ interface CardsJson {
   issuers: IssuerEntry[];
 }
 
+// H8 - Module-level cache so cards.json is only read once
+let cardsDataCache: CardsJson | null = null;
+
+async function getCardsData(): Promise<CardsJson> {
+  if (!cardsDataCache) {
+    const raw = await readFile(CARDS_JSON, 'utf-8');
+    cardsDataCache = JSON.parse(raw) as CardsJson;
+  }
+  return cardsDataCache;
+}
+
 export const GET: APIRoute = async ({ url }) => {
   try {
     const issuerFilter = url.searchParams.get('issuer');
     const typeFilter = url.searchParams.get('type');
 
-    const raw = await readFile(CARDS_JSON, 'utf-8');
-    const data = JSON.parse(raw) as CardsJson;
+    const data = await getCardsData();
 
     // Flatten all cards from all issuers
     let allCards = data.issuers.flatMap((issuer) =>

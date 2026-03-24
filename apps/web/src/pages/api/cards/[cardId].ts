@@ -69,6 +69,17 @@ interface CardsJson {
   issuers: IssuerEntry[];
 }
 
+// H8 - Module-level cache so cards.json is only read once
+let cardsDataCache: CardsJson | null = null;
+
+async function getCardsData(): Promise<CardsJson> {
+  if (!cardsDataCache) {
+    const raw = await readFile(CARDS_JSON, 'utf-8');
+    cardsDataCache = JSON.parse(raw) as CardsJson;
+  }
+  return cardsDataCache;
+}
+
 export const GET: APIRoute = async ({ params }) => {
   try {
     const { cardId } = params;
@@ -79,8 +90,7 @@ export const GET: APIRoute = async ({ params }) => {
       });
     }
 
-    const raw = await readFile(CARDS_JSON, 'utf-8');
-    const data = JSON.parse(raw) as CardsJson;
+    const data = await getCardsData();
 
     // Find card across all issuers
     for (const issuer of data.issuers) {

@@ -1,9 +1,30 @@
 import type { APIRoute } from 'astro';
-import { writeFile, mkdir } from 'fs/promises';
-import { join } from 'path';
+import { writeFile, mkdir, readdir, stat, unlink } from 'fs/promises';
+import { join, extname } from 'path';
 import { detectFormat } from '@cherrypicker/parser';
 
 const UPLOAD_DIR = join(process.cwd(), 'uploads');
+const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB
+const ALLOWED_EXTENSIONS = ['.csv', '.xlsx', '.xls', '.pdf'];
+const ONE_HOUR_MS = 60 * 60 * 1000;
+
+async function cleanupOldUploads(): Promise<void> {
+  try {
+    const files = await readdir(UPLOAD_DIR);
+    const now = Date.now();
+    await Promise.all(
+      files.map(async (file) => {
+        const filePath = join(UPLOAD_DIR, file);
+        const fileStat = await stat(filePath);
+        if (now - fileStat.mtimeMs > ONE_HOUR_MS) {
+          await unlink(filePath);
+        }
+      }),
+    );
+  } catch {
+    // Non-blocking: ignore cleanup errors
+  }
+}
 
 export const POST: APIRoute = async ({ request }) => {
   try {
@@ -15,6 +36,26 @@ export const POST: APIRoute = async ({ request }) => {
         status: 400,
         headers: { 'Content-Type': 'application/json' },
       });
+    }
+
+    // C2 - File size limit (10MB max)
+    if (file.size > MAX_FILE_SIZE) {
+      return new Response(JSON.stringify({ error: '파일 크기가 10MB를 초과합니다' }), {
+        status: 413,
+        headers: { 'Content-Type': 'application/json' },
+      });
+    }
+
+    // H5 - Server-side extension validation
+    const ext = extname(file.name).toLowerCase();
+    if (!ALLOWED_EXTENSIONS.includes(ext)) {
+      return new Response(
+        JSON.stringify({ error: '지원하지 않는 파일 형식입니다. CSV, XLSX, XLS, PDF 파일만 허용됩니다' }),
+        {
+          status: 400,
+          headers: { 'Content-Type': 'application/json' },
+        },
+      );
     }
 
     await mkdir(UPLOAD_DIR, { recursive: true });
@@ -29,11 +70,14 @@ export const POST: APIRoute = async ({ request }) => {
     // Auto-detect format and bank after writing
     const detection = await detectFormat(filePath);
 
+    // M12 - Schedule cleanup of old files (non-blocking)
+    void cleanupOldUploads();
+
+    // H6 - Return only fileName, not full filePath
     return new Response(
       JSON.stringify({
         success: true,
         fileName,
-        filePath,
         size: file.size,
         type: file.type,
         detection: {
