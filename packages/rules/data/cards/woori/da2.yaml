@@ -1,0 +1,116 @@
+card:
+  id: woori-da2
+  issuer: woori
+  name: DA Card of Rules II
+  nameKo: 우리카드 DA카드의정석Ⅱ
+  type: credit
+  annualFee:
+    domestic: 12000
+    international: 12000
+  url: https://m.wooricard.com/dcmw/yh1/crd/crd01/M1CRD101S08.do
+  lastUpdated: "2026-03-24"
+  source: manual
+
+performanceTiers:
+  - id: tier0
+    label: 무실적
+    minSpending: 0
+    maxSpending: 299999
+
+  - id: tier1
+    label: 전월 30만원 이상
+    minSpending: 300000
+    maxSpending: null
+
+performanceExclusions:
+  - tax_payment
+  - gift_card
+
+rewards:
+  - category: uncategorized
+    type: discount
+    tiers:
+      - performanceTier: tier0
+        rate: 0.8
+        monthlyCap: null
+        perTransactionCap: null
+      - performanceTier: tier1
+        rate: 0.8
+        monthlyCap: null
+        perTransactionCap: null
+    conditions:
+      note: "전 가맹점 0.8% 청구할인. 무실적 무한도"
+
+  - category: dining
+    type: discount
+    tiers:
+      - performanceTier: tier0
+        rate: 1.3
+        monthlyCap: null
+        perTransactionCap: null
+      - performanceTier: tier1
+        rate: 1.3
+        monthlyCap: null
+        perTransactionCap: null
+    conditions:
+      note: "음식점 생활업종 1.3% 청구할인. 무실적 무한도"
+
+  - category: grocery
+    type: discount
+    tiers:
+      - performanceTier: tier0
+        rate: 1.3
+        monthlyCap: null
+        perTransactionCap: null
+      - performanceTier: tier1
+        rate: 1.3
+        monthlyCap: null
+        perTransactionCap: null
+    conditions:
+      note: "마트/슈퍼 생활업종 1.3% 청구할인. 무실적 무한도"
+
+  - category: convenience_store
+    type: discount
+    tiers:
+      - performanceTier: tier0
+        rate: 1.3
+        monthlyCap: null
+        perTransactionCap: null
+      - performanceTier: tier1
+        rate: 1.3
+        monthlyCap: null
+        perTransactionCap: null
+    conditions:
+      note: "편의점 생활업종 1.3% 청구할인. 무실적 무한도"
+
+  - category: medical
+    type: discount
+    tiers:
+      - performanceTier: tier0
+        rate: 1.3
+        monthlyCap: null
+        perTransactionCap: null
+      - performanceTier: tier1
+        rate: 1.3
+        monthlyCap: null
+        perTransactionCap: null
+    conditions:
+      note: "병원/약국 생활업종 1.3% 청구할인. 무실적 무한도"
+
+  - category: education
+    type: discount
+    tiers:
+      - performanceTier: tier0
+        rate: 1.3
+        monthlyCap: null
+        perTransactionCap: null
+      - performanceTier: tier1
+        rate: 1.3
+        monthlyCap: null
+        perTransactionCap: null
+    conditions:
+      note: "교육/학원 생활업종 1.3% 청구할인. 무실적 무한도"
+
+globalConstraints:
+  monthlyTotalDiscountCap: null
+  minimumAnnualSpending: null

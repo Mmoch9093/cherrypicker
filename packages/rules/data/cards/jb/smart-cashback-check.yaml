@@ -1,0 +1,92 @@
+card:
+  id: jb-smart-cashback-check
+  issuer: jb
+  name: Smart Cashback Check Card
+  nameKo: 전북은행 Smart Cashback 체크카드
+  type: check
+  annualFee:
+    domestic: 0
+    international: 0
+  url: https://www.jbbank.co.kr/CARD_MAIN.act
+  lastUpdated: "2026-03-24"
+  source: manual
+
+performanceTiers:
+  - id: tier0
+    label: 무실적
+    minSpending: 0
+    maxSpending: null
+
+performanceExclusions: []
+
+rewards:
+  - category: uncategorized
+    type: cashback
+    tiers:
+      - performanceTier: tier0
+        rate: 1.2
+        monthlyCap: null
+        perTransactionCap: null
+    conditions:
+      minTransaction: 5000
+      excludeOnline: false
+      specificMerchants: []
+      note: "전 가맹점 최대 1.2% 캐시백. 건당 5000원 이상"
+
+  - category: dining
+    type: cashback
+    tiers:
+      - performanceTier: tier0
+        rate: 10.0
+        monthlyCap: null
+        perTransactionCap: null
+    conditions:
+      minTransaction: null
+      excludeOnline: false
+      specificMerchants: []
+      note: "전국 제과점 10% 캐시백"
+
+  - category: transportation
+    type: cashback
+    tiers:
+      - performanceTier: tier0
+        rate: null
+        monthlyCap: null
+        perTransactionCap: null
+    conditions:
+      minTransaction: null
+      excludeOnline: false
+      specificMerchants: []
+      note: "전국 주유소 리터당 30원 적립"
+
+  - category: entertainment
+    type: discount
+    tiers:
+      - performanceTier: tier0
+        rate: null
+        monthlyCap: null
+        perTransactionCap: null
+    conditions:
+      minTransaction: null
+      excludeOnline: false
+      specificMerchants: []
+      note: "전북지역 영화관 현장할인"
+
+  - category: education
+    type: cashback
+    tiers:
+      - performanceTier: tier0
+        rate: 2.0
+        monthlyCap: null
+        perTransactionCap: null
+    conditions:
+      minTransaction: null
+      excludeOnline: false
+      specificMerchants:
+        - 교보문고
+      note: "교보문고 광화문/전주점 2% 캐시백"
+
+globalConstraints:
+  monthlyTotalDiscountCap: null
+  minimumAnnualSpending: null
+  note: "KB국민카드 전산망 공유. 무실적 캐시백 카드. 전북 지역 특화 혜택 포함."

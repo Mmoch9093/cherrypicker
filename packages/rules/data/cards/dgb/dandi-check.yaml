@@ -1,0 +1,126 @@
+card:
+  id: dgb-dandi-check
+  issuer: dgb
+  name: Daegu Dandi Check Card
+  nameKo: iM뱅크 대구단디 체크카드
+  type: check
+  annualFee:
+    domestic: 0
+    international: 0
+  url: https://www.imbank.co.kr/fnc_ebz_sm_11010_card.act
+  lastUpdated: "2026-03-24"
+  source: manual
+
+performanceTiers:
+  - id: tier0
+    label: 무실적
+    minSpending: 0
+    maxSpending: 199999
+
+  - id: tier1
+    label: 전월 20만원 이상
+    minSpending: 200000
+    maxSpending: null
+
+performanceExclusions: []
+
+rewards:
+  - category: dining
+    type: cashback
+    tiers:
+      - performanceTier: tier0
+        rate: 0
+        monthlyCap: null
+        perTransactionCap: null
+      - performanceTier: tier1
+        rate: 10.0
+        monthlyCap: null
+        perTransactionCap: null
+    conditions:
+      minTransaction: null
+      excludeOnline: false
+      specificMerchants:
+        - 스타벅스
+        - 슬리플리스인시애틀
+        - 블랙스미스
+        - 베니건스
+        - 아웃백
+      note: "스타벅스 등 커피 10%, 패밀리레스토랑 20% 결제일 캐시백"
+
+  - category: entertainment
+    type: cashback
+    tiers:
+      - performanceTier: tier0
+        rate: 0
+        monthlyCap: null
+        perTransactionCap: null
+      - performanceTier: tier1
+        rate: null
+        monthlyCap: null
+        perTransactionCap: 3000
+    conditions:
+      minTransaction: null
+      excludeOnline: false
+      specificMerchants:
+        - CGV
+        - 메가박스
+        - 롯데시네마
+      note: "영화관 3000원 캐시백"
+
+  - category: convenience_store
+    type: cashback
+    tiers:
+      - performanceTier: tier0
+        rate: 0
+        monthlyCap: null
+        perTransactionCap: null
+      - performanceTier: tier1
+        rate: 5.0
+        monthlyCap: null
+        perTransactionCap: null
+    conditions:
+      minTransaction: null
+      excludeOnline: false
+      specificMerchants:
+        - CU
+        - GS25
+      note: "편의점 5% 결제일 캐시백"
+
+  - category: telecom
+    type: cashback
+    tiers:
+      - performanceTier: tier0
+        rate: 0
+        monthlyCap: null
+        perTransactionCap: null
+      - performanceTier: tier1
+        rate: 3.0
+        monthlyCap: null
+        perTransactionCap: null
+    conditions:
+      minTransaction: null
+      excludeOnline: false
+      specificMerchants: []
+      note: "이동통신요금 자동이체 시 3% 결제일 캐시백"
+
+  - category: online_shopping
+    type: cashback
+    tiers:
+      - performanceTier: tier0
+        rate: 0
+        monthlyCap: null
+        perTransactionCap: null
+      - performanceTier: tier1
+        rate: 5.0
+        monthlyCap: null
+        perTransactionCap: null
+    conditions:
+      minTransaction: null
+      excludeOnline: false
+      specificMerchants: []
+      note: "온라인 쇼핑몰 5% 결제일 캐시백"
+
+globalConstraints:
+  monthlyTotalDiscountCap: null
+  minimumAnnualSpending: null
+  note: "BC카드 브랜드. 체크카드 발급수수료 2,000원 (3만원 이상 이용 시 캐시백). 대구 지역 특화 혜택 포함."

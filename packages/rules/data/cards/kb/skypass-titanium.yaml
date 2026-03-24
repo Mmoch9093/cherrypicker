@@ -1,0 +1,46 @@
+card:
+  id: kb-skypass-titanium
+  issuer: kb
+  name: Skypass Titanium Card
+  nameKo: KB국민 스카이패스 티타늄카드
+  type: credit
+  annualFee:
+    domestic: 45000
+    international: 45000
+  url: https://card.kbcard.com/CRD/DVIEW/HCAMCXPRICAC0076?cooperationcode=04285&mainCC=a
+  lastUpdated: "2026-03-24"
+  source: manual
+
+performanceTiers:
+  - id: tier0
+    label: 무실적
+    minSpending: 0
+    maxSpending: null
+
+performanceExclusions: []
+
+rewards:
+  - category: uncategorized
+    label: 국내 전 가맹점 (1000원당 1마일)
+    type: mileage
+    tiers:
+      - performanceTier: tier0
+        rate: 0.1
+        monthlyCap: null
+        perTransactionCap: null
+    conditions:
+      specificMerchants: []
+
+  - category: travel
+    label: 해외 가맹점/면세점 (1000원당 2마일)
+    type: mileage
+    tiers:
+      - performanceTier: tier0
+        rate: 0.2
+        monthlyCap: null
+        perTransactionCap: null
+
+globalConstraints:
+  monthlyTotalDiscountCap: null
+  minimumAnnualSpending: null
+  monthlyMileageCap: 5000

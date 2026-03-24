@@ -1,0 +1,52 @@
+card:
+  id: suhyup-realreal2
+  issuer: suhyup
+  name: "Real? Real! 2 Card"
+  nameKo: "Sh수협은행 Real? Real! 2 카드"
+  type: credit
+  annualFee:
+    domestic: 12000
+    international: 12000
+  url: https://www.suhyup-bank.com/ib20/mnu/FPD00040
+  lastUpdated: "2026-03-24"
+  source: manual
+
+performanceTiers:
+  - id: tier0
+    label: 무실적
+    minSpending: 0
+    maxSpending: null
+
+performanceExclusions: []
+
+rewards:
+  - category: uncategorized
+    type: discount
+    tiers:
+      - performanceTier: tier0
+        rate: 0.7
+        monthlyCap: null
+        perTransactionCap: null
+    conditions:
+      minTransaction: null
+      excludeOnline: false
+      specificMerchants: []
+      note: "국내 전 가맹점 0.7% 청구할인 (결제계좌 수협은행 기준). 타행 결제계좌 시 0.4%"
+
+  - category: telecom
+    type: discount
+    tiers:
+      - performanceTier: tier0
+        rate: 20.0
+        monthlyCap: null
+        perTransactionCap: null
+    conditions:
+      minTransaction: null
+      excludeOnline: false
+      specificMerchants: []
+      note: "통신요금 20% 청구할인"
+
+globalConstraints:
+  monthlyTotalDiscountCap: null
+  minimumAnnualSpending: null
+  note: "무실적 무한도 할인 카드. 분기별 추가 캐시백 별도. 해외 가맹점 2% 캐시백."

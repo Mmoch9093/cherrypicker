@@ -1,0 +1,59 @@
+card:
+  id: nh-zgm-the-pay
+  issuer: nh
+  name: zgm.the pay Card
+  nameKo: NH농협 zgm.the pay 카드
+  type: credit
+  annualFee:
+    domestic: 12000
+    international: 12000
+  url: https://card.nonghyup.com/content/html/bridge/zgm/
+  lastUpdated: "2026-03-24"
+  source: manual
+
+performanceTiers:
+  - id: tier0
+    label: 무실적
+    minSpending: 0
+    maxSpending: null
+
+performanceExclusions:
+  - tax_payment
+  - gift_card
+  - insurance
+
+rewards:
+  - category: uncategorized
+    type: discount
+    tiers:
+      - performanceTier: tier0
+        rate: 1.0
+        monthlyCap: null
+        perTransactionCap: null
+    conditions:
+      note: "국내/해외 전 가맹점 1% 청구할인. 무실적 무한도"
+
+  - category: online_shopping
+    type: discount
+    tiers:
+      - performanceTier: tier0
+        rate: 1.2
+        monthlyCap: 100000
+        perTransactionCap: null
+    conditions:
+      note: "간편결제(삼성페이/네이버페이/카카오페이 등) 1.2% 청구할인. 무실적. 통합 월 10만원 한도"
+      specificMerchants:
+        - 삼성페이
+        - 네이버페이
+        - 카카오페이
+        - 쿠페이
+        - 스마일페이
+        - 배민페이
+        - SSG페이
+        - L페이
+        - SK페이
+        - 페이코
+
+globalConstraints:
+  monthlyTotalDiscountCap: null
+  minimumAnnualSpending: null

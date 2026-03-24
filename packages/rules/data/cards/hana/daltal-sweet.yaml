@@ -1,0 +1,119 @@
+card:
+  id: "hana-daltal-sweet"
+  issuer: "hana"
+  name: "Daltal Hana Sweet"
+  nameKo: "달달하나 Sweet"
+  type: credit
+  annualFee:
+    domestic: 25000
+    international: 25000
+  url: "https://www.hanacard.co.kr/OPI41000000D.web?CD_PD_SEQ=18058"
+  lastUpdated: "2026-03-24"
+  source: manual
+
+performanceTiers:
+  - id: tier0
+    label: "무실적"
+    minSpending: 0
+    maxSpending: 299999
+  - id: tier1
+    label: "전월 30만원 이상"
+    minSpending: 300000
+    maxSpending: 699999
+  - id: tier2
+    label: "전월 70만원 이상"
+    minSpending: 700000
+    maxSpending: null
+
+performanceExclusions:
+  - tax_payment
+
+rewards:
+  - category: "dining"
+    label: "음식점 주간(06~17시) 적립"
+    type: points
+    tiers:
+      - performanceTier: tier1
+        rate: 5.0
+        monthlyCap: 5000
+        perTransactionCap: null
+      - performanceTier: tier2
+        rate: 10.0
+        monthlyCap: 10000
+        perTransactionCap: null
+  - category: "dining"
+    label: "배달앱 (배달의민족/요기요/쿠팡이츠) 적립"
+    type: points
+    tiers:
+      - performanceTier: tier1
+        rate: 5.0
+        monthlyCap: 5000
+        perTransactionCap: null
+      - performanceTier: tier2
+        rate: 10.0
+        monthlyCap: 10000
+        perTransactionCap: null
+  - category: "dining"
+    label: "커피 업종 적립"
+    type: points
+    tiers:
+      - performanceTier: tier1
+        rate: 10.0
+        monthlyCap: 5000
+        perTransactionCap: null
+      - performanceTier: tier2
+        rate: 20.0
+        monthlyCap: 10000
+        perTransactionCap: null
+  - category: "dining"
+    label: "베이커리 적립"
+    type: points
+    tiers:
+      - performanceTier: tier1
+        rate: 10.0
+        monthlyCap: 5000
+        perTransactionCap: null
+      - performanceTier: tier2
+        rate: 20.0
+        monthlyCap: 10000
+        perTransactionCap: null
+  - category: "travel"
+    label: "해외 10% 적립"
+    type: points
+    tiers:
+      - performanceTier: tier1
+        rate: 10.0
+        monthlyCap: 5000
+        perTransactionCap: null
+      - performanceTier: tier2
+        rate: 10.0
+        monthlyCap: 10000
+        perTransactionCap: null
+  - category: "public_transit"
+    label: "택시/대중교통 10% 적립"
+    type: points
+    tiers:
+      - performanceTier: tier1
+        rate: 10.0
+        monthlyCap: 5000
+        perTransactionCap: null
+      - performanceTier: tier2
+        rate: 10.0
+        monthlyCap: 10000
+        perTransactionCap: null
+  - category: "medical"
+    label: "병원/약국 10% 적립"
+    type: points
+    tiers:
+      - performanceTier: tier1
+        rate: 10.0
+        monthlyCap: 5000
+        perTransactionCap: null
+      - performanceTier: tier2
+        rate: 10.0
+        monthlyCap: 10000
+        perTransactionCap: null
+
+globalConstraints:
+  monthlyTotalDiscountCap: null
+  minimumAnnualSpending: null

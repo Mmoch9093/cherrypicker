@@ -4,6 +4,7 @@ card:
   name: GOAT BC Baro Card
   nameKo: GOAT BC 바로카드
   type: credit
+  discontinued: "2026-03-06"
   annualFee:
     domestic: 12000
     international: 15000

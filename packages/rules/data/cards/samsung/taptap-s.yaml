@@ -30,32 +30,39 @@ performanceExclusions:
 
 rewards:
   - category: "uncategorized"
-    label: "모든 업종 기본 적립"
+    label: "모든 업종 기본 적립 (무실적/무한도)"
     type: points
     tiers:
+      - performanceTier: tier0
+        rate: 1.0
+        monthlyCap: null
+        perTransactionCap: null
       - performanceTier: tier1
         rate: 1.0
         monthlyCap: null
         perTransactionCap: null
   - category: "transportation"
-    label: "주유"
+    label: "주유 (5만원 이상 결제 시 건당 2,000원)"
     type: discount
     tiers:
       - performanceTier: tier1
         rate: null
-        fixedAmount: 60
-        unit: "won_per_liter"
+        fixedAmount: 2000
         monthlyCap: 8000
         perTransactionCap: null
+    conditions:
+      minTransaction: 50000
   - category: "entertainment"
-    label: "영화"
+    label: "영화 (1만원 이상 결제 시 건당 5,000원)"
     type: discount
     tiers:
       - performanceTier: tier1
         rate: null
-        fixedAmount: 4000
-        monthlyCap: 8000
+        fixedAmount: 5000
+        monthlyCap: 10000
         perTransactionCap: null
+    conditions:
+      minTransaction: 10000
 
 globalConstraints:
   monthlyTotalDiscountCap: null

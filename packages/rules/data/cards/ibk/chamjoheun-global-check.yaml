@@ -1,0 +1,45 @@
+card:
+  id: ibk-chamjoheun-global-check
+  issuer: ibk
+  name: Chamjoheun Global Check Card
+  nameKo: IBK 참! 좋은 글로벌 체크카드
+  type: check
+  annualFee:
+    domestic: 3000
+    international: 3000
+  url: https://m.bccard.com/app/mobileweb/CardDetail.do?exec=cardDetail&cardGdsNo=033006
+  lastUpdated: "2026-03-24"
+  source: manual
+
+performanceTiers:
+  - id: tier0
+    label: 무실적
+    minSpending: 0
+    maxSpending: null
+
+performanceExclusions: []
+
+rewards:
+  - category: travel
+    type: cashback
+    tiers:
+      - performanceTier: tier0
+        rate: 1.5
+        monthlyCap: null
+        perTransactionCap: null
+    conditions:
+      note: "해외 가맹점 이용금액 1.5% 캐시백. 무실적 무한도. 1회 USD10 이상 시 적용"
+
+  - category: uncategorized
+    type: cashback
+    tiers:
+      - performanceTier: tier0
+        rate: 0.1
+        monthlyCap: null
+        perTransactionCap: null
+    conditions:
+      note: "국내 가맹점 이용금액 0.1% 캐시백. 무실적 무한도"
+
+globalConstraints:
+  monthlyTotalDiscountCap: null
+  minimumAnnualSpending: 3000000

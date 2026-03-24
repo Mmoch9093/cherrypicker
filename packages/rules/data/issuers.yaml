@@ -48,3 +48,43 @@ issuers:
     nameKo: BC카드
     nameEn: BC Card
     website: https://www.bccard.com
+
+  - id: toss
+    nameKo: 토스뱅크
+    nameEn: Toss Bank
+    website: https://www.tossbank.com
+
+  - id: kakao
+    nameKo: 카카오뱅크
+    nameEn: Kakao Bank
+    website: https://www.kakaobank.com
+
+  - id: kbank
+    nameKo: 케이뱅크
+    nameEn: K Bank
+    website: https://www.kbanknow.com
+
+  - id: dgb
+    nameKo: iM뱅크(대구은행)
+    nameEn: iM Bank (DGB)
+    website: https://www.imbank.co.kr
+
+  - id: bnk
+    nameKo: BNK부산은행
+    nameEn: BNK Busan Bank
+    website: https://www.busanbank.co.kr
+
+  - id: suhyup
+    nameKo: Sh수협은행
+    nameEn: Suhyup Bank
+    website: https://www.suhyup-bank.com
+
+  - id: jb
+    nameKo: 전북은행
+    nameEn: JB Bank
+    website: https://www.jbbank.co.kr
+
+  - id: kwangju
+    nameKo: 광주은행
+    nameEn: Kwangju Bank
+    website: https://www.kjbank.com

@@ -1,0 +1,38 @@
+card:
+  id: "hana-naverpay-check"
+  issuer: "hana"
+  name: "Naver Pay Money Check"
+  nameKo: "네이버페이 머니 하나 체크카드"
+  type: check
+  annualFee:
+    domestic: 0
+    international: 0
+  url: "https://www.hanacard.co.kr/OPI41000000D.web?CD_PD_SEQ=13823"
+  lastUpdated: "2026-03-24"
+  source: manual
+
+performanceTiers:
+  - id: tier0
+    label: "무실적"
+    minSpending: 0
+    maxSpending: 249999
+  - id: tier1
+    label: "전월 25만원 이상"
+    minSpending: 250000
+    maxSpending: null
+
+performanceExclusions: []
+
+rewards:
+  - category: "uncategorized"
+    label: "국내외 전 가맹점 1.2% 네이버페이 포인트 적립"
+    type: points
+    tiers:
+      - performanceTier: tier1
+        rate: 1.2
+        monthlyCap: 10000
+        perTransactionCap: null
+
+globalConstraints:
+  monthlyTotalDiscountCap: 10000
+  minimumAnnualSpending: null

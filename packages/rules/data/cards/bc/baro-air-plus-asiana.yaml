@@ -1,0 +1,35 @@
+card:
+  id: bc-baro-air-plus-asiana
+  issuer: bc
+  name: Baro Air Plus Asiana Card
+  nameKo: BC 바로 에어 플러스 아시아나
+  type: credit
+  annualFee:
+    domestic: 19000
+    international: 19000
+  url: https://m.bccard.com/app/mobileweb/CardDetail.do?exec=cardDetail&cardGdsNo=101925
+  lastUpdated: "2026-03-24"
+  source: manual
+
+performanceTiers:
+  - id: tier0
+    label: 무실적
+    minSpending: 0
+    maxSpending: null
+
+performanceExclusions: []
+
+rewards:
+  - category: uncategorized
+    type: mileage
+    tiers:
+      - performanceTier: tier0
+        rate: 1.3
+        monthlyCap: null
+        perTransactionCap: null
+    conditions:
+      note: "1천원당 1.3 아시아나 마일리지 적립. 무실적 무한도. 제세공과금/관리비/상품권/무이자할부도 적립 대상. 100만원당 300마일리지 추가 적립"
+
+globalConstraints:
+  monthlyTotalDiscountCap: null
+  minimumAnnualSpending: null

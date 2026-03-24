@@ -1,0 +1,121 @@
+card:
+  id: nh-namu
+  issuer: nh
+  name: Namu NH Card
+  nameKo: 나무 NH농협카드
+  type: credit
+  annualFee:
+    domestic: 12000
+    international: 12000
+  url: https://m.bccard.com/app/mobileweb/CardDetail.do?exec=cardDetail&cardGdsNo=103213
+  lastUpdated: "2026-03-24"
+  source: manual
+
+performanceTiers:
+  - id: tier0
+    label: 무실적
+    minSpending: 0
+    maxSpending: 399999
+
+  - id: tier1
+    label: 전월 40만원 이상
+    minSpending: 400000
+    maxSpending: null
+
+performanceExclusions:
+  - tax_payment
+  - utility_bills
+  - apartment_mgmt
+  - tuition
+  - gift_card
+  - insurance
+
+rewards:
+  - category: dining
+    type: cashback
+    tiers:
+      - performanceTier: tier0
+        rate: 0
+        monthlyCap: null
+        perTransactionCap: null
+      - performanceTier: tier1
+        rate: 5.0
+        monthlyCap: 5000
+        perTransactionCap: null
+    conditions:
+      note: "외식 5% 캐시백. 5개 할인영역 중 선택 2개 적용. 영역별 5천원, 통합 월 1만5천원 한도"
+
+  - category: convenience_store
+    type: cashback
+    tiers:
+      - performanceTier: tier0
+        rate: 0
+        monthlyCap: null
+        perTransactionCap: null
+      - performanceTier: tier1
+        rate: 5.0
+        monthlyCap: 5000
+        perTransactionCap: null
+    conditions:
+      note: "편의점 5% 캐시백. 5개 할인영역 중 선택 2개 적용. 영역별 5천원, 통합 월 1만5천원 한도"
+
+  - category: transportation
+    subcategory: fuel
+    type: cashback
+    tiers:
+      - performanceTier: tier0
+        rate: 0
+        monthlyCap: null
+        perTransactionCap: null
+      - performanceTier: tier1
+        rate: 5.0
+        monthlyCap: 5000
+        perTransactionCap: null
+    conditions:
+      note: "주유 5% 캐시백. 5개 할인영역 중 선택 2개 적용. 영역별 5천원, 통합 월 1만5천원 한도"
+
+  - category: public_transit
+    type: cashback
+    tiers:
+      - performanceTier: tier0
+        rate: 0
+        monthlyCap: null
+        perTransactionCap: null
+      - performanceTier: tier1
+        rate: 5.0
+        monthlyCap: 5000
+        perTransactionCap: null
+    conditions:
+      note: "교통 5% 캐시백. 5개 할인영역 중 선택 2개 적용. 영역별 5천원, 통합 월 1만5천원 한도"
+
+  - category: online_shopping
+    type: cashback
+    tiers:
+      - performanceTier: tier0
+        rate: 0
+        monthlyCap: null
+        perTransactionCap: null
+      - performanceTier: tier1
+        rate: 5.0
+        monthlyCap: 5000
+        perTransactionCap: null
+    conditions:
+      note: "온라인쇼핑 5% 캐시백. 5개 할인영역 중 선택 2개 적용. 영역별 5천원, 통합 월 1만5천원 한도"
+
+  - category: subscription
+    type: cashback
+    tiers:
+      - performanceTier: tier0
+        rate: 0
+        monthlyCap: null
+        perTransactionCap: null
+      - performanceTier: tier1
+        rate: 0
+        monthlyCap: null
+        perTransactionCap: 2900
+    conditions:
+      note: "나무멤버스 월정액 2,900원 캐시백"
+
+globalConstraints:
+  monthlyTotalDiscountCap: 17900
+  minimumAnnualSpending: null

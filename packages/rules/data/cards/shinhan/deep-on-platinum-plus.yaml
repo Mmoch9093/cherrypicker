@@ -1,0 +1,99 @@
+card:
+  id: "shinhan-deep-on-platinum-plus"
+  issuer: "shinhan"
+  name: "Deep On Platinum+"
+  nameKo: "딥온 플래티넘플러스"
+  type: credit
+  annualFee:
+    domestic: 30000
+    international: 33000
+  url: "https://www.shinhancard.com/pconts/html/card/apply/credit/1188280_2207.html"
+  lastUpdated: "2026-03-24"
+  source: manual
+
+performanceTiers:
+  - id: tier0
+    label: "무실적"
+    minSpending: 0
+    maxSpending: 299999
+  - id: tier1
+    label: "전월 30만원 이상"
+    minSpending: 300000
+    maxSpending: 599999
+  - id: tier2
+    label: "전월 60만원 이상"
+    minSpending: 600000
+    maxSpending: null
+
+performanceExclusions:
+  - tax_payment
+  - short_term_loan
+  - long_term_loan
+  - annual_fee
+  - gift_card_purchase
+
+rewards:
+  - category: "online_shopping"
+    label: "간편결제 (네이버페이/카카오페이/삼성페이 등) 20% 할인"
+    type: discount
+    tiers:
+      - performanceTier: tier1
+        rate: 20.0
+        monthlyCap: 5000
+        perTransactionCap: null
+      - performanceTier: tier2
+        rate: 20.0
+        monthlyCap: 10000
+        perTransactionCap: null
+  - category: "convenience_store"
+    label: "4대 편의점 20% 할인"
+    type: discount
+    tiers:
+      - performanceTier: tier1
+        rate: 20.0
+        monthlyCap: 5000
+        perTransactionCap: null
+      - performanceTier: tier2
+        rate: 20.0
+        monthlyCap: 10000
+        perTransactionCap: null
+  - category: "online_shopping"
+    label: "국내 온라인 10% 할인"
+    type: discount
+    tiers:
+      - performanceTier: tier1
+        rate: 10.0
+        monthlyCap: 5000
+        perTransactionCap: null
+      - performanceTier: tier2
+        rate: 10.0
+        monthlyCap: 10000
+        perTransactionCap: null
+  - category: "dining"
+    label: "배달 (배달의민족/요기요/쿠팡이츠) 10% 할인"
+    type: discount
+    tiers:
+      - performanceTier: tier1
+        rate: 10.0
+        monthlyCap: 5000
+        perTransactionCap: null
+      - performanceTier: tier2
+        rate: 10.0
+        monthlyCap: 10000
+        perTransactionCap: null
+  - category: "travel"
+    label: "항공권 10% 할인"
+    type: discount
+    tiers:
+      - performanceTier: tier1
+        rate: 10.0
+        monthlyCap: 5000
+        perTransactionCap: null
+      - performanceTier: tier2
+        rate: 10.0
+        monthlyCap: 10000
+        perTransactionCap: null
+
+globalConstraints:
+  monthlyTotalDiscountCap: null
+  minimumAnnualSpending: null

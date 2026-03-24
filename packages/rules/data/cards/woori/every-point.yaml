@@ -1,0 +1,76 @@
+card:
+  id: woori-every-point
+  issuer: woori
+  name: Card of Rules EVERY POINT
+  nameKo: 우리카드 카드의정석 EVERY POINT
+  type: credit
+  annualFee:
+    domestic: 12000
+    international: 12000
+  url: https://m.wooricard.com/dcmw/yh1/crd/crd01/M1CRD101S08.do
+  lastUpdated: "2026-03-24"
+  source: manual
+
+performanceTiers:
+  - id: tier0
+    label: 무실적
+    minSpending: 0
+    maxSpending: 399999
+
+  - id: tier1
+    label: 전월 40만원 이상
+    minSpending: 400000
+    maxSpending: 799999
+
+  - id: tier2
+    label: 전월 80만원 이상
+    minSpending: 800000
+    maxSpending: null
+
+performanceExclusions:
+  - tax_payment
+  - gift_card
+
+rewards:
+  - category: online_shopping
+    type: points
+    tiers:
+      - performanceTier: tier0
+        rate: 0.8
+        monthlyCap: null
+        perTransactionCap: null
+      - performanceTier: tier1
+        rate: 2.8
+        monthlyCap: 10000
+        perTransactionCap: null
+      - performanceTier: tier2
+        rate: 2.8
+        monthlyCap: 20000
+        perTransactionCap: null
+    conditions:
+      minTransaction: null
+      excludeOnline: false
+      specificMerchants:
+        - 우리WON페이
+        - 네이버페이
+        - 카카오페이
+
+  - category: uncategorized
+    type: points
+    tiers:
+      - performanceTier: tier0
+        rate: 0.8
+        monthlyCap: null
+        perTransactionCap: null
+      - performanceTier: tier1
+        rate: 0.8
+        monthlyCap: null
+        perTransactionCap: null
+      - performanceTier: tier2
+        rate: 0.8
+        monthlyCap: null
+        perTransactionCap: null
+
+globalConstraints:
+  monthlyTotalDiscountCap: null
+  minimumAnnualSpending: null

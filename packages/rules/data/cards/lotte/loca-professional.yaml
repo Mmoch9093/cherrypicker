@@ -1,0 +1,34 @@
+card:
+  id: "lotte-loca-professional"
+  issuer: "lotte"
+  name: "LOCA Professional"
+  nameKo: "로카 프로페셔널"
+  type: credit
+  annualFee:
+    domestic: 300000
+    international: 300000
+  url: "https://www.lottecard.co.kr/app/LPCDXAA_V021.lc"
+  lastUpdated: "2026-03-24"
+  source: manual
+
+performanceTiers:
+  - id: tier0
+    label: "무실적"
+    minSpending: 0
+    maxSpending: null
+
+performanceExclusions: []
+
+rewards:
+  - category: "uncategorized"
+    label: "국내외 전 가맹점 1% 캐시백 (무실적, 무제한)"
+    type: cashback
+    tiers:
+      - performanceTier: tier0
+        rate: 1.0
+        monthlyCap: null
+        perTransactionCap: null
+
+globalConstraints:
+  monthlyTotalDiscountCap: null
+  minimumAnnualSpending: null

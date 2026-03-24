@@ -1,13 +1,13 @@
 card:
-  id: kb-my-wesh
-  issuer: kb
-  name: My WE:SH
-  nameKo: KB국민 마이위시 카드
+  id: hyundai-baemin-gobbaegi
+  issuer: hyundai
+  name: Baemin Gobbaegi Card
+  nameKo: 배민 현대카드 곱빼기
   type: credit
   annualFee:
-    domestic: 15000
-    international: 15000
-  url: https://card.kbcard.com/CRD/DVIEW/HCAMCXPRICAC0076?mainCC=a&cooperationcode=09298
+    domestic: 30000
+    international: 30000
+  url: https://www.hyundaicard.com/crd/crd01/crd0101/H100000206.hdc
   lastUpdated: "2026-03-24"
   source: manual
 
@@ -26,86 +26,83 @@ performanceExclusions:
   - tax_payment
   - utility_bills
   - apartment_mgmt
+  - tuition
   - gift_card
 
 rewards:
-  - category: online_shopping
-    type: discount
+  - category: dining
+    label: 배달의민족 앱 결제
+    type: points
     tiers:
       - performanceTier: tier0
         rate: 0
         monthlyCap: null
         perTransactionCap: null
       - performanceTier: tier1
-        rate: 10.0
-        monthlyCap: 5000
-        perTransactionCap: 2500
+        rate: 5.0
+        monthlyCap: 50000
+        perTransactionCap: null
     conditions:
-      minTransaction: null
-      excludeOnline: false
       specificMerchants:
-        - KB Pay
+        - 배달의민족
 
   - category: dining
-    type: discount
+    label: 커피전문점
+    type: points
     tiers:
       - performanceTier: tier0
         rate: 0
         monthlyCap: null
         perTransactionCap: null
       - performanceTier: tier1
-        rate: 10.0
-        monthlyCap: 5000
-        perTransactionCap: 2500
+        rate: 3.0
+        monthlyCap: 50000
+        perTransactionCap: null
+    conditions:
+      specificMerchants:
+        - 스타벅스
+        - 투썸플레이스
+        - 이디야
 
   - category: convenience_store
-    type: discount
+    label: 편의점
+    type: points
     tiers:
       - performanceTier: tier0
         rate: 0
         monthlyCap: null
         perTransactionCap: null
       - performanceTier: tier1
-        rate: 10.0
-        monthlyCap: 5000
-        perTransactionCap: 2500
-    conditions:
-      specificMerchants:
-        - GS25
-        - CU
+        rate: 3.0
+        monthlyCap: 50000
+        perTransactionCap: null
 
-  - category: telecom
-    type: discount
+  - category: public_transit
+    label: 대중교통
+    type: points
     tiers:
       - performanceTier: tier0
         rate: 0
         monthlyCap: null
         perTransactionCap: null
       - performanceTier: tier1
-        rate: 10.0
-        monthlyCap: 5000
-        perTransactionCap: 2500
+        rate: 3.0
+        monthlyCap: 50000
+        perTransactionCap: null
 
-  - category: subscription
-    type: discount
+  - category: uncategorized
+    label: 전 가맹점 기본 적립
+    type: points
     tiers:
       - performanceTier: tier0
-        rate: 0
+        rate: 0.5
         monthlyCap: null
         perTransactionCap: null
       - performanceTier: tier1
-        rate: 30.0
-        monthlyCap: 5000
+        rate: 1.2
+        monthlyCap: null
         perTransactionCap: null
-    conditions:
-      specificMerchants:
-        - 넷플릭스
-        - 티빙
-        - 웨이브
-        - 쿠팡플레이
-        - 디즈니플러스
-        - 유튜브프리미엄
 
 globalConstraints:
-  monthlyTotalDiscountCap: 25000
+  monthlyTotalDiscountCap: 50000
   minimumAnnualSpending: null

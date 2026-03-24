@@ -1,0 +1,110 @@
+card:
+  id: woori-discount
+  issuer: woori
+  name: Card of Rules DISCOUNT
+  nameKo: 우리카드 카드의정석 DISCOUNT
+  type: credit
+  annualFee:
+    domestic: 10000
+    international: 12000
+  url: https://m.bccard.com/app/mobileweb/CardDetail.do?exec=cardDetail&cardGdsNo=834593
+  lastUpdated: "2026-03-24"
+  source: manual
+
+performanceTiers:
+  - id: tier0
+    label: 무실적
+    minSpending: 0
+    maxSpending: 299999
+
+  - id: tier1
+    label: 전월 30만원 이상
+    minSpending: 300000
+    maxSpending: 499999
+
+  - id: tier2
+    label: 전월 50만원 이상
+    minSpending: 500000
+    maxSpending: null
+
+performanceExclusions:
+  - tax_payment
+  - gift_card
+  - apartment_mgmt
+
+rewards:
+  - category: uncategorized
+    type: discount
+    tiers:
+      - performanceTier: tier0
+        rate: 0
+        monthlyCap: null
+        perTransactionCap: null
+      - performanceTier: tier1
+        rate: 0.7
+        monthlyCap: 5000
+        perTransactionCap: 1000
+      - performanceTier: tier2
+        rate: 1.0
+        monthlyCap: 10000
+        perTransactionCap: 1000
+    conditions:
+      note: "전 가맹점 0.7~1% 청구할인. 건당 1천원 한도"
+
+  - category: transportation
+    subcategory: fuel
+    type: discount
+    tiers:
+      - performanceTier: tier0
+        rate: 0
+        monthlyCap: null
+        perTransactionCap: null
+      - performanceTier: tier1
+        rate: 60
+        monthlyCap: 6000
+        perTransactionCap: 100000
+      - performanceTier: tier2
+        rate: 100
+        monthlyCap: 10000
+        perTransactionCap: 100000
+    conditions:
+      specificMerchants:
+        - S-OIL
+        - 현대오일뱅크
+
+  - category: public_transit
+    type: discount
+    tiers:
+      - performanceTier: tier0
+        rate: 0
+        monthlyCap: null
+        perTransactionCap: null
+      - performanceTier: tier1
+        rate: 10.0
+        monthlyCap: 5000
+        perTransactionCap: null
+      - performanceTier: tier2
+        rate: 10.0
+        monthlyCap: 5000
+        perTransactionCap: null
+
+  - category: dining
+    subcategory: cafe
+    type: discount
+    tiers:
+      - performanceTier: tier0
+        rate: 0
+        monthlyCap: null
+        perTransactionCap: null
+      - performanceTier: tier1
+        rate: 10.0
+        monthlyCap: 5000
+        perTransactionCap: 1000
+      - performanceTier: tier2
+        rate: 10.0
+        monthlyCap: 5000
+        perTransactionCap: 1000
+
+globalConstraints:
+  monthlyTotalDiscountCap: 30000
+  minimumAnnualSpending: null
