@@ -1,0 +1,59 @@
+card:
+  id: "samsung-id-simple"
+  issuer: "samsung"
+  name: "iD SIMPLE"
+  nameKo: "아이디 심플"
+  type: credit
+  annualFee:
+    domestic: 7000
+    international: 7000
+  url: "https://www.samsungcard.com/home/card/cardinfo/PGHPPCCCardCardinfoDetails001?code=AAP1767"
+  lastUpdated: "2026-03-24"
+  source: manual
+
+performanceTiers:
+  - id: tier0
+    label: "무실적"
+    minSpending: 0
+    maxSpending: null
+
+performanceExclusions: []
+
+rewards:
+  - category: "uncategorized"
+    label: "국내외 가맹점 (건당 10만원 미만)"
+    type: discount
+    tiers:
+      - performanceTier: tier0
+        rate: 0.7
+        monthlyCap: null
+        perTransactionCap: 99999
+  - category: "uncategorized"
+    label: "국내외 가맹점 (건당 10만원 이상)"
+    type: discount
+    tiers:
+      - performanceTier: tier0
+        rate: 1.0
+        monthlyCap: null
+        perTransactionCap: null
+  - category: "subscription"
+    label: "온라인쇼핑몰 멤버십"
+    type: discount
+    tiers:
+      - performanceTier: tier0
+        rate: 50.0
+        monthlyCap: null
+        perTransactionCap: null
+  - category: "entertainment"
+    label: "영화"
+    type: discount
+    tiers:
+      - performanceTier: tier0
+        rate: null
+        fixedAmount: 3000
+        monthlyCap: 3000
+        perTransactionCap: null
+
+globalConstraints:
+  monthlyTotalDiscountCap: null
+  minimumAnnualSpending: null

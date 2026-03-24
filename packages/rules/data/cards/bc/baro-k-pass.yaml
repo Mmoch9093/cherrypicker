@@ -1,0 +1,123 @@
+card:
+  id: bc-baro-k-pass
+  issuer: bc
+  name: Baro K-Pass Card
+  nameKo: BC 바로 K-패스 카드
+  type: credit
+  annualFee:
+    domestic: 6000
+    international: 7000
+  url: https://m.bccard.com/app/mobileweb/CardDetail.do?exec=cardDetail&cardGdsNo=103112
+  lastUpdated: "2026-03-24"
+  source: manual
+
+performanceTiers:
+  - id: tier0
+    label: 무실적
+    minSpending: 0
+    maxSpending: 299999
+
+  - id: tier1
+    label: 전월 30만원 이상
+    minSpending: 300000
+    maxSpending: 599999
+
+  - id: tier2
+    label: 전월 60만원 이상
+    minSpending: 600000
+    maxSpending: null
+
+performanceExclusions:
+  - tax_payment
+  - utility_bills
+  - apartment_mgmt
+  - tuition
+  - gift_card
+
+rewards:
+  - category: public_transit
+    type: discount
+    tiers:
+      - performanceTier: tier0
+        rate: 0
+        monthlyCap: null
+        perTransactionCap: null
+      - performanceTier: tier1
+        rate: 15.0
+        monthlyCap: 10000
+        perTransactionCap: null
+      - performanceTier: tier2
+        rate: 15.0
+        monthlyCap: 15000
+        perTransactionCap: null
+
+  - category: entertainment
+    subcategory: streaming
+    type: discount
+    tiers:
+      - performanceTier: tier0
+        rate: 0
+        monthlyCap: null
+        perTransactionCap: null
+      - performanceTier: tier1
+        rate: 15.0
+        monthlyCap: 3000
+        perTransactionCap: null
+      - performanceTier: tier2
+        rate: 15.0
+        monthlyCap: 5000
+        perTransactionCap: null
+
+  - category: convenience_store
+    type: discount
+    tiers:
+      - performanceTier: tier0
+        rate: 0
+        monthlyCap: null
+        perTransactionCap: null
+      - performanceTier: tier1
+        rate: 5.0
+        monthlyCap: 3000
+        perTransactionCap: null
+      - performanceTier: tier2
+        rate: 5.0
+        monthlyCap: 5000
+        perTransactionCap: null
+
+  - category: telecom
+    type: discount
+    tiers:
+      - performanceTier: tier0
+        rate: 0
+        monthlyCap: null
+        perTransactionCap: null
+      - performanceTier: tier1
+        rate: 5.0
+        monthlyCap: 3000
+        perTransactionCap: null
+      - performanceTier: tier2
+        rate: 5.0
+        monthlyCap: 5000
+        perTransactionCap: null
+
+  - category: travel
+    type: discount
+    tiers:
+      - performanceTier: tier0
+        rate: 0
+        monthlyCap: null
+        perTransactionCap: null
+      - performanceTier: tier1
+        rate: 3.0
+        monthlyCap: 3000
+        perTransactionCap: null
+      - performanceTier: tier2
+        rate: 3.0
+        monthlyCap: 5000
+        perTransactionCap: null
+    conditions:
+      note: "해외 가맹점 할인"
+
+globalConstraints:
+  monthlyTotalDiscountCap: 30000
+  minimumAnnualSpending: null

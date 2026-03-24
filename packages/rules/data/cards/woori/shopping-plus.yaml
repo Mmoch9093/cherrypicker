@@ -1,0 +1,146 @@
+card:
+  id: woori-shopping-plus
+  issuer: woori
+  name: Card of Rules SHOPPING+
+  nameKo: 우리카드 카드의정석 SHOPPING+
+  type: credit
+  annualFee:
+    domestic: 10000
+    international: 12000
+  url: https://m.wooricard.com/dcmw/yh1/crd/crd01/M1CRD101S08.do
+  lastUpdated: "2026-03-24"
+  source: manual
+
+performanceTiers:
+  - id: tier0
+    label: 무실적
+    minSpending: 0
+    maxSpending: 299999
+
+  - id: tier1
+    label: 전월 30만원 이상
+    minSpending: 300000
+    maxSpending: 699999
+
+  - id: tier2
+    label: 전월 70만원 이상
+    minSpending: 700000
+    maxSpending: 1199999
+
+  - id: tier3
+    label: 전월 120만원 이상
+    minSpending: 1200000
+    maxSpending: null
+
+performanceExclusions:
+  - tax_payment
+  - gift_card
+
+rewards:
+  - category: online_shopping
+    type: discount
+    tiers:
+      - performanceTier: tier0
+        rate: 0
+        monthlyCap: null
+        perTransactionCap: null
+      - performanceTier: tier1
+        rate: 10.0
+        monthlyCap: 4000
+        perTransactionCap: null
+      - performanceTier: tier2
+        rate: 10.0
+        monthlyCap: 8000
+        perTransactionCap: null
+      - performanceTier: tier3
+        rate: 10.0
+        monthlyCap: 16000
+        perTransactionCap: null
+
+  - category: offline_shopping
+    type: discount
+    tiers:
+      - performanceTier: tier0
+        rate: 0
+        monthlyCap: null
+        perTransactionCap: null
+      - performanceTier: tier1
+        rate: 10.0
+        monthlyCap: 6000
+        perTransactionCap: null
+      - performanceTier: tier2
+        rate: 10.0
+        monthlyCap: 12000
+        perTransactionCap: null
+      - performanceTier: tier3
+        rate: 10.0
+        monthlyCap: 24000
+        perTransactionCap: null
+    conditions:
+      minTransaction: null
+      excludeOnline: false
+      specificMerchants:
+        - 백화점
+        - 대형할인점
+        - 창고형할인매장
+        - 슈퍼마켓
+        - 프리미엄아울렛
+        - 편의점
+
+  - category: transportation
+    type: discount
+    tiers:
+      - performanceTier: tier0
+        rate: 0
+        monthlyCap: null
+        perTransactionCap: null
+      - performanceTier: tier1
+        rate: 60
+        monthlyCap: 6000
+        perTransactionCap: 100000
+      - performanceTier: tier2
+        rate: 60
+        monthlyCap: 6000
+        perTransactionCap: 100000
+      - performanceTier: tier3
+        rate: 60
+        monthlyCap: 6000
+        perTransactionCap: 100000
+    conditions:
+      minTransaction: null
+      excludeOnline: false
+      specificMerchants:
+        - SK에너지
+        - GS칼텍스
+        - S-OIL
+        - 현대오일뱅크
+
+  - category: dining
+    type: discount
+    tiers:
+      - performanceTier: tier0
+        rate: 0
+        monthlyCap: null
+        perTransactionCap: null
+      - performanceTier: tier1
+        rate: 10.0
+        monthlyCap: 5000
+        perTransactionCap: 1000
+      - performanceTier: tier2
+        rate: 10.0
+        monthlyCap: 5000
+        perTransactionCap: 1000
+      - performanceTier: tier3
+        rate: 10.0
+        monthlyCap: 5000
+        perTransactionCap: 1000
+    conditions:
+      minTransaction: null
+      excludeOnline: false
+      specificMerchants:
+        - 스타벅스
+        - 폴바셋
+
+globalConstraints:
+  monthlyTotalDiscountCap: null
+  minimumAnnualSpending: null

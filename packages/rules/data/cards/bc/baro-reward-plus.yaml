@@ -1,0 +1,149 @@
+card:
+  id: bc-baro-reward-plus
+  issuer: bc
+  name: Baro Reward Plus Card
+  nameKo: BC 바로 리워드 플러스
+  type: credit
+  annualFee:
+    domestic: 10000
+    international: 10000
+  url: https://m.bccard.com/app/mobileweb/CardDetail.do?exec=cardDetail&cardGdsNo=101921
+  lastUpdated: "2026-03-24"
+  source: manual
+
+performanceTiers:
+  - id: tier0
+    label: 무실적
+    minSpending: 0
+    maxSpending: 299999
+
+  - id: tier1
+    label: 전월 30만원 이상
+    minSpending: 300000
+    maxSpending: 599999
+
+  - id: tier2
+    label: 전월 60만원 이상
+    minSpending: 600000
+    maxSpending: null
+
+performanceExclusions:
+  - tax_payment
+  - utility_bills
+  - apartment_mgmt
+  - tuition
+  - gift_card
+
+rewards:
+  - category: uncategorized
+    type: points
+    tiers:
+      - performanceTier: tier0
+        rate: 0.5
+        monthlyCap: null
+        perTransactionCap: null
+      - performanceTier: tier1
+        rate: 1.0
+        monthlyCap: null
+        perTransactionCap: null
+      - performanceTier: tier2
+        rate: 1.5
+        monthlyCap: null
+        perTransactionCap: null
+    conditions:
+      note: "페이북 머니 기본적립, 적립한도 없음"
+
+  - category: entertainment
+    subcategory: movie
+    type: points
+    tiers:
+      - performanceTier: tier0
+        rate: 0
+        monthlyCap: null
+        perTransactionCap: null
+      - performanceTier: tier1
+        rate: 30.0
+        monthlyCap: 3000
+        perTransactionCap: null
+      - performanceTier: tier2
+        rate: 30.0
+        monthlyCap: 5000
+        perTransactionCap: null
+    conditions:
+      note: "특별적립 - 영화/구독서비스"
+
+  - category: entertainment
+    subcategory: streaming
+    type: points
+    tiers:
+      - performanceTier: tier0
+        rate: 0
+        monthlyCap: null
+        perTransactionCap: null
+      - performanceTier: tier1
+        rate: 30.0
+        monthlyCap: 3000
+        perTransactionCap: null
+      - performanceTier: tier2
+        rate: 30.0
+        monthlyCap: 5000
+        perTransactionCap: null
+
+  - category: offline_shopping
+    type: points
+    tiers:
+      - performanceTier: tier0
+        rate: 0
+        monthlyCap: null
+        perTransactionCap: null
+      - performanceTier: tier1
+        rate: 5.0
+        monthlyCap: 3000
+        perTransactionCap: null
+      - performanceTier: tier2
+        rate: 5.0
+        monthlyCap: 5000
+        perTransactionCap: null
+    conditions:
+      note: "특별적립 - 백화점, 대형마트"
+
+  - category: transportation
+    subcategory: fuel
+    type: points
+    tiers:
+      - performanceTier: tier0
+        rate: 0
+        monthlyCap: null
+        perTransactionCap: null
+      - performanceTier: tier1
+        rate: 5.0
+        monthlyCap: 3000
+        perTransactionCap: null
+      - performanceTier: tier2
+        rate: 5.0
+        monthlyCap: 5000
+        perTransactionCap: null
+    conditions:
+      note: "특별적립 - 주유소"
+
+  - category: telecom
+    type: points
+    tiers:
+      - performanceTier: tier0
+        rate: 0
+        monthlyCap: null
+        perTransactionCap: null
+      - performanceTier: tier1
+        rate: 5.0
+        monthlyCap: 1000
+        perTransactionCap: null
+      - performanceTier: tier2
+        rate: 5.0
+        monthlyCap: 1000
+        perTransactionCap: null
+    conditions:
+      note: "특별적립 - 핸드폰요금 자동납부 필수"
+
+globalConstraints:
+  monthlyTotalDiscountCap: null
+  minimumAnnualSpending: null

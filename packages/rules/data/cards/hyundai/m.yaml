@@ -1,0 +1,88 @@
+card:
+  id: hyundai-m
+  issuer: hyundai
+  name: Hyundai Card M
+  nameKo: 현대카드 M
+  type: credit
+  annualFee:
+    domestic: 30000
+    international: 30000
+  url: https://www.hyundaicard.com/crd/crd01/crd0101/H100000213.hdc
+  lastUpdated: "2026-03-24"
+  source: manual
+
+performanceTiers:
+  - id: tier0
+    label: 무실적
+    minSpending: 0
+    maxSpending: 499999
+
+  - id: tier1
+    label: 전월 50만원 이상
+    minSpending: 500000
+    maxSpending: 999999
+
+  - id: tier2
+    label: 전월 100만원 이상
+    minSpending: 1000000
+    maxSpending: null
+
+performanceExclusions:
+  - tax_payment
+  - utility_bills
+  - apartment_mgmt
+  - tuition
+  - gift_card
+
+rewards:
+  - category: online_shopping
+    type: points
+    tiers:
+      - performanceTier: tier0
+        rate: 0
+        monthlyCap: null
+        perTransactionCap: null
+      - performanceTier: tier1
+        rate: 1.5
+        monthlyCap: null
+        perTransactionCap: null
+      - performanceTier: tier2
+        rate: 5.0
+        monthlyCap: 10000
+        perTransactionCap: null
+
+  - category: dining
+    type: points
+    tiers:
+      - performanceTier: tier0
+        rate: 0
+        monthlyCap: null
+        perTransactionCap: null
+      - performanceTier: tier1
+        rate: 1.5
+        monthlyCap: null
+        perTransactionCap: null
+      - performanceTier: tier2
+        rate: 5.0
+        monthlyCap: 10000
+        perTransactionCap: null
+
+  - category: uncategorized
+    type: points
+    tiers:
+      - performanceTier: tier0
+        rate: 0
+        monthlyCap: null
+        perTransactionCap: null
+      - performanceTier: tier1
+        rate: 1.5
+        monthlyCap: null
+        perTransactionCap: null
+      - performanceTier: tier2
+        rate: 1.5
+        monthlyCap: null
+        perTransactionCap: null
+
+globalConstraints:
+  monthlyTotalDiscountCap: null
+  minimumAnnualSpending: null

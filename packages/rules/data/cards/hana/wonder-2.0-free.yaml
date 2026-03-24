@@ -1,0 +1,75 @@
+card:
+  id: hana-wonder-2.0-free
+  issuer: hana
+  name: Wonder Card 2.0 FREE
+  nameKo: 하나카드 원더카드 2.0 FREE
+  type: credit
+  annualFee:
+    domestic: 12000
+    international: 12000
+  url: https://www.hanacard.co.kr/OPI41000000D.web?CD_PD_SEQ=15859
+  lastUpdated: "2026-03-24"
+  source: manual
+
+performanceTiers:
+  - id: tier0
+    label: 무실적
+    minSpending: 0
+    maxSpending: null
+
+performanceExclusions: []
+
+rewards:
+  - category: grocery
+    type: discount
+    tiers:
+      - performanceTier: tier0
+        rate: 2.0
+        monthlyCap: null
+        perTransactionCap: null
+    conditions:
+      minTransaction: null
+      excludeOnline: false
+      specificMerchants:
+        - 쿠팡
+        - 이마트
+        - 홈플러스
+        - 롯데마트
+        - 트레이더스
+
+  - category: dining
+    type: discount
+    tiers:
+      - performanceTier: tier0
+        rate: 2.0
+        monthlyCap: null
+        perTransactionCap: null
+    conditions:
+      minTransaction: null
+      excludeOnline: false
+      specificMerchants:
+        - 파리바게트
+        - 뚜레쥬르
+        - 아티제
+        - 파리크라상
+        - 던킨도너츠
+
+  - category: public_transit
+    type: discount
+    tiers:
+      - performanceTier: tier0
+        rate: 3.0
+        monthlyCap: null
+        perTransactionCap: null
+
+  - category: uncategorized
+    type: discount
+    tiers:
+      - performanceTier: tier0
+        rate: 0.7
+        monthlyCap: null
+        perTransactionCap: null
+
+globalConstraints:
+  monthlyTotalDiscountCap: null
+  minimumAnnualSpending: null

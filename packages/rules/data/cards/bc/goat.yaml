@@ -1,0 +1,50 @@
+card:
+  id: bc-goat
+  issuer: bc
+  name: GOAT BC Baro Card
+  nameKo: GOAT BC 바로카드
+  type: credit
+  annualFee:
+    domestic: 12000
+    international: 15000
+  url: https://m.bccard.com/app/mobileweb/CardDetail.do?exec=cardDetail&cardGdsNo=100008
+  lastUpdated: "2026-03-24"
+  source: manual
+
+performanceTiers:
+  - id: tier0
+    label: 무실적
+    minSpending: 0
+    maxSpending: null
+
+performanceExclusions:
+  - tax_payment
+  - utility_bills
+  - apartment_mgmt
+  - tuition
+  - gift_card
+
+rewards:
+  - category: uncategorized
+    type: points
+    tiers:
+      - performanceTier: tier0
+        rate: 1.5
+        monthlyCap: null
+        perTransactionCap: null
+    conditions:
+      note: "페이북 머니 적립, 무실적 무한도. 당월 100만원 초과분은 1% 적립"
+
+  - category: travel
+    type: points
+    tiers:
+      - performanceTier: tier0
+        rate: 3.0
+        monthlyCap: null
+        perTransactionCap: null
+    conditions:
+      note: "해외 가맹점 적립. 당월 100만원 초과분은 2% 적립. 해외이용수수료 별도"
+
+globalConstraints:
+  monthlyTotalDiscountCap: null
+  minimumAnnualSpending: null

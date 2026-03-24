@@ -1,0 +1,99 @@
+card:
+  id: "samsung-id-on"
+  issuer: "samsung"
+  name: "iD ON"
+  nameKo: "아이디 온"
+  type: credit
+  annualFee:
+    domestic: 20000
+    international: 20000
+  url: "https://www.samsungcard.com/home/card/cardinfo/PGHPPCCCardCardinfoDetails001?code=AAP1731"
+  lastUpdated: "2026-03-24"
+  source: manual
+
+performanceTiers:
+  - id: tier0
+    label: "무실적"
+    minSpending: 0
+    maxSpending: 299999
+  - id: tier1
+    label: "전월 30만원 이상"
+    minSpending: 300000
+    maxSpending: 599999
+  - id: tier2
+    label: "전월 60만원 이상"
+    minSpending: 600000
+    maxSpending: null
+
+performanceExclusions:
+  - tax_payment
+  - gift_card_purchase
+  - short_term_loan
+  - long_term_loan
+  - annual_fee
+
+rewards:
+  - category: "dining"
+    label: "맞춤 할인 (카페/배달앱/델리 중 최다이용 1개)"
+    type: discount
+    tiers:
+      - performanceTier: tier1
+        rate: 30.0
+        monthlyCap: 10000
+        perTransactionCap: null
+      - performanceTier: tier2
+        rate: 30.0
+        monthlyCap: 15000
+        perTransactionCap: null
+  - category: "telecom"
+    label: "이동통신요금 정기결제"
+    type: discount
+    tiers:
+      - performanceTier: tier1
+        rate: 10.0
+        monthlyCap: 5000
+        perTransactionCap: null
+      - performanceTier: tier2
+        rate: 10.0
+        monthlyCap: 5000
+        perTransactionCap: null
+  - category: "public_transit"
+    label: "대중교통 (버스/지하철/택시)"
+    type: discount
+    tiers:
+      - performanceTier: tier1
+        rate: 10.0
+        monthlyCap: 5000
+        perTransactionCap: null
+      - performanceTier: tier2
+        rate: 10.0
+        monthlyCap: 5000
+        perTransactionCap: null
+  - category: "subscription"
+    label: "스트리밍 (넷플릭스/티빙/웨이브/왓챠/멜론/FLO)"
+    type: discount
+    tiers:
+      - performanceTier: tier1
+        rate: 10.0
+        monthlyCap: 5000
+        perTransactionCap: null
+      - performanceTier: tier2
+        rate: 10.0
+        monthlyCap: 5000
+        perTransactionCap: null
+  - category: "online_shopping"
+    label: "온라인 간편결제 (한도 없음)"
+    type: discount
+    tiers:
+      - performanceTier: tier1
+        rate: 1.0
+        monthlyCap: null
+        perTransactionCap: null
+      - performanceTier: tier2
+        rate: 1.0
+        monthlyCap: null
+        perTransactionCap: null
+
+globalConstraints:
+  monthlyTotalDiscountCap: 40000
+  minimumAnnualSpending: null

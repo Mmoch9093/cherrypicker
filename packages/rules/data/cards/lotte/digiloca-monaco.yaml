@@ -1,0 +1,83 @@
+card:
+  id: lotte-digiloca-monaco
+  issuer: lotte
+  name: DigiLOCA Monaco
+  nameKo: 롯데카드 디지로카 Monaco
+  type: credit
+  annualFee:
+    domestic: 125000
+    international: 125000
+  url: https://m.lottecard.co.kr/app/LPCDXAA_V020.lc
+  lastUpdated: "2026-03-24"
+  source: manual
+
+performanceTiers:
+  - id: tier0
+    label: 무실적
+    minSpending: 0
+    maxSpending: null
+
+performanceExclusions: []
+
+rewards:
+  - category: online_shopping
+    type: discount
+    tiers:
+      - performanceTier: tier0
+        rate: 5.0
+        monthlyCap: 10000
+        perTransactionCap: null
+
+  - category: dining
+    type: discount
+    tiers:
+      - performanceTier: tier0
+        rate: 5.0
+        monthlyCap: 5000
+        perTransactionCap: null
+    conditions:
+      minTransaction: null
+      excludeOnline: false
+      specificMerchants:
+        - 배달의민족
+        - 요기요
+        - 쿠팡이츠
+
+  - category: telecom
+    type: discount
+    tiers:
+      - performanceTier: tier0
+        rate: 5.0
+        monthlyCap: 5000
+        perTransactionCap: null
+
+  - category: subscription
+    type: discount
+    tiers:
+      - performanceTier: tier0
+        rate: 50.0
+        monthlyCap: 5000
+        perTransactionCap: null
+    conditions:
+      minTransaction: null
+      excludeOnline: false
+      specificMerchants:
+        - 넷플릭스
+        - 유튜브프리미엄
+        - 디즈니플러스
+        - 왓챠
+        - 웨이브
+        - 멜론
+        - 지니뮤직
+
+  - category: uncategorized
+    type: discount
+    tiers:
+      - performanceTier: tier0
+        rate: 1.0
+        monthlyCap: null
+        perTransactionCap: null
+
+globalConstraints:
+  monthlyTotalDiscountCap: null
+  minimumAnnualSpending: null

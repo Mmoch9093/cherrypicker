@@ -1,0 +1,117 @@
+card:
+  id: kb-k-pass
+  issuer: kb
+  name: K-Pass Card
+  nameKo: KB국민 K패스 카드
+  type: credit
+  annualFee:
+    domestic: 10000
+    international: 12000
+  url: https://card.kbcard.com/CRD/DVIEW/HCAMCXPRICAC0076?cooperationcode=09321&mainCC=a
+  lastUpdated: "2026-03-24"
+  source: manual
+
+performanceTiers:
+  - id: tier0
+    label: 무실적
+    minSpending: 0
+    maxSpending: 299999
+
+  - id: tier1
+    label: 전월 30만원 이상
+    minSpending: 300000
+    maxSpending: null
+
+performanceExclusions:
+  - tax_payment
+  - utility_bills
+  - apartment_mgmt
+  - gift_card
+
+rewards:
+  - category: public_transit
+    type: discount
+    tiers:
+      - performanceTier: tier0
+        rate: 0
+        monthlyCap: null
+        perTransactionCap: null
+      - performanceTier: tier1
+        rate: 10.0
+        monthlyCap: 5000
+        perTransactionCap: null
+
+  - category: convenience_store
+    type: discount
+    tiers:
+      - performanceTier: tier0
+        rate: 0
+        monthlyCap: null
+        perTransactionCap: null
+      - performanceTier: tier1
+        rate: 5.0
+        monthlyCap: 5000
+        perTransactionCap: null
+
+  - category: dining
+    type: discount
+    tiers:
+      - performanceTier: tier0
+        rate: 0
+        monthlyCap: null
+        perTransactionCap: null
+      - performanceTier: tier1
+        rate: 5.0
+        monthlyCap: 5000
+        perTransactionCap: null
+    conditions:
+      specificMerchants:
+        - 커피전문점
+        - 배달앱
+
+  - category: medical
+    type: discount
+    tiers:
+      - performanceTier: tier0
+        rate: 0
+        monthlyCap: null
+        perTransactionCap: null
+      - performanceTier: tier1
+        rate: 5.0
+        monthlyCap: 5000
+        perTransactionCap: null
+
+  - category: telecom
+    type: discount
+    tiers:
+      - performanceTier: tier0
+        rate: 0
+        monthlyCap: null
+        perTransactionCap: null
+      - performanceTier: tier1
+        rate: 5.0
+        monthlyCap: 5000
+        perTransactionCap: null
+
+  - category: subscription
+    type: discount
+    tiers:
+      - performanceTier: tier0
+        rate: 0
+        monthlyCap: null
+        perTransactionCap: null
+      - performanceTier: tier1
+        rate: 5.0
+        monthlyCap: 5000
+        perTransactionCap: null
+    conditions:
+      specificMerchants:
+        - 넷플릭스
+        - 티빙
+        - 웨이브
+        - 쿠팡플레이
+        - 디즈니플러스
+
+globalConstraints:
+  monthlyTotalDiscountCap: 30000
+  minimumAnnualSpending: null

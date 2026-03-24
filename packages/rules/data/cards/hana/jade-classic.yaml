@@ -1,0 +1,60 @@
+card:
+  id: hana-jade-classic
+  issuer: hana
+  name: JADE Classic
+  nameKo: 하나카드 JADE Classic
+  type: credit
+  annualFee:
+    domestic: 120000
+    international: 120000
+  url: https://www.hanacard.co.kr/OPI41000000D.web?CD_PD_SEQ=17504
+  lastUpdated: "2026-03-24"
+  source: manual
+
+performanceTiers:
+  - id: tier0
+    label: 무실적
+    minSpending: 0
+    maxSpending: 499999
+
+  - id: tier1
+    label: 전월 50만원 이상
+    minSpending: 500000
+    maxSpending: null
+
+performanceExclusions:
+  - tax_payment
+  - gift_card
+
+rewards:
+  - category: uncategorized
+    type: points
+    tiers:
+      - performanceTier: tier0
+        rate: 1.0
+        monthlyCap: null
+        perTransactionCap: null
+      - performanceTier: tier1
+        rate: 1.0
+        monthlyCap: 5000
+        perTransactionCap: null
+
+  - category: travel
+    type: discount
+    tiers:
+      - performanceTier: tier0
+        rate: 0
+        monthlyCap: null
+        perTransactionCap: null
+      - performanceTier: tier1
+        rate: 0
+        monthlyCap: null
+        perTransactionCap: null
+    conditions:
+      minTransaction: null
+      excludeOnline: false
+      specificMerchants: []
+
+globalConstraints:
+  monthlyTotalDiscountCap: null
+  minimumAnnualSpending: null

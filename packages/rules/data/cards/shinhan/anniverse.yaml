@@ -1,0 +1,139 @@
+card:
+  id: "shinhan-anniverse"
+  issuer: "shinhan"
+  name: "ANNIVERSE (처음)"
+  nameKo: "처음"
+  type: credit
+  annualFee:
+    domestic: 15000
+    international: 18000
+  url: "https://www.shinhancard.com/pconts/html/card/apply/credit/1229296_2207.html"
+  lastUpdated: "2026-03-24"
+  source: manual
+
+performanceTiers:
+  - id: tier0
+    label: "무실적"
+    minSpending: 0
+    maxSpending: 299999
+  - id: tier1
+    label: "전월 30만원 이상"
+    minSpending: 300000
+    maxSpending: 499999
+  - id: tier2
+    label: "전월 50만원 이상"
+    minSpending: 500000
+    maxSpending: 999999
+  - id: tier3
+    label: "전월 100만원 이상"
+    minSpending: 1000000
+    maxSpending: null
+
+performanceExclusions:
+  - tax_payment
+  - short_term_loan
+  - long_term_loan
+  - annual_fee
+  - gift_card_purchase
+
+rewards:
+  - category: "dining"
+    label: "음식점/카페 적립"
+    type: points
+    tiers:
+      - performanceTier: tier1
+        rate: 5.0
+        monthlyCap: 5000
+        perTransactionCap: null
+      - performanceTier: tier2
+        rate: 5.0
+        monthlyCap: 10000
+        perTransactionCap: null
+      - performanceTier: tier3
+        rate: 5.0
+        monthlyCap: 15000
+        perTransactionCap: null
+  - category: "convenience_store"
+    label: "편의점 적립"
+    type: points
+    tiers:
+      - performanceTier: tier1
+        rate: 5.0
+        monthlyCap: 5000
+        perTransactionCap: null
+      - performanceTier: tier2
+        rate: 5.0
+        monthlyCap: 10000
+        perTransactionCap: null
+      - performanceTier: tier3
+        rate: 5.0
+        monthlyCap: 15000
+        perTransactionCap: null
+  - category: "online_shopping"
+    label: "온라인쇼핑 적립"
+    type: points
+    tiers:
+      - performanceTier: tier1
+        rate: 5.0
+        monthlyCap: 5000
+        perTransactionCap: null
+      - performanceTier: tier2
+        rate: 5.0
+        monthlyCap: 10000
+        perTransactionCap: null
+      - performanceTier: tier3
+        rate: 5.0
+        monthlyCap: 15000
+        perTransactionCap: null
+  - category: "telecom"
+    label: "통신비 적립"
+    type: points
+    tiers:
+      - performanceTier: tier1
+        rate: 10.0
+        monthlyCap: 3000
+        perTransactionCap: null
+      - performanceTier: tier2
+        rate: 10.0
+        monthlyCap: 5000
+        perTransactionCap: null
+      - performanceTier: tier3
+        rate: 10.0
+        monthlyCap: 7000
+        perTransactionCap: null
+  - category: "subscription"
+    label: "OTT 구독 (넷플릭스/유튜브프리미엄 등) 적립"
+    type: points
+    tiers:
+      - performanceTier: tier1
+        rate: 15.0
+        monthlyCap: 3000
+        perTransactionCap: null
+      - performanceTier: tier2
+        rate: 15.0
+        monthlyCap: 5000
+        perTransactionCap: null
+      - performanceTier: tier3
+        rate: 15.0
+        monthlyCap: 7000
+        perTransactionCap: null
+  - category: "subscription"
+    label: "멤버십 서비스 (네이버플러스/쿠팡와우 등) 적립"
+    type: points
+    tiers:
+      - performanceTier: tier1
+        rate: 20.0
+        monthlyCap: 3000
+        perTransactionCap: null
+      - performanceTier: tier2
+        rate: 20.0
+        monthlyCap: 5000
+        perTransactionCap: null
+      - performanceTier: tier3
+        rate: 20.0
+        monthlyCap: 7000
+        perTransactionCap: null
+
+globalConstraints:
+  monthlyTotalDiscountCap: null
+  minimumAnnualSpending: null

@@ -1,0 +1,87 @@
+card:
+  id: lotte-digiloca-paris
+  issuer: lotte
+  name: DigiLOCA Paris
+  nameKo: 롯데카드 디지로카 Paris
+  type: credit
+  annualFee:
+    domestic: 20000
+    international: 20000
+  url: https://www.lottecard.co.kr/app/LPCDXBA_V100.lc?vtCdKndC=P14728-A14728
+  lastUpdated: "2026-03-24"
+  source: manual
+
+performanceTiers:
+  - id: tier0
+    label: 무실적
+    minSpending: 0
+    maxSpending: 499999
+
+  - id: tier1
+    label: 전월 50만원 이상
+    minSpending: 500000
+    maxSpending: null
+
+performanceExclusions: []
+
+rewards:
+  - category: online_shopping
+    type: discount
+    tiers:
+      - performanceTier: tier0
+        rate: 0
+        monthlyCap: null
+        perTransactionCap: null
+      - performanceTier: tier1
+        rate: 5.0
+        monthlyCap: 10000
+        perTransactionCap: null
+
+  - category: telecom
+    type: discount
+    tiers:
+      - performanceTier: tier0
+        rate: 0
+        monthlyCap: null
+        perTransactionCap: null
+      - performanceTier: tier1
+        rate: 5.0
+        monthlyCap: 5000
+        perTransactionCap: null
+
+  - category: subscription
+    type: discount
+    tiers:
+      - performanceTier: tier0
+        rate: 0
+        monthlyCap: null
+        perTransactionCap: null
+      - performanceTier: tier1
+        rate: 50.0
+        monthlyCap: 5000
+        perTransactionCap: null
+    conditions:
+      minTransaction: null
+      excludeOnline: false
+      specificMerchants:
+        - 넷플릭스
+        - 유튜브프리미엄
+        - 디즈니플러스
+        - 왓챠
+        - 웨이브
+
+  - category: uncategorized
+    type: discount
+    tiers:
+      - performanceTier: tier0
+        rate: 0.7
+        monthlyCap: null
+        perTransactionCap: null
+      - performanceTier: tier1
+        rate: 0.7
+        monthlyCap: null
+        perTransactionCap: null
+
+globalConstraints:
+  monthlyTotalDiscountCap: null
+  minimumAnnualSpending: null

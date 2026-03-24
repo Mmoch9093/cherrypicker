@@ -1,0 +1,154 @@
+card:
+  id: nh-olbareun-point
+  issuer: nh
+  name: Olbareun POINT Card
+  nameKo: NH농협 올바른 POINT 카드
+  type: credit
+  annualFee:
+    domestic: 14000
+    international: 14000
+  url: https://card.nonghyup.com/index_cardProd.html?SERVICE_ID=IPCC2021R&NAVIGATE_TYPE=1
+  lastUpdated: "2026-03-24"
+  source: manual
+
+performanceTiers:
+  - id: tier0
+    label: 무실적
+    minSpending: 0
+    maxSpending: 299999
+
+  - id: tier1
+    label: 전월 30만원 이상
+    minSpending: 300000
+    maxSpending: 599999
+
+  - id: tier2
+    label: 전월 60만원 이상
+    minSpending: 600000
+    maxSpending: null
+
+performanceExclusions:
+  - tax_payment
+  - utility_bills
+  - apartment_mgmt
+  - tuition
+  - gift_card
+  - insurance
+
+rewards:
+  - category: uncategorized
+    type: points
+    tiers:
+      - performanceTier: tier0
+        rate: 0.7
+        monthlyCap: null
+        perTransactionCap: null
+      - performanceTier: tier1
+        rate: 1.0
+        monthlyCap: null
+        perTransactionCap: null
+      - performanceTier: tier2
+        rate: 1.0
+        monthlyCap: null
+        perTransactionCap: null
+    conditions:
+      note: "NH포인트 기본적립, 적립한도 없음"
+
+  - category: grocery
+    subcategory: supermarket
+    type: points
+    tiers:
+      - performanceTier: tier0
+        rate: 0
+        monthlyCap: null
+        perTransactionCap: null
+      - performanceTier: tier1
+        rate: 0.5
+        monthlyCap: null
+        perTransactionCap: null
+      - performanceTier: tier2
+        rate: 1.0
+        monthlyCap: null
+        perTransactionCap: null
+    conditions:
+      note: "추가적립 (기본적립에 더해짐), 적립한도 없음"
+      specificMerchants:
+        - 하나로마트
+
+  - category: convenience_store
+    type: points
+    tiers:
+      - performanceTier: tier0
+        rate: 0
+        monthlyCap: null
+        perTransactionCap: null
+      - performanceTier: tier1
+        rate: 0.5
+        monthlyCap: null
+        perTransactionCap: null
+      - performanceTier: tier2
+        rate: 1.0
+        monthlyCap: null
+        perTransactionCap: null
+    conditions:
+      note: "추가적립 (기본적립에 더해짐), 적립한도 없음"
+
+  - category: entertainment
+    subcategory: movie
+    type: points
+    tiers:
+      - performanceTier: tier0
+        rate: 0
+        monthlyCap: null
+        perTransactionCap: null
+      - performanceTier: tier1
+        rate: 0.5
+        monthlyCap: null
+        perTransactionCap: null
+      - performanceTier: tier2
+        rate: 1.0
+        monthlyCap: null
+        perTransactionCap: null
+    conditions:
+      note: "추가적립 (기본적립에 더해짐), 적립한도 없음"
+
+  - category: dining
+    subcategory: cafe
+    type: points
+    tiers:
+      - performanceTier: tier0
+        rate: 0
+        monthlyCap: null
+        perTransactionCap: null
+      - performanceTier: tier1
+        rate: 0.5
+        monthlyCap: null
+        perTransactionCap: null
+      - performanceTier: tier2
+        rate: 1.0
+        monthlyCap: null
+        perTransactionCap: null
+    conditions:
+      note: "추가적립 (기본적립에 더해짐), 적립한도 없음"
+
+  - category: travel
+    type: points
+    tiers:
+      - performanceTier: tier0
+        rate: 0
+        monthlyCap: null
+        perTransactionCap: null
+      - performanceTier: tier1
+        rate: 0.5
+        monthlyCap: null
+        perTransactionCap: null
+      - performanceTier: tier2
+        rate: 1.0
+        monthlyCap: null
+        perTransactionCap: null
+    conditions:
+      note: "추가적립 - 해외 이용금액 (기본적립에 더해짐), 적립한도 없음"
+
+globalConstraints:
+  monthlyTotalDiscountCap: null
+  minimumAnnualSpending: null

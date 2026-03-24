@@ -1,0 +1,145 @@
+card:
+  id: "shinhan-b-big"
+  issuer: "shinhan"
+  name: "B.Big"
+  nameKo: "삑"
+  type: credit
+  annualFee:
+    domestic: 10000
+    international: 13000
+  url: "https://www.shinhancard.com/pconts/html/card/apply/credit/1187938_2207.html"
+  lastUpdated: "2026-03-24"
+  source: manual
+
+performanceTiers:
+  - id: tier0
+    label: "무실적"
+    minSpending: 0
+    maxSpending: 299999
+  - id: tier1
+    label: "전월 30만원 이상"
+    minSpending: 300000
+    maxSpending: 499999
+  - id: tier2
+    label: "전월 50만원 이상"
+    minSpending: 500000
+    maxSpending: 999999
+  - id: tier3
+    label: "전월 100만원 이상"
+    minSpending: 1000000
+    maxSpending: null
+
+performanceExclusions:
+  - tax_payment
+  - short_term_loan
+  - long_term_loan
+  - annual_fee
+  - gift_card_purchase
+
+rewards:
+  - category: "public_transit"
+    label: "대중교통 (버스/지하철) 일별 할인"
+    type: discount
+    tiers:
+      - performanceTier: tier1
+        rate: null
+        fixedAmount: 200
+        unit: "won_per_day"
+        monthlyCap: 6000
+        perTransactionCap: null
+      - performanceTier: tier2
+        rate: null
+        fixedAmount: 400
+        unit: "won_per_day"
+        monthlyCap: 12000
+        perTransactionCap: null
+      - performanceTier: tier3
+        rate: null
+        fixedAmount: 600
+        unit: "won_per_day"
+        monthlyCap: 18000
+        perTransactionCap: null
+  - category: "transportation"
+    label: "택시"
+    type: discount
+    tiers:
+      - performanceTier: tier1
+        rate: 10.0
+        monthlyCap: 5000
+        perTransactionCap: null
+      - performanceTier: tier2
+        rate: 10.0
+        monthlyCap: 5000
+        perTransactionCap: null
+      - performanceTier: tier3
+        rate: 10.0
+        monthlyCap: 5000
+        perTransactionCap: null
+  - category: "travel"
+    label: "KTX"
+    type: discount
+    tiers:
+      - performanceTier: tier1
+        rate: 10.0
+        monthlyCap: 5000
+        perTransactionCap: null
+      - performanceTier: tier2
+        rate: 10.0
+        monthlyCap: 5000
+        perTransactionCap: null
+      - performanceTier: tier3
+        rate: 10.0
+        monthlyCap: 5000
+        perTransactionCap: null
+  - category: "convenience_store"
+    label: "편의점"
+    type: discount
+    tiers:
+      - performanceTier: tier1
+        rate: 5.0
+        monthlyCap: 3000
+        perTransactionCap: null
+      - performanceTier: tier2
+        rate: 5.0
+        monthlyCap: 3000
+        perTransactionCap: null
+      - performanceTier: tier3
+        rate: 10.0
+        monthlyCap: 5000
+        perTransactionCap: null
+  - category: "offline_shopping"
+    label: "백화점"
+    type: discount
+    tiers:
+      - performanceTier: tier1
+        rate: 5.0
+        monthlyCap: 3000
+        perTransactionCap: null
+      - performanceTier: tier2
+        rate: 5.0
+        monthlyCap: 3000
+        perTransactionCap: null
+      - performanceTier: tier3
+        rate: 10.0
+        monthlyCap: 5000
+        perTransactionCap: null
+  - category: "telecom"
+    label: "통신"
+    type: discount
+    tiers:
+      - performanceTier: tier1
+        rate: 5.0
+        monthlyCap: 3000
+        perTransactionCap: null
+      - performanceTier: tier2
+        rate: 5.0
+        monthlyCap: 3000
+        perTransactionCap: null
+      - performanceTier: tier3
+        rate: 10.0
+        monthlyCap: 5000
+        perTransactionCap: null
+
+globalConstraints:
+  monthlyTotalDiscountCap: 15000
+  minimumAnnualSpending: null

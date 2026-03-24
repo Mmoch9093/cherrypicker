@@ -1,0 +1,156 @@
+card:
+  id: bc-baro-clear-plus
+  issuer: bc
+  name: Baro Clear Plus Card
+  nameKo: BC 바로 클리어 플러스
+  type: credit
+  annualFee:
+    domestic: 5000
+    international: 5000
+  url: https://m.bccard.com/app/mobileweb/CardDetail.do?exec=cardDetail&cardGdsNo=101922
+  lastUpdated: "2026-03-24"
+  source: manual
+
+performanceTiers:
+  - id: tier0
+    label: 무실적
+    minSpending: 0
+    maxSpending: 149999
+
+  - id: tier1
+    label: 전월 15만원 이상
+    minSpending: 150000
+    maxSpending: 299999
+
+  - id: tier2
+    label: 전월 30만원 이상
+    minSpending: 300000
+    maxSpending: 499999
+
+  - id: tier3
+    label: 전월 50만원 이상
+    minSpending: 500000
+    maxSpending: null
+
+performanceExclusions:
+  - tax_payment
+  - utility_bills
+  - apartment_mgmt
+  - tuition
+  - gift_card
+  - public_transit
+  - telecom
+
+rewards:
+  - category: dining
+    type: discount
+    tiers:
+      - performanceTier: tier0
+        rate: 0
+        monthlyCap: null
+        perTransactionCap: null
+      - performanceTier: tier1
+        rate: 7.0
+        monthlyCap: 5000
+        perTransactionCap: null
+      - performanceTier: tier2
+        rate: 7.0
+        monthlyCap: 10000
+        perTransactionCap: null
+      - performanceTier: tier3
+        rate: 7.0
+        monthlyCap: 20000
+        perTransactionCap: null
+    conditions:
+      note: "점심식사(11~14시) 및 배달앱"
+
+  - category: online_shopping
+    type: discount
+    tiers:
+      - performanceTier: tier0
+        rate: 0
+        monthlyCap: null
+        perTransactionCap: null
+      - performanceTier: tier1
+        rate: 10.0
+        monthlyCap: 5000
+        perTransactionCap: null
+      - performanceTier: tier2
+        rate: 10.0
+        monthlyCap: 10000
+        perTransactionCap: null
+      - performanceTier: tier3
+        rate: 10.0
+        monthlyCap: 20000
+        perTransactionCap: null
+    conditions:
+      specificMerchants:
+        - 쿠팡
+        - 11번가
+        - G마켓
+        - 옥션
+
+  - category: convenience_store
+    type: discount
+    tiers:
+      - performanceTier: tier0
+        rate: 0
+        monthlyCap: null
+        perTransactionCap: null
+      - performanceTier: tier1
+        rate: 10.0
+        monthlyCap: 5000
+        perTransactionCap: null
+      - performanceTier: tier2
+        rate: 10.0
+        monthlyCap: 10000
+        perTransactionCap: null
+      - performanceTier: tier3
+        rate: 10.0
+        monthlyCap: 20000
+        perTransactionCap: null
+
+  - category: telecom
+    type: discount
+    tiers:
+      - performanceTier: tier0
+        rate: 0
+        monthlyCap: null
+        perTransactionCap: null
+      - performanceTier: tier1
+        rate: 10.0
+        monthlyCap: 5000
+        perTransactionCap: null
+      - performanceTier: tier2
+        rate: 10.0
+        monthlyCap: 10000
+        perTransactionCap: null
+      - performanceTier: tier3
+        rate: 10.0
+        monthlyCap: 20000
+        perTransactionCap: null
+
+  - category: entertainment
+    subcategory: streaming
+    type: discount
+    tiers:
+      - performanceTier: tier0
+        rate: 0
+        monthlyCap: null
+        perTransactionCap: null
+      - performanceTier: tier1
+        rate: 10.0
+        monthlyCap: 5000
+        perTransactionCap: null
+      - performanceTier: tier2
+        rate: 10.0
+        monthlyCap: 10000
+        perTransactionCap: null
+      - performanceTier: tier3
+        rate: 10.0
+        monthlyCap: 20000
+        perTransactionCap: null
+
+globalConstraints:
+  monthlyTotalDiscountCap: 20000
+  minimumAnnualSpending: null

@@ -1,0 +1,159 @@
+card:
+  id: nh-take5
+  issuer: nh
+  name: TAKE5 Card
+  nameKo: NH농협 TAKE5(테이크5)카드
+  type: credit
+  annualFee:
+    domestic: 10000
+    international: 12000
+  url: https://card.nonghyup.com/index_cardProd.html?SERVICE_ID=IPCC2021R&NAVIGATE_TYPE=1
+  lastUpdated: "2026-03-24"
+  source: manual
+
+performanceTiers:
+  - id: tier0
+    label: 무실적
+    minSpending: 0
+    maxSpending: 299999
+
+  - id: tier1
+    label: 전월 30만원 이상
+    minSpending: 300000
+    maxSpending: 599999
+
+  - id: tier2
+    label: 전월 60만원 이상
+    minSpending: 600000
+    maxSpending: 999999
+
+  - id: tier3
+    label: 전월 100만원 이상
+    minSpending: 1000000
+    maxSpending: null
+
+performanceExclusions:
+  - tax_payment
+  - utility_bills
+  - apartment_mgmt
+  - tuition
+  - gift_card
+  - insurance
+
+rewards:
+  - category: dining
+    type: discount
+    tiers:
+      - performanceTier: tier0
+        rate: 0
+        monthlyCap: null
+        perTransactionCap: null
+      - performanceTier: tier1
+        rate: 10.0
+        monthlyCap: 5000
+        perTransactionCap: null
+      - performanceTier: tier2
+        rate: 10.0
+        monthlyCap: 10000
+        perTransactionCap: null
+      - performanceTier: tier3
+        rate: 10.0
+        monthlyCap: 15000
+        perTransactionCap: null
+    conditions:
+      note: "Joy Pack 선택 시 - 음식점, 스타벅스"
+
+  - category: entertainment
+    subcategory: movie
+    type: discount
+    tiers:
+      - performanceTier: tier0
+        rate: 0
+        monthlyCap: null
+        perTransactionCap: null
+      - performanceTier: tier1
+        rate: 30.0
+        monthlyCap: 5000
+        perTransactionCap: null
+      - performanceTier: tier2
+        rate: 30.0
+        monthlyCap: 7000
+        perTransactionCap: null
+      - performanceTier: tier3
+        rate: 30.0
+        monthlyCap: 10000
+        perTransactionCap: null
+    conditions:
+      note: "Joy Pack 선택 시"
+
+  - category: public_transit
+    type: discount
+    tiers:
+      - performanceTier: tier0
+        rate: 0
+        monthlyCap: null
+        perTransactionCap: null
+      - performanceTier: tier1
+        rate: 10.0
+        monthlyCap: 3000
+        perTransactionCap: null
+      - performanceTier: tier2
+        rate: 10.0
+        monthlyCap: 5000
+        perTransactionCap: null
+      - performanceTier: tier3
+        rate: 10.0
+        monthlyCap: 5000
+        perTransactionCap: null
+    conditions:
+      note: "Joy Pack 선택 시"
+
+  - category: education
+    subcategory: books
+    type: discount
+    tiers:
+      - performanceTier: tier0
+        rate: 0
+        monthlyCap: null
+        perTransactionCap: null
+      - performanceTier: tier1
+        rate: 20.0
+        monthlyCap: 6000
+        perTransactionCap: null
+      - performanceTier: tier2
+        rate: 20.0
+        monthlyCap: 9000
+        perTransactionCap: null
+      - performanceTier: tier3
+        rate: 20.0
+        monthlyCap: 12000
+        perTransactionCap: null
+    conditions:
+      note: "Edu Pack 선택 시 - 국내/외 서점"
+
+  - category: transportation
+    subcategory: fuel
+    type: discount
+    tiers:
+      - performanceTier: tier0
+        rate: 0
+        monthlyCap: null
+        perTransactionCap: null
+      - performanceTier: tier1
+        rate: 60
+        monthlyCap: 6000
+        perTransactionCap: null
+      - performanceTier: tier2
+        rate: 60
+        monthlyCap: 9000
+        perTransactionCap: null
+      - performanceTier: tier3
+        rate: 60
+        monthlyCap: 12000
+        perTransactionCap: null
+    conditions:
+      note: "Oil Pack 선택 시"
+
+globalConstraints:
+  monthlyTotalDiscountCap: 40000
+  minimumAnnualSpending: null

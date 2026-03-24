@@ -1,0 +1,164 @@
+card:
+  id: hyundai-m-boost
+  issuer: hyundai
+  name: M BOOST
+  nameKo: 현대카드 M BOOST
+  type: credit
+  annualFee:
+    domestic: 30000
+    international: 30000
+  url: https://www.hyundaicard.com/crd/crd01/crd0101/H100000106.hdc
+  lastUpdated: "2026-03-24"
+  source: manual
+
+performanceTiers:
+  - id: tier0
+    label: 무실적
+    minSpending: 0
+    maxSpending: 499999
+
+  - id: tier1
+    label: 당월 50만원 이상
+    minSpending: 500000
+    maxSpending: 999999
+
+  - id: tier2
+    label: 당월 100만원 이상
+    minSpending: 1000000
+    maxSpending: null
+
+performanceExclusions:
+  - tax_payment
+  - utility_bills
+  - apartment_mgmt
+  - tuition
+  - gift_card
+
+rewards:
+  - category: dining
+    type: points
+    tiers:
+      - performanceTier: tier0
+        rate: 0
+        monthlyCap: null
+        perTransactionCap: null
+      - performanceTier: tier1
+        rate: 3.0
+        monthlyCap: null
+        perTransactionCap: null
+      - performanceTier: tier2
+        rate: 4.5
+        monthlyCap: null
+        perTransactionCap: null
+    conditions:
+      minTransaction: null
+      excludeOnline: false
+      specificMerchants:
+        - 커피전문점
+        - 베이커리
+        - 외식
+
+  - category: entertainment
+    type: points
+    tiers:
+      - performanceTier: tier0
+        rate: 0
+        monthlyCap: null
+        perTransactionCap: null
+      - performanceTier: tier1
+        rate: 3.0
+        monthlyCap: null
+        perTransactionCap: null
+      - performanceTier: tier2
+        rate: 4.5
+        monthlyCap: null
+        perTransactionCap: null
+    conditions:
+      specificMerchants:
+        - CGV
+        - 메가박스
+        - 롯데시네마
+
+  - category: convenience_store
+    type: points
+    tiers:
+      - performanceTier: tier0
+        rate: 0
+        monthlyCap: null
+        perTransactionCap: null
+      - performanceTier: tier1
+        rate: 1.0
+        monthlyCap: null
+        perTransactionCap: null
+      - performanceTier: tier2
+        rate: 1.5
+        monthlyCap: null
+        perTransactionCap: null
+
+  - category: education
+    type: points
+    tiers:
+      - performanceTier: tier0
+        rate: 0
+        monthlyCap: null
+        perTransactionCap: null
+      - performanceTier: tier1
+        rate: 1.0
+        monthlyCap: null
+        perTransactionCap: null
+      - performanceTier: tier2
+        rate: 1.5
+        monthlyCap: null
+        perTransactionCap: null
+
+  - category: public_transit
+    type: points
+    tiers:
+      - performanceTier: tier0
+        rate: 0
+        monthlyCap: null
+        perTransactionCap: null
+      - performanceTier: tier1
+        rate: 2.0
+        monthlyCap: null
+        perTransactionCap: null
+      - performanceTier: tier2
+        rate: 3.0
+        monthlyCap: null
+        perTransactionCap: null
+
+  - category: telecom
+    type: points
+    tiers:
+      - performanceTier: tier0
+        rate: 0
+        monthlyCap: null
+        perTransactionCap: null
+      - performanceTier: tier1
+        rate: 0.7
+        monthlyCap: null
+        perTransactionCap: null
+      - performanceTier: tier2
+        rate: 1.05
+        monthlyCap: null
+        perTransactionCap: null
+
+  - category: uncategorized
+    type: points
+    tiers:
+      - performanceTier: tier0
+        rate: 0
+        monthlyCap: null
+        perTransactionCap: null
+      - performanceTier: tier1
+        rate: 0.7
+        monthlyCap: null
+        perTransactionCap: null
+      - performanceTier: tier2
+        rate: 1.05
+        monthlyCap: null
+        perTransactionCap: null
+
+globalConstraints:
+  monthlyTotalDiscountCap: null
+  minimumAnnualSpending: null

@@ -1,0 +1,98 @@
+card:
+  id: kb-wesh-all
+  issuer: kb
+  name: WE:SH ALL
+  nameKo: KB국민 위시올 카드
+  type: credit
+  annualFee:
+    domestic: 20000
+    international: 20000
+  url: https://card.kbcard.com/CRD/DVIEW/HCAMCXPRICAC0076?mainCC=a&cooperationcode=09922
+  lastUpdated: "2026-03-24"
+  source: manual
+
+performanceTiers:
+  - id: tier0
+    label: 무실적
+    minSpending: 0
+    maxSpending: 399999
+
+  - id: tier1
+    label: 전월 40만원 이상
+    minSpending: 400000
+    maxSpending: null
+
+performanceExclusions:
+  - tax_payment
+  - utility_bills
+  - apartment_mgmt
+  - gift_card
+
+rewards:
+  - category: uncategorized
+    type: discount
+    tiers:
+      - performanceTier: tier0
+        rate: 1.0
+        monthlyCap: 10000
+        perTransactionCap: null
+      - performanceTier: tier1
+        rate: 1.0
+        monthlyCap: 10000
+        perTransactionCap: null
+    conditions:
+      minTransaction: null
+      excludeOnline: false
+      specificMerchants: []
+
+  - category: subscription
+    type: discount
+    tiers:
+      - performanceTier: tier0
+        rate: 0
+        monthlyCap: null
+        perTransactionCap: null
+      - performanceTier: tier1
+        rate: 50.0
+        monthlyCap: 3000
+        perTransactionCap: null
+    conditions:
+      specificMerchants:
+        - 쿠팡 로켓와우
+        - 네이버플러스 멤버십
+        - SSG 멤버십
+
+  - category: subscription
+    type: discount
+    tiers:
+      - performanceTier: tier0
+        rate: 0
+        monthlyCap: null
+        perTransactionCap: null
+      - performanceTier: tier1
+        rate: 10.0
+        monthlyCap: 3000
+        perTransactionCap: null
+    conditions:
+      specificMerchants:
+        - 넷플릭스
+        - 티빙
+        - 웨이브
+        - 쿠팡플레이
+        - 디즈니플러스
+
+  - category: telecom
+    type: discount
+    tiers:
+      - performanceTier: tier0
+        rate: 0
+        monthlyCap: null
+        perTransactionCap: null
+      - performanceTier: tier1
+        rate: 5.0
+        monthlyCap: 3000
+        perTransactionCap: null
+
+globalConstraints:
+  monthlyTotalDiscountCap: null
+  minimumAnnualSpending: null

@@ -1,0 +1,177 @@
+card:
+  id: "shinhan-mr-life"
+  issuer: "shinhan"
+  name: "Mr.Life"
+  nameKo: "미스터라이프"
+  type: credit
+  annualFee:
+    domestic: 15000
+    international: 18000
+  url: "https://www.shinhancard.com/pconts/html/card/apply/credit/1187937_2207.html"
+  lastUpdated: "2026-03-24"
+  source: manual
+
+performanceTiers:
+  - id: tier0
+    label: "무실적"
+    minSpending: 0
+    maxSpending: 299999
+  - id: tier1
+    label: "전월 30만원 이상"
+    minSpending: 300000
+    maxSpending: 499999
+  - id: tier2
+    label: "전월 50만원 이상"
+    minSpending: 500000
+    maxSpending: 999999
+  - id: tier3
+    label: "전월 100만원 이상"
+    minSpending: 1000000
+    maxSpending: null
+
+performanceExclusions:
+  - tax_payment
+  - short_term_loan
+  - long_term_loan
+  - annual_fee
+  - gift_card_purchase
+
+rewards:
+  - category: "utilities"
+    label: "공과금 (전기/도시가스) 할인"
+    type: discount
+    tiers:
+      - performanceTier: tier1
+        rate: 10.0
+        monthlyCap: 3000
+        perTransactionCap: 50000
+      - performanceTier: tier2
+        rate: 10.0
+        monthlyCap: 7000
+        perTransactionCap: 50000
+      - performanceTier: tier3
+        rate: 10.0
+        monthlyCap: 10000
+        perTransactionCap: 50000
+  - category: "telecom"
+    label: "통신요금 할인"
+    type: discount
+    tiers:
+      - performanceTier: tier1
+        rate: 10.0
+        monthlyCap: 3000
+        perTransactionCap: 50000
+      - performanceTier: tier2
+        rate: 10.0
+        monthlyCap: 7000
+        perTransactionCap: 50000
+      - performanceTier: tier3
+        rate: 10.0
+        monthlyCap: 10000
+        perTransactionCap: 50000
+  - category: "convenience_store"
+    label: "편의점 할인 (오전9시~오후9시)"
+    type: discount
+    tiers:
+      - performanceTier: tier1
+        rate: 10.0
+        monthlyCap: 10000
+        perTransactionCap: null
+      - performanceTier: tier2
+        rate: 10.0
+        monthlyCap: 20000
+        perTransactionCap: null
+      - performanceTier: tier3
+        rate: 10.0
+        monthlyCap: 30000
+        perTransactionCap: null
+  - category: "medical"
+    label: "병원/약국 할인 (오전9시~오후9시)"
+    type: discount
+    tiers:
+      - performanceTier: tier1
+        rate: 10.0
+        monthlyCap: 10000
+        perTransactionCap: null
+      - performanceTier: tier2
+        rate: 10.0
+        monthlyCap: 20000
+        perTransactionCap: null
+      - performanceTier: tier3
+        rate: 10.0
+        monthlyCap: 30000
+        perTransactionCap: null
+  - category: "online_shopping"
+    label: "온라인쇼핑 할인 (오후9시~오전9시)"
+    type: discount
+    tiers:
+      - performanceTier: tier1
+        rate: 10.0
+        monthlyCap: 10000
+        perTransactionCap: null
+      - performanceTier: tier2
+        rate: 10.0
+        monthlyCap: 20000
+        perTransactionCap: null
+      - performanceTier: tier3
+        rate: 10.0
+        monthlyCap: 30000
+        perTransactionCap: null
+  - category: "dining"
+    label: "식음료 할인 (오후9시~오전9시)"
+    type: discount
+    tiers:
+      - performanceTier: tier1
+        rate: 10.0
+        monthlyCap: 10000
+        perTransactionCap: null
+      - performanceTier: tier2
+        rate: 10.0
+        monthlyCap: 20000
+        perTransactionCap: null
+      - performanceTier: tier3
+        rate: 10.0
+        monthlyCap: 30000
+        perTransactionCap: null
+  - category: "grocery"
+    label: "주말 대형할인마트 할인"
+    type: discount
+    tiers:
+      - performanceTier: tier1
+        rate: 10.0
+        monthlyCap: 3000
+        perTransactionCap: null
+      - performanceTier: tier2
+        rate: 10.0
+        monthlyCap: 7000
+        perTransactionCap: null
+      - performanceTier: tier3
+        rate: 10.0
+        monthlyCap: 10000
+        perTransactionCap: null
+  - category: "transportation"
+    label: "주말 주유소 할인"
+    type: discount
+    tiers:
+      - performanceTier: tier1
+        rate: null
+        fixedAmount: 60
+        unit: "won_per_liter"
+        monthlyCap: 3000
+        perTransactionCap: null
+      - performanceTier: tier2
+        rate: null
+        fixedAmount: 60
+        unit: "won_per_liter"
+        monthlyCap: 7000
+        perTransactionCap: null
+      - performanceTier: tier3
+        rate: null
+        fixedAmount: 60
+        unit: "won_per_liter"
+        monthlyCap: 10000
+        perTransactionCap: null
+
+globalConstraints:
+  monthlyTotalDiscountCap: null
+  minimumAnnualSpending: null

@@ -1,0 +1,114 @@
+card:
+  id: kb-toktok-m
+  issuer: kb
+  name: Toktok M Card
+  nameKo: KB국민 톡톡M 카드
+  type: credit
+  annualFee:
+    domestic: 15000
+    international: 15000
+  url: https://card.kbcard.com/CRD/DVIEW/HCAMCXPRICAC0076?cooperationcode=09290&mainCC=a
+  lastUpdated: "2026-03-24"
+  source: manual
+
+performanceTiers:
+  - id: tier0
+    label: 무실적
+    minSpending: 0
+    maxSpending: 299999
+
+  - id: tier1
+    label: 전월 30만원 이상
+    minSpending: 300000
+    maxSpending: 599999
+
+  - id: tier2
+    label: 전월 60만원 이상
+    minSpending: 600000
+    maxSpending: null
+
+performanceExclusions:
+  - tax_payment
+  - utility_bills
+  - apartment_mgmt
+  - tuition
+  - gift_card
+
+rewards:
+  - category: subscription
+    type: discount
+    tiers:
+      - performanceTier: tier0
+        rate: 0
+        monthlyCap: null
+        perTransactionCap: null
+      - performanceTier: tier1
+        rate: 100.0
+        monthlyCap: 6000
+        perTransactionCap: null
+      - performanceTier: tier2
+        rate: 100.0
+        monthlyCap: 10000
+        perTransactionCap: null
+    conditions:
+      specificMerchants:
+        - 쿠팡 로켓와우
+        - 네이버플러스 멤버십
+        - 넷플릭스
+        - 티빙
+        - 유튜브프리미엄
+
+  - category: online_shopping
+    type: discount
+    tiers:
+      - performanceTier: tier0
+        rate: 0
+        monthlyCap: null
+        perTransactionCap: null
+      - performanceTier: tier1
+        rate: 10.0
+        monthlyCap: 5000
+        perTransactionCap: null
+      - performanceTier: tier2
+        rate: 10.0
+        monthlyCap: 10000
+        perTransactionCap: null
+    conditions:
+      specificMerchants:
+        - 간편결제
+
+  - category: public_transit
+    type: discount
+    tiers:
+      - performanceTier: tier0
+        rate: 0
+        monthlyCap: null
+        perTransactionCap: null
+      - performanceTier: tier1
+        rate: 5.0
+        monthlyCap: 3000
+        perTransactionCap: null
+      - performanceTier: tier2
+        rate: 5.0
+        monthlyCap: 5000
+        perTransactionCap: null
+
+  - category: convenience_store
+    type: discount
+    tiers:
+      - performanceTier: tier0
+        rate: 0
+        monthlyCap: null
+        perTransactionCap: null
+      - performanceTier: tier1
+        rate: 5.0
+        monthlyCap: 3000
+        perTransactionCap: null
+      - performanceTier: tier2
+        rate: 5.0
+        monthlyCap: 5000
+        perTransactionCap: null
+
+globalConstraints:
+  monthlyTotalDiscountCap: 30000
+  minimumAnnualSpending: null

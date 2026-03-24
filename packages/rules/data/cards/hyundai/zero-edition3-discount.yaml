@@ -1,0 +1,37 @@
+card:
+  id: hyundai-zero-edition3-discount
+  issuer: hyundai
+  name: ZERO Edition3 (Discount)
+  nameKo: 현대카드 ZERO Edition3 (할인형)
+  type: credit
+  annualFee:
+    domestic: 15000
+    international: 15000
+  url: https://www.hyundaicard.com/crd/crd01/crd0101/H100000174.hdc
+  lastUpdated: "2026-03-24"
+  source: manual
+
+performanceTiers:
+  - id: tier0
+    label: 무실적
+    minSpending: 0
+    maxSpending: null
+
+performanceExclusions: []
+
+rewards:
+  - category: uncategorized
+    type: discount
+    tiers:
+      - performanceTier: tier0
+        rate: 0.8
+        monthlyCap: null
+        perTransactionCap: null
+    conditions:
+      minTransaction: null
+      excludeOnline: false
+      specificMerchants: []
+
+globalConstraints:
+  monthlyTotalDiscountCap: null
+  minimumAnnualSpending: null

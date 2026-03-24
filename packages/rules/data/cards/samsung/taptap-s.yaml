@@ -1,0 +1,62 @@
+card:
+  id: "samsung-taptap-s"
+  issuer: "samsung"
+  name: "taptap S"
+  nameKo: "탭탭에스"
+  type: credit
+  annualFee:
+    domestic: 10000
+    international: 10000
+  url: "https://www.samsungcard.com/personal/card/taptap/UHPPCA0209M0.jsp"
+  lastUpdated: "2026-03-24"
+  source: manual
+
+performanceTiers:
+  - id: tier0
+    label: "무실적"
+    minSpending: 0
+    maxSpending: 499999
+  - id: tier1
+    label: "전월 50만원 이상"
+    minSpending: 500000
+    maxSpending: null
+
+performanceExclusions:
+  - tax_payment
+  - gift_card_purchase
+  - short_term_loan
+  - long_term_loan
+  - annual_fee
+
+rewards:
+  - category: "uncategorized"
+    label: "모든 업종 기본 적립"
+    type: points
+    tiers:
+      - performanceTier: tier1
+        rate: 1.0
+        monthlyCap: null
+        perTransactionCap: null
+  - category: "transportation"
+    label: "주유"
+    type: discount
+    tiers:
+      - performanceTier: tier1
+        rate: null
+        fixedAmount: 60
+        unit: "won_per_liter"
+        monthlyCap: 8000
+        perTransactionCap: null
+  - category: "entertainment"
+    label: "영화"
+    type: discount
+    tiers:
+      - performanceTier: tier1
+        rate: null
+        fixedAmount: 4000
+        monthlyCap: 8000
+        perTransactionCap: null
+
+globalConstraints:
+  monthlyTotalDiscountCap: null
+  minimumAnnualSpending: null

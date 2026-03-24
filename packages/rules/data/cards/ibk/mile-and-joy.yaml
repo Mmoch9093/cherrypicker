@@ -1,0 +1,63 @@
+card:
+  id: ibk-mile-and-joy
+  issuer: ibk
+  name: Mile & Joy Card
+  nameKo: IBK 마일앤조이카드
+  type: credit
+  annualFee:
+    domestic: 30000
+    international: 30000
+  url: https://m.bccard.com/app/mobileweb/CardDetail.do?exec=cardDetail&cardGdsNo=756477
+  lastUpdated: "2026-03-24"
+  source: manual
+
+performanceTiers:
+  - id: tier0
+    label: 무실적
+    minSpending: 0
+    maxSpending: 299999
+
+  - id: tier1
+    label: 전월 30만원 이상
+    minSpending: 300000
+    maxSpending: null
+
+performanceExclusions:
+  - tax_payment
+  - utility_bills
+  - apartment_mgmt
+  - tuition
+  - gift_card
+
+rewards:
+  - category: uncategorized
+    type: mileage
+    tiers:
+      - performanceTier: tier0
+        rate: 0.067
+        monthlyCap: null
+        perTransactionCap: null
+      - performanceTier: tier1
+        rate: 0.067
+        monthlyCap: null
+        perTransactionCap: null
+    conditions:
+      note: "대한항공 1,500원당 1마일, 아시아나 1,000원당 1마일"
+
+  - category: travel
+    type: mileage
+    tiers:
+      - performanceTier: tier0
+        rate: 0
+        monthlyCap: null
+        perTransactionCap: null
+      - performanceTier: tier1
+        rate: 0.133
+        monthlyCap: null
+        perTransactionCap: null
+    conditions:
+      note: "해외 가맹점 대한항공 1,500원당 2마일, 면세점 1,500원당 3마일"
+
+globalConstraints:
+  monthlyTotalDiscountCap: null
+  minimumAnnualSpending: null
