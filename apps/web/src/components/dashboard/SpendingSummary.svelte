@@ -90,7 +90,7 @@
     <div class="opacity-40 text-[var(--color-text-muted)]">
       <Icon name="folder-open" size={40} />
     </div>
-    <div class="text-sm font-medium text-[var(--color-text-muted)]">아직 분석 결과가 없어요</div>
-    <div class="text-xs text-[var(--color-text-muted)]">명세서를 올리면 여기에 지출 요약이 나와요</div>
+    <div class="text-sm font-medium text-[var(--color-text-muted)]">아직 분석한 내역이 없어요</div>
+    <div class="text-xs text-[var(--color-text-muted)]">명세서를 올려 보세요</div>
   </div>
 {/if}

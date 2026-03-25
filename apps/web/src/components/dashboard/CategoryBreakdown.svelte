@@ -208,7 +208,7 @@
     <div class="opacity-40 text-[var(--color-text-muted)]">
       <Icon name="chart-bar" size={40} />
     </div>
-    <div class="text-sm font-medium text-[var(--color-text-muted)]">아직 데이터가 없어요</div>
-    <div class="text-xs text-[var(--color-text-muted)]">명세서를 올리면 카테고리별 지출이 나와요</div>
+    <div class="text-sm font-medium text-[var(--color-text-muted)]">아직 분석한 내역이 없어요</div>
+    <div class="text-xs text-[var(--color-text-muted)]">명세서를 올려 보세요</div>
   </div>
 {/if}

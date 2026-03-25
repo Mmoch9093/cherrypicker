@@ -132,7 +132,7 @@
     <!-- Left: Single best card -->
     <div class="rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] p-5">
       <div class="mb-3 flex items-center justify-between">
-        <div class="text-xs font-medium text-[var(--color-text-muted)]">단일 카드 최고 혜택</div>
+        <div class="text-xs font-medium text-[var(--color-text-muted)]">카드 한 장으로 받는 혜택</div>
         {#if opt.bestSingleCard.cardId}
           {@const issuer = getIssuerFromCardId(opt.bestSingleCard.cardId)}
           <span
@@ -146,10 +146,7 @@
       <div class="text-sm font-semibold text-[var(--color-text)] mb-2">{opt.bestSingleCard.cardName}</div>
       <div class="text-2xl font-bold text-gray-700">{formatWon(opt.bestSingleCard.totalReward)}</div>
       <div class="mt-1 text-xs text-[var(--color-text-muted)]">
-        월 혜택
-        {#if opt.totalSpending > 0}
-          · 혜택률 {((opt.bestSingleCard.totalReward / opt.totalSpending) * 100).toFixed(2)}%
-        {/if}
+        월 혜택{#if opt.totalSpending > 0}, 혜택률 {((opt.bestSingleCard.totalReward / opt.totalSpending) * 100).toFixed(2)}%{/if}
       </div>
     </div>
 
@@ -177,7 +174,7 @@
       </div>
       {#if savingsPct > 0}
         <div class="mt-2 inline-block rounded-full bg-green-200 px-2 py-0.5 text-xs font-semibold text-green-800">
-          단일 카드 대비 +{savingsPct}%
+          한 장짜리보다 +{savingsPct}%
         </div>
       {/if}
     </div>
@@ -237,6 +234,6 @@
       <Icon name="banknotes" size={40} />
     </div>
     <div class="text-sm font-medium text-[var(--color-text-muted)]">아직 비교 데이터가 없어요</div>
-    <div class="text-xs text-[var(--color-text-muted)]">명세서를 올리면 절약 금액을 비교할 수 있어요</div>
+    <div class="text-xs text-[var(--color-text-muted)]">명세서를 올리면 얼마나 아낄 수 있는지 보여 드려요</div>
   </div>
 {/if}

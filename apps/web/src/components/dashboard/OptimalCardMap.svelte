@@ -58,7 +58,7 @@
   <!-- Summary header -->
   <div class="mt-4 mb-3 flex items-center justify-between">
     <div class="text-sm text-[var(--color-text-muted)]">
-      총 <strong class="text-[var(--color-text)]">{uniqueCardCount}장</strong>의 카드로 최적 혜택
+      총 <strong class="text-[var(--color-text)]">{uniqueCardCount}장</strong>의 카드면 충분해요
     </div>
     <!-- Sort controls -->
     <div class="flex items-center gap-1 text-xs">
@@ -177,6 +177,6 @@
       <Icon name="credit-card" size={40} />
     </div>
     <div class="text-sm font-medium text-[var(--color-text-muted)]">아직 추천 결과가 없어요</div>
-    <div class="text-xs text-[var(--color-text-muted)]">명세서를 올리면 카테고리별 추천 카드가 나와요</div>
+    <div class="text-xs text-[var(--color-text-muted)]">명세서를 올리면 항목별로 어떤 카드가 좋은지 알려 드려요</div>
   </div>
 {/if}

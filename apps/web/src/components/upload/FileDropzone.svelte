@@ -184,8 +184,8 @@
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7" />
           </svg>
         </div>
-        <p class="text-base font-semibold text-green-700">분석 완료!</p>
-        <p class="text-sm text-green-600">대시보드로 이동 중...</p>
+        <p class="text-base font-semibold text-green-700">분석 완료</p>
+        <p class="text-sm text-green-600">대시보드로 이동할게요</p>
       </div>
     {:else if uploadedFile}
       <div class="flex flex-col items-center gap-2">
@@ -220,7 +220,7 @@
   {#if uploadedFile && uploadStatus !== 'success'}
     <div class="rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] p-4 space-y-4">
       <div>
-        <p class="mb-2.5 text-xs font-semibold uppercase tracking-wide text-[var(--color-text-muted)]">카드사 선택 (선택 사항)</p>
+        <p class="mb-2.5 text-xs font-semibold uppercase tracking-wide text-[var(--color-text-muted)]">카드사를 고르면 더 정확해요</p>
         <div class="flex flex-wrap gap-2">
           <!-- Auto-detect pill -->
           <button
@@ -261,7 +261,7 @@
               <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
               <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4l3-3-3-3v4a8 8 0 00-8 8h4z"></path>
             </svg>
-            분석 중...
+            분석하는 중
           </span>
         {:else}
           분석 시작
@@ -286,7 +286,7 @@
           d="M12 9v2m0 4h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z" />
       </svg>
       <div class="flex-1">
-        <p class="font-medium">오류가 발생했습니다</p>
+        <p class="font-medium">문제가 생겼어요</p>
         <p class="mt-0.5 text-red-600">{errorMessage}</p>
       </div>
       <button
