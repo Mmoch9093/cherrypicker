@@ -1,7 +1,16 @@
 <script lang="ts">
+  import { onMount } from 'svelte';
   import { analysisStore } from '../../lib/store.svelte.js';
   import { formatWon } from '../../lib/formatters.js';
   import Icon from '../ui/Icon.svelte';
+
+  let dismissed = $state(false);
+
+  onMount(() => {
+    if (typeof localStorage !== 'undefined' && localStorage.getItem('cherrypicker:dismissed-warning')) {
+      dismissed = true;
+    }
+  });
 
   function formatPeriod(period: { start: string; end: string } | undefined): string {
     if (!period) return '-';
@@ -22,7 +31,7 @@
 {#if analysisStore.loading}
   <div class="mt-4 grid grid-cols-2 gap-4 sm:grid-cols-3 xl:grid-cols-5">
     {#each Array(5) as _}
-      <div class="animate-pulse rounded-xl bg-gray-100 p-4">
+      <div class="animate-pulse rounded-xl bg-[var(--color-bg)] p-4">
         <div class="mb-2 h-4 w-16 rounded bg-gray-200"></div>
         <div class="h-7 w-24 rounded bg-gray-300"></div>
       </div>
@@ -53,12 +62,12 @@
     </div>
 
     <!-- 분석 기간 -->
-    <div class="rounded-xl bg-gradient-to-br from-gray-50 to-gray-100 p-4 shadow-sm">
-      <div class="flex items-center gap-1.5 text-sm text-gray-500">
+    <div class="rounded-xl bg-[var(--color-surface)] border border-[var(--color-border)] p-4 shadow-sm">
+      <div class="flex items-center gap-1.5 text-sm text-[var(--color-text-muted)]">
         <Icon name="calendar" size={15} />
         <span>분석 기간</span>
       </div>
-      <div class="mt-1 text-lg font-semibold text-gray-800">
+      <div class="mt-1 text-lg font-semibold text-[var(--color-text)]">
         {formatPeriod(analysisStore.statementPeriod)}
       </div>
     </div>
@@ -85,6 +94,12 @@
       </div>
     </div>
   </div>
+  {#if analysisStore.result && !dismissed}
+    <div class="mt-3 flex items-center gap-2 rounded-lg bg-amber-50 px-3 py-2 text-xs text-amber-700 border border-amber-200">
+      <span>탭을 닫으면 결과가 사라져요. 저장하려면 리포트를 PDF로 내려받으세요.</span>
+      <button class="ml-auto shrink-0 text-amber-500 hover:text-amber-700" onclick={() => { dismissed = true; try { localStorage.setItem('cherrypicker:dismissed-warning', '1'); } catch {} }}>닫기</button>
+    </div>
+  {/if}
 {:else}
   <div class="mt-4 flex h-48 flex-col items-center justify-center gap-3 rounded-xl border border-dashed border-[var(--color-border)] text-center">
     <div class="opacity-40 text-[var(--color-text-muted)]">

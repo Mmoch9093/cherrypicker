@@ -1,5 +1,5 @@
 export type FileFormat = 'csv' | 'xlsx' | 'pdf';
-export type BankId = 'hyundai' | 'kb' | 'ibk' | 'woori' | 'samsung' | 'shinhan' | 'lotte' | 'hana' | 'nh' | 'bc';
+export type BankId = 'hyundai' | 'kb' | 'ibk' | 'woori' | 'samsung' | 'shinhan' | 'lotte' | 'hana' | 'nh' | 'bc' | 'kakao' | 'toss' | 'kbank' | 'bnk' | 'dgb' | 'suhyup' | 'jb' | 'kwangju' | 'jeju' | 'sc' | 'mg' | 'cu' | 'kdb' | 'epost';
 
 export interface DetectionResult {
   format: FileFormat;

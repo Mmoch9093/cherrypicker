@@ -86,6 +86,90 @@ const BANK_COLUMN_CONFIGS: Record<BankId, ColumnConfig> = {
     installments: '할부',
     category: '업종',
   },
+  kakao: {
+    date: '거래일시',
+    merchant: '가맹점명',
+    amount: '거래금액',
+    installments: '할부',
+  },
+  toss: {
+    date: '거래일',
+    merchant: '가맹점명',
+    amount: '거래금액',
+    installments: '할부',
+  },
+  kbank: {
+    date: '거래일',
+    merchant: '가맹점명',
+    amount: '이용금액',
+    installments: '할부',
+  },
+  bnk: {
+    date: '이용일',
+    merchant: '가맹점명',
+    amount: '이용금액',
+    installments: '할부',
+  },
+  dgb: {
+    date: '이용일',
+    merchant: '가맹점명',
+    amount: '이용금액',
+    installments: '할부',
+  },
+  suhyup: {
+    date: '이용일',
+    merchant: '가맹점명',
+    amount: '이용금액',
+    installments: '할부',
+  },
+  jb: {
+    date: '이용일',
+    merchant: '가맹점명',
+    amount: '이용금액',
+    installments: '할부',
+  },
+  kwangju: {
+    date: '이용일',
+    merchant: '가맹점명',
+    amount: '이용금액',
+    installments: '할부',
+  },
+  jeju: {
+    date: '이용일',
+    merchant: '가맹점명',
+    amount: '이용금액',
+    installments: '할부',
+  },
+  sc: {
+    date: '이용일',
+    merchant: '가맹점명',
+    amount: '이용금액',
+    installments: '할부',
+  },
+  mg: {
+    date: '이용일',
+    merchant: '가맹점명',
+    amount: '이용금액',
+    installments: '할부',
+  },
+  cu: {
+    date: '이용일',
+    merchant: '가맹점명',
+    amount: '이용금액',
+    installments: '할부',
+  },
+  kdb: {
+    date: '이용일',
+    merchant: '가맹점명',
+    amount: '이용금액',
+    installments: '할부',
+  },
+  epost: {
+    date: '이용일',
+    merchant: '가맹점명',
+    amount: '이용금액',
+    installments: '할부',
+  },
 };
 
 function getBankColumnConfig(bankId: BankId): ColumnConfig {
@@ -118,9 +202,11 @@ function parseDateToISO(raw: unknown): string {
 }
 
 function parseAmount(raw: unknown): number {
-  if (typeof raw === 'number') return Math.abs(raw);
+  if (typeof raw === 'number') return raw;
   if (typeof raw === 'string') {
-    return parseInt(raw.trim().replace(/원$/, '').replace(/,/g, ''), 10) || 0;
+    const cleaned = raw.trim().replace(/원$/, '').replace(/,/g, '');
+    const parsed = parseInt(cleaned, 10);
+    return Number.isNaN(parsed) ? 0 : parsed;
   }
   return 0;
 }

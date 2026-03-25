@@ -17,6 +17,9 @@
   let searchQuery = $state('');
   let typeFilter = $state<'all' | 'credit' | 'check'>('all');
   let sortOrder = $state<'name' | 'fee-asc' | 'fee-desc' | 'rewards'>('name');
+  let issuerFilter = $state('');
+
+  let availableIssuers = $derived([...new Set(cards.map(c => c.issuer))].sort());
 
   let filteredCards = $derived.by(() => {
     let result = cards.slice();
@@ -27,6 +30,9 @@
     } else if (typeFilter === 'check') {
       result = result.filter((c) => c.type === 'check');
     }
+
+    // Issuer filter
+    if (issuerFilter) result = result.filter(c => c.issuer === issuerFilter);
 
     // Search filter
     const q = searchQuery.trim().toLowerCase();
@@ -65,7 +71,7 @@
   <!-- Search + Sort row -->
   <div class="flex flex-col gap-3 sm:flex-row sm:items-center">
     <div class="relative flex-1">
-      <span class="pointer-events-none absolute inset-y-0 left-3 flex items-center text-gray-400">
+      <span class="pointer-events-none absolute inset-y-0 left-3 flex items-center text-[var(--color-text-muted)]">
         <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
             d="M21 21l-4.35-4.35M17 11A6 6 0 1 1 5 11a6 6 0 0 1 12 0z" />
@@ -96,18 +102,34 @@
         class="rounded-full px-4 py-1.5 text-sm font-medium transition-colors
           {typeFilter === val
             ? 'bg-[var(--color-primary)] text-white shadow-sm'
-            : 'bg-gray-100 text-gray-600 hover:bg-gray-200'}"
+            : 'bg-[var(--color-bg)] text-[var(--color-text-muted)] hover:bg-[var(--color-border)]'}"
         onclick={() => (typeFilter = val as 'all' | 'credit' | 'check')}
       >
         {label}
       </button>
     {/each}
     {#if !loading}
-      <span class="ml-auto rounded-full bg-gray-100 px-3 py-1 text-xs font-medium text-gray-500">
+      <span class="ml-auto rounded-full bg-[var(--color-bg)] px-3 py-1 text-xs font-medium text-[var(--color-text-muted)]">
         {filteredCards.length}개 카드
       </span>
     {/if}
   </div>
+
+  <!-- Issuer filter pills -->
+  {#if availableIssuers.length > 0}
+    <div class="flex flex-wrap gap-1.5">
+      <button
+        class="rounded-full border px-2.5 py-1 text-xs transition-colors {issuerFilter === '' ? 'border-[var(--color-primary)] bg-[var(--color-primary)] text-white' : 'border-[var(--color-border)] text-[var(--color-text-muted)] hover:border-[var(--color-text-muted)]'}"
+        onclick={() => (issuerFilter = '')}
+      >전체</button>
+      {#each availableIssuers as iss}
+        <button
+          class="rounded-full border px-2.5 py-1 text-xs transition-colors {issuerFilter === iss ? 'border-[var(--color-primary)] bg-[var(--color-primary)] text-white' : 'border-[var(--color-border)] text-[var(--color-text-muted)] hover:border-[var(--color-text-muted)]'}"
+          onclick={() => (issuerFilter = iss)}
+        >{formatIssuerNameKo(iss)}</button>
+      {/each}
+    </div>
+  {/if}
 
   {#if loading}
     <!-- Loading skeleton: 6 card placeholders -->
@@ -133,7 +155,7 @@
         <p class="text-sm">검색 결과가 없어요</p>
         <button
           class="mt-1 text-xs text-[var(--color-primary)] hover:underline"
-          onclick={() => { searchQuery = ''; typeFilter = 'all'; }}
+          onclick={() => { searchQuery = ''; typeFilter = 'all'; issuerFilter = ''; }}
         >
           필터 초기화
         </button>

@@ -34,7 +34,9 @@ function parseDateToISO(raw: string): string {
 }
 
 function parseAmount(raw: string): number {
-  return parseInt(raw.trim().replace(/원$/, '').replace(/,/g, ''), 10) || 0;
+  const cleaned = raw.trim().replace(/원$/, '').replace(/,/g, '');
+  const parsed = parseInt(cleaned, 10);
+  return Number.isNaN(parsed) ? 0 : parsed;
 }
 
 // ---------------------------------------------------------------------------

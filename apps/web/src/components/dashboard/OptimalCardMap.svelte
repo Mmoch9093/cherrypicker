@@ -65,7 +65,7 @@
       <span class="text-[var(--color-text-muted)] mr-1">정렬:</span>
       {#each ([['spending', '지출순'], ['rate', '혜택률순'], ['reward', '혜택액순']] as const) as [key, label]}
         <button
-          class="rounded px-2 py-0.5 transition-colors {sortKey === key ? 'bg-[var(--color-primary)] text-white' : 'bg-gray-100 text-[var(--color-text-muted)] hover:bg-gray-200'}"
+          class="rounded px-2 py-0.5 transition-colors {sortKey === key ? 'bg-[var(--color-primary)] text-white' : 'bg-[var(--color-bg)] text-[var(--color-text-muted)] hover:bg-[var(--color-border)]'}"
           onclick={() => (sortKey = key)}
         >
           {label}
@@ -93,7 +93,7 @@
           {@const isExpanded = expandedRows.has(a.category)}
           {@const rateBarWidth = Math.round((a.rate / maxRate) * 100)}
           <tr
-            class="border-b border-[var(--color-border)] last:border-0 hover:bg-gray-50 transition-colors cursor-pointer"
+            class="border-b border-[var(--color-border)] last:border-0 hover:bg-[var(--color-bg)] transition-colors cursor-pointer"
             onclick={() => toggleRow(a.category)}
           >
             <!-- Left border accent by issuer color -->
@@ -114,7 +114,7 @@
             <td class="py-3 text-right">
               <div class="flex flex-col items-end gap-1">
                 <span class="font-mono font-semibold text-[var(--color-primary)]">{formatRate(a.rate)}</span>
-                <div class="h-1.5 w-20 overflow-hidden rounded-full bg-gray-100">
+                <div class="h-1.5 w-20 overflow-hidden rounded-full bg-[var(--color-bg)]">
                   <div
                     class="h-full rounded-full bg-[var(--color-primary)] transition-all duration-500"
                     style="width: {rateBarWidth}%; opacity: 0.7"
@@ -130,14 +130,14 @@
 
           <!-- Expanded alternatives row -->
           {#if isExpanded && a.alternatives && a.alternatives.length > 0}
-            <tr class="border-b border-[var(--color-border)] last:border-0 bg-gray-50">
+            <tr class="border-b border-[var(--color-border)] last:border-0 bg-[var(--color-bg)]">
               <td colspan="5" class="px-6 py-3">
                 <div class="text-xs text-[var(--color-text-muted)] mb-2 font-medium">대안 카드</div>
                 <div class="flex flex-wrap gap-2">
                   {#each a.alternatives as alt}
                     {@const altIssuer = getIssuerFromCardId(alt.cardId)}
                     {@const altColor = getIssuerColor(altIssuer)}
-                    <div class="flex items-center gap-1.5 rounded-lg border border-[var(--color-border)] bg-white px-2.5 py-1.5 text-xs">
+                    <div class="flex items-center gap-1.5 rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] px-2.5 py-1.5 text-xs">
                       <span
                         class="inline-block h-2 w-2 rounded-full"
                         style="background-color: {altColor}"
@@ -151,7 +151,7 @@
               </td>
             </tr>
           {:else if isExpanded}
-            <tr class="border-b border-[var(--color-border)] last:border-0 bg-gray-50">
+            <tr class="border-b border-[var(--color-border)] last:border-0 bg-[var(--color-bg)]">
               <td colspan="5" class="px-6 py-3 text-xs text-[var(--color-text-muted)]">대안 없음</td>
             </tr>
           {/if}

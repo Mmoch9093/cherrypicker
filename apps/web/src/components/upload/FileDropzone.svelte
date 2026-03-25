@@ -143,7 +143,7 @@
                 ? 'bg-green-500 text-white'
                 : isActive
                   ? 'bg-[var(--color-primary)] text-white shadow-md shadow-[var(--color-primary)]/30'
-                  : 'bg-gray-200 text-gray-400'}"
+                  : 'bg-[var(--color-border)] text-[var(--color-text-muted)]'}"
           >
             {#if isDone}
               <svg class="h-3.5 w-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -155,7 +155,7 @@
           </div>
           <span
             class="text-xs transition-colors duration-200
-              {isActive ? 'font-semibold text-[var(--color-primary)]' : isDone ? 'text-green-600' : 'text-gray-400'}"
+              {isActive ? 'font-semibold text-[var(--color-primary)]' : isDone ? 'text-green-600' : 'text-[var(--color-text-muted)]'}"
           >
             {step}
           </span>
@@ -163,7 +163,7 @@
         {#if i < STEPS.length - 1}
           <div
             class="mb-4 h-px w-8 transition-colors duration-300 sm:w-12
-              {currentStep > stepNum ? 'bg-green-400' : 'bg-gray-200'}"
+              {currentStep > stepNum ? 'bg-green-400' : 'bg-[var(--color-border)]'}"
           ></div>
         {/if}
       </div>
@@ -175,7 +175,7 @@
   <div
     class="rounded-2xl border-2 p-10 text-center transition-all duration-200
       {isDragOver
-        ? 'animate-pulse border-[var(--color-primary)] bg-blue-50 shadow-inner'
+        ? 'animate-pulse border-[var(--color-primary)] bg-[var(--color-primary-light)] shadow-inner'
         : uploadedFile
           ? 'border-green-400 bg-green-50'
           : 'border-dashed border-[var(--color-border)] hover:border-[var(--color-primary)]/50'}"
@@ -294,7 +294,7 @@
 
       <!-- Progress bar during upload -->
       {#if uploadStatus === 'uploading'}
-        <div class="h-1.5 w-full overflow-hidden rounded-full bg-gray-200">
+        <div class="h-1.5 w-full overflow-hidden rounded-full bg-[var(--color-border)]">
           <div class="h-full animate-[loading_1.5s_ease-in-out_infinite] rounded-full bg-[var(--color-primary)]"
             style="width: 60%;"></div>
         </div>
@@ -314,7 +314,7 @@
         <p class="mt-0.5 text-red-600">{errorMessage}</p>
       </div>
       <button
-        class="shrink-0 rounded-lg border border-red-300 bg-white px-3 py-1.5 text-xs font-medium text-red-700 hover:bg-red-50 transition-colors"
+        class="shrink-0 rounded-lg border border-red-300 bg-[var(--color-surface)] px-3 py-1.5 text-xs font-medium text-red-700 hover:bg-red-50 transition-colors"
         onclick={handleRetry}
       >
         다시 시도

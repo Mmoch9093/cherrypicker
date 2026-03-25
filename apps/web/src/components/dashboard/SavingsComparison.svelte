@@ -102,20 +102,20 @@
       <!-- Single card bar -->
       <div class="flex items-center gap-3">
         <div class="w-24 shrink-0 text-xs text-[var(--color-text-muted)]">카드 한 장</div>
-        <div class="flex-1 h-6 overflow-hidden rounded-lg bg-gray-100">
+        <div class="flex-1 h-6 overflow-hidden rounded-lg bg-[var(--color-bg)]">
           <div
-            class="h-full rounded-lg bg-gray-400 transition-all duration-700"
+            class="h-full rounded-lg bg-[var(--color-border)] transition-all duration-700"
             style="width: {singleBarWidth}%"
           ></div>
         </div>
-        <div class="w-28 shrink-0 text-right text-sm font-mono text-gray-600">
+        <div class="w-28 shrink-0 text-right text-sm font-mono text-[var(--color-text-muted)]">
           {formatWon(opt.bestSingleCard.totalReward)}
         </div>
       </div>
       <!-- Cherry-pick bar (always 100%) -->
       <div class="flex items-center gap-3">
         <div class="w-24 shrink-0 text-xs font-semibold text-[var(--color-primary)]">체리피킹</div>
-        <div class="flex-1 h-6 overflow-hidden rounded-lg bg-blue-100">
+        <div class="flex-1 h-6 overflow-hidden rounded-lg bg-[var(--color-primary-light)]">
           <div
             class="h-full rounded-lg bg-[var(--color-primary)] transition-all duration-700"
             style="width: 100%"
@@ -146,7 +146,7 @@
         {/if}
       </div>
       <div class="text-sm font-semibold text-[var(--color-text)] mb-2">{opt.bestSingleCard.cardName}</div>
-      <div class="text-2xl font-bold text-gray-700">{formatWon(opt.bestSingleCard.totalReward)}</div>
+      <div class="text-2xl font-bold text-[var(--color-text)]">{formatWon(opt.bestSingleCard.totalReward)}</div>
       <div class="mt-1 text-xs text-[var(--color-text-muted)]">
         월 혜택{#if opt.totalSpending > 0}, 혜택률 {((opt.bestSingleCard.totalReward / opt.totalSpending) * 100).toFixed(2)}%{/if}
       </div>
@@ -197,7 +197,7 @@
       <div class="mt-3 overflow-hidden rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)]">
         <table class="w-full text-sm">
           <thead>
-            <tr class="border-b border-[var(--color-border)] bg-gray-50 text-left text-xs text-[var(--color-text-muted)]">
+            <tr class="border-b border-[var(--color-border)] bg-[var(--color-bg)] text-left text-xs text-[var(--color-text-muted)]">
               <th class="px-4 py-2.5 font-medium">카드명</th>
               <th class="px-4 py-2.5 text-right font-medium">해당 지출</th>
               <th class="px-4 py-2.5 text-right font-medium">예상 혜택</th>
@@ -208,7 +208,7 @@
             {#each cardBreakdown as card}
               {@const issuer = getIssuerFromCardId(card.cardId)}
               {@const issuerColor = getIssuerColor(issuer)}
-              <tr class="border-b border-[var(--color-border)] last:border-0 hover:bg-gray-50">
+              <tr class="border-b border-[var(--color-border)] last:border-0 hover:bg-[var(--color-bg)]">
                 <td class="px-4 py-3">
                   <span
                     class="inline-block rounded-full px-2 py-0.5 text-xs text-white"

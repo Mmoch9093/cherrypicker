@@ -140,11 +140,12 @@
     {#each categories as cat, i}
       {@const isTop3 = i < 3}
       <div
-        class="relative rounded-lg px-3 py-2 transition-colors duration-150 cursor-default {isTop3 ? 'bg-gray-50' : ''} {hoveredIndex === i ? 'bg-blue-50' : ''}"
+        class="relative rounded-lg px-3 py-2 transition-colors duration-150 cursor-default {isTop3 ? 'bg-[var(--color-bg)]' : ''} {hoveredIndex === i ? 'bg-[var(--color-primary-light)]' : ''}"
         role="row"
         aria-label={cat.labelKo}
         onmouseenter={() => (hoveredIndex = i)}
         onmouseleave={() => (hoveredIndex = null)}
+        onclick={() => (hoveredIndex = hoveredIndex === i ? null : i)}
       >
         <div class="flex items-center gap-3">
           <!-- Rank -->
@@ -160,7 +161,7 @@
 
           <!-- Bar -->
           <div class="flex-1 relative">
-            <div class="h-6 overflow-hidden rounded-lg bg-gray-100 shadow-inner">
+            <div class="h-6 overflow-hidden rounded-lg bg-[var(--color-bg)] shadow-inner">
               <div
                 class="h-full rounded-lg transition-all duration-700 ease-out"
                 style="width: {(cat.percentage / maxPercentage) * 100}%; background-color: {cat.color}; opacity: {hoveredIndex === i ? 1 : 0.8}"
@@ -179,7 +180,7 @@
 
         <!-- Hover tooltip expansion -->
         {#if hoveredIndex === i}
-          <div class="mt-2 ml-8 rounded-md border border-[var(--color-border)] bg-white px-3 py-2 text-xs shadow-md">
+          <div class="mt-2 ml-8 rounded-md border border-[var(--color-border)] bg-[var(--color-surface)] px-3 py-2 text-xs shadow-md">
             <div class="flex justify-between gap-8">
               <span class="text-[var(--color-text-muted)]">정확한 금액</span>
               <span class="font-semibold">{formatWon(cat.amount)}</span>

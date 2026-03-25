@@ -18,7 +18,7 @@
     const pct = rate * 100;
     if (pct >= 5) return 'text-green-600 font-semibold';
     if (pct >= 2) return 'text-blue-600 font-medium';
-    return 'text-gray-500';
+    return 'text-[var(--color-text-muted)]';
   }
 
   function formatRewardRate(tier: RewardTier): string {
@@ -169,7 +169,7 @@
                 {/if}
               </div>
               {#if i < card.performanceTiers.length - 1}
-                <div class="h-px w-4 shrink-0 bg-gray-300"></div>
+                <div class="h-px w-4 shrink-0 bg-[var(--color-border)]"></div>
               {/if}
             </div>
           {/each}
@@ -184,7 +184,7 @@
         <div class="mt-3 overflow-x-auto rounded-xl border border-[var(--color-border)]">
           <table class="w-full text-sm">
             <thead>
-              <tr class="border-b border-[var(--color-border)] bg-gray-50/60 text-left text-xs text-[var(--color-text-muted)]">
+              <tr class="border-b border-[var(--color-border)] bg-[var(--color-bg)] text-left text-xs text-[var(--color-text-muted)]">
                 <th class="px-4 py-2.5 font-medium">카테고리</th>
                 <th class="px-4 py-2.5 text-right font-medium">혜택률</th>
                 <th class="px-4 py-2.5 text-right font-medium">월 한도</th>
@@ -194,13 +194,13 @@
             <tbody>
               {#each groupedByPerf as group}
                 <!-- Performance tier header row -->
-                <tr class="border-b border-[var(--color-border)] bg-blue-50/50">
+                <tr class="border-b border-[var(--color-border)] bg-[var(--color-primary-light)]">
                   <td colspan="4" class="px-4 py-1.5 text-xs font-semibold text-blue-700">
                     {group.perfLabel}
                   </td>
                 </tr>
                 {#each group.rows as row}
-                  <tr class="border-b border-[var(--color-border)] last:border-0 hover:bg-gray-50/50 transition-colors">
+                  <tr class="border-b border-[var(--color-border)] last:border-0 hover:bg-[var(--color-bg)] transition-colors">
                     <td class="px-4 py-2.5 font-medium">
                       <span class="mr-1.5 inline-flex items-center text-[var(--color-text-muted)]">
                         <Icon name={getCategoryIconName(row.category)} size={14} />
@@ -226,10 +226,10 @@
     {#if card.performanceExclusions.length > 0}
       <div>
         <h2 class="text-base font-semibold text-[var(--color-text)]">실적 제외 항목</h2>
-        <ul class="mt-3 space-y-1.5 rounded-xl border border-[var(--color-border)] bg-gray-50/50 p-4">
+        <ul class="mt-3 space-y-1.5 rounded-xl border border-[var(--color-border)] bg-[var(--color-bg)] p-4">
           {#each card.performanceExclusions as exclusion}
             <li class="flex items-start gap-2 text-sm text-[var(--color-text-muted)]">
-              <span class="mt-0.5 shrink-0 text-gray-400">•</span>
+              <span class="mt-0.5 shrink-0 text-[var(--color-text-muted)]">•</span>
               {exclusion}
             </li>
           {/each}
