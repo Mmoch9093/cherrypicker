@@ -12,7 +12,7 @@
     "@cherrypicker/rules": "workspace:*"
   },
   "devDependencies": {
-    "typescript": "^5.8.0",
+    "typescript": "^6.0.0",
     "@types/node": "^22.0.0"
   }
 }

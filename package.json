@@ -20,7 +20,7 @@
   },
   "devDependencies": {
     "turbo": "^2.8.20",
-    "typescript": "^5.8.0",
+    "typescript": "^6.0.0",
     "yaml": "^2.8.3",
     "zod": "^4.3.6"
   },
