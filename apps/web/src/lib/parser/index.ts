@@ -43,5 +43,9 @@ export async function parseFile(file: File, bank?: BankId): Promise<ParseResult>
       const buffer = await file.arrayBuffer();
       return parsePDF(buffer, bank);
     }
+    default: {
+      const _exhaustive: never = format;
+      throw new Error(`지원하지 않는 형식이에요: ${_exhaustive}`);
+    }
   }
 }

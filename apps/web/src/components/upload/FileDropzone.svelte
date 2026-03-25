@@ -5,6 +5,7 @@
 
   let isDragOver = $state(false);
   let uploadedFile = $state<File | null>(null);
+  let fileInputEl = $state<HTMLInputElement | null>(null);
   let uploadStatus = $state<'idle' | 'uploading' | 'success' | 'error'>('idle');
   let errorMessage = $state('');
   let bank = $state('');
@@ -196,7 +197,7 @@
         <p class="text-sm text-[var(--color-text-muted)]">{formatFileSize(uploadedFile.size)}</p>
         <button
           class="mt-1 text-sm text-[var(--color-primary)] hover:underline"
-          onclick={() => { uploadedFile = null; uploadStatus = 'idle'; errorMessage = ''; }}
+          onclick={() => { uploadedFile = null; uploadStatus = 'idle'; errorMessage = ''; if (fileInputEl) fileInputEl.value = ''; }}
         >
           다른 파일 선택
         </button>
@@ -210,7 +211,7 @@
         <p class="text-sm text-[var(--color-text-muted)]">CSV, Excel, PDF 지원</p>
         <label class="mt-3 inline-block cursor-pointer rounded-xl bg-[var(--color-primary)] px-5 py-2.5 text-sm font-medium text-white shadow-sm hover:bg-[var(--color-primary-dark)] transition-colors">
           파일 선택
-          <input type="file" class="hidden" accept=".csv,.xlsx,.xls,.pdf" onchange={handleFileInput} />
+          <input type="file" class="hidden" accept=".csv,.xlsx,.xls,.pdf" onchange={handleFileInput} bind:this={fileInputEl} />
         </label>
       </div>
     {/if}

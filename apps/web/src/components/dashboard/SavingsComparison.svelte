@@ -54,16 +54,17 @@
     const target = opt?.savingsVsSingleCard ?? 0;
     if (target === 0) { displayedSavings = 0; return; }
     let cancelled = false;
+    let rafId: number;
     const start = performance.now();
     const duration = 800;
     function tick(now: number) {
       if (cancelled) return;
       const progress = Math.min((now - start) / duration, 1);
       displayedSavings = Math.round(target * progress);
-      if (progress < 1) requestAnimationFrame(tick);
+      if (progress < 1) rafId = requestAnimationFrame(tick);
     }
-    requestAnimationFrame(tick);
-    return () => { cancelled = true; };
+    rafId = requestAnimationFrame(tick);
+    return () => { cancelled = true; cancelAnimationFrame(rafId); };
   });
 
   let savingsPct = $derived.by(() => {
@@ -73,7 +74,7 @@
 
   // Bar comparison widths (proportional)
   let singleBarWidth = $derived.by(() => {
-    if (!opt || opt.totalReward === 0) return 0;
+    if (!opt || opt.totalReward === 0 || !opt.bestSingleCard) return 0;
     const ratio = opt.bestSingleCard.totalReward / opt.totalReward;
     return Math.min(Math.round(ratio * 100), 100);
   });

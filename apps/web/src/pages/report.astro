@@ -41,6 +41,44 @@ import Layout from '../layouts/Layout.astro';
   </div>
 </Layout>
 
+<script>
+  try {
+    const raw = sessionStorage.getItem('cherrypicker:analysis');
+    if (raw) {
+      const data = JSON.parse(raw);
+      const opt = data.optimization;
+      if (opt) {
+        const fmt = (n: number) => n.toLocaleString('ko-KR') + '원';
+        const el = document.getElementById('report-content');
+        if (el) {
+          const uniqueCards = new Set(opt.assignments.map((a: { assignedCardId: string }) => a.assignedCardId)).size;
+          let html = '<h2 style="font-size:1.25rem;font-weight:bold;margin-bottom:1rem;">분석 요약</h2>';
+          html += '<table style="width:100%;border-collapse:collapse;margin-bottom:2rem;">';
+          html += '<tr><td style="padding:8px;border-bottom:1px solid #e2e8f0;">분석 기간</td><td style="padding:8px;border-bottom:1px solid #e2e8f0;">' + (data.statementPeriod ? data.statementPeriod.start + ' ~ ' + data.statementPeriod.end : '-') + '</td></tr>';
+          html += '<tr><td style="padding:8px;border-bottom:1px solid #e2e8f0;">총 지출</td><td style="padding:8px;border-bottom:1px solid #e2e8f0;">' + fmt(opt.totalSpending) + '</td></tr>';
+          html += '<tr><td style="padding:8px;border-bottom:1px solid #e2e8f0;">체리피킹 혜택</td><td style="padding:8px;border-bottom:1px solid #e2e8f0;">' + fmt(opt.totalReward) + '</td></tr>';
+          html += '<tr><td style="padding:8px;border-bottom:1px solid #e2e8f0;">추가 절약</td><td style="padding:8px;border-bottom:1px solid #e2e8f0;">+' + fmt(opt.savingsVsSingleCard) + '</td></tr>';
+          html += '<tr><td style="padding:8px;">필요 카드 수</td><td style="padding:8px;">' + uniqueCards + '장</td></tr>';
+          html += '</table>';
+          html += '<h2 style="font-size:1.25rem;font-weight:bold;margin-bottom:1rem;">카테고리별 추천 카드</h2>';
+          html += '<table style="width:100%;border-collapse:collapse;">';
+          html += '<thead><tr style="border-bottom:2px solid #e2e8f0;"><th style="padding:8px;text-align:left;">카테고리</th><th style="padding:8px;text-align:left;">추천 카드</th><th style="padding:8px;text-align:right;">혜택률</th><th style="padding:8px;text-align:right;">월 혜택</th></tr></thead><tbody>';
+          for (const a of opt.assignments) {
+            html += '<tr style="border-bottom:1px solid #e2e8f0;">';
+            html += '<td style="padding:8px;">' + a.categoryNameKo + '</td>';
+            html += '<td style="padding:8px;">' + a.assignedCardName + '</td>';
+            html += '<td style="padding:8px;text-align:right;">' + (a.rate * 100).toFixed(1) + '%</td>';
+            html += '<td style="padding:8px;text-align:right;">' + fmt(a.reward) + '</td>';
+            html += '</tr>';
+          }
+          html += '</tbody></table>';
+          el.innerHTML = html;
+        }
+      }
+    }
+  } catch {}
+</script>
+
 <style>
   @media print {
     :global(nav),

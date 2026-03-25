@@ -116,12 +116,12 @@
 
 {#if analysisStore.loading}
   <div class="mt-4 space-y-3">
-    {#each Array(6) as _}
+    {#each [80, 60, 45, 70, 35, 55] as w}
       <div class="animate-pulse flex items-center gap-3">
         <div class="h-4 w-5 rounded bg-gray-200"></div>
         <div class="h-4 w-20 rounded bg-gray-200"></div>
         <div class="flex-1">
-          <div class="h-6 rounded-lg bg-gray-200" style="width: {Math.random() * 60 + 20}%"></div>
+          <div class="h-6 rounded-lg bg-gray-200" style="width: {w}%"></div>
         </div>
         <div class="h-4 w-24 rounded bg-gray-200"></div>
         <div class="h-4 w-10 rounded bg-gray-200"></div>

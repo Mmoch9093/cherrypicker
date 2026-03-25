@@ -4,8 +4,6 @@
   import { formatWon, formatPercent, getCategoryIconName, getIssuerColor, formatIssuerNameKo } from '../../lib/formatters.js';
   import Icon from '../ui/Icon.svelte';
 
-  const base = import.meta.env.BASE_URL ?? '/';
-
   interface Props {
     cardId: string | undefined;
   }
@@ -34,7 +32,6 @@
   interface FlatRow {
     category: string;
     tier: TierRow;
-    isFirstForCategory: boolean;
   }
 
   let groupedByPerf = $derived.by(() => {
@@ -44,7 +41,7 @@
       for (const t of reward.tiers) {
         const key = t.performanceTier ?? '기본';
         if (!map.has(key)) map.set(key, []);
-        map.get(key)!.push({ category: reward.category, tier: t, isFirstForCategory: true });
+        map.get(key)!.push({ category: reward.category, tier: t });
       }
     }
     return Array.from(map.entries()).map(([perfLabel, rows]) => ({ perfLabel, rows }));

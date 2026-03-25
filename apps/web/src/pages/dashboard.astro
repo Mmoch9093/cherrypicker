@@ -10,7 +10,7 @@ import SavingsComparison from '../components/dashboard/SavingsComparison.svelte'
   <!-- Back link -->
   <div class="mb-6">
     <a
-      href={`${Astro.site ? import.meta.env.BASE_URL : '/'}`}
+      href={`${import.meta.env.BASE_URL}`}
       class="inline-flex items-center gap-1.5 text-sm text-[var(--color-text-muted)] transition-colors hover:text-[var(--color-primary)]"
     >
       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="16" height="16" aria-hidden="true">
