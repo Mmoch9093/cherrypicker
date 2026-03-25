@@ -1,0 +1,107 @@
+card:
+  id: "kb-easy-study"
+  issuer: "kb"
+  name: "Easy Study"
+  nameKo: "KB국민 Easy Study 티타늄카드"
+  type: credit
+  annualFee:
+    domestic: 15000
+    international: 15000
+  url: "https://card.kbcard.com/CXPRICAC0076.cms?mainCC=a&cooperationcode=09250"
+  lastUpdated: "2026-03-25"
+  source: manual
+
+performanceTiers:
+  - id: tier0
+    label: "무실적"
+    minSpending: 0
+    maxSpending: 499999
+  - id: tier1
+    label: "전월 50만원 이상"
+    minSpending: 500000
+    maxSpending: 999999
+  - id: tier2
+    label: "전월 100만원 이상"
+    minSpending: 1000000
+    maxSpending: 1499999
+  - id: tier3
+    label: "전월 150만원 이상"
+    minSpending: 1500000
+    maxSpending: null
+
+performanceExclusions:
+  - tax_payment
+  - gift_card_purchase
+  - tuition
+
+rewards:
+  - category: "education"
+    label: "학원/취미/자기계발 3% 청구할인"
+    type: discount
+    tiers:
+      - performanceTier: tier0
+        rate: 0
+        monthlyCap: null
+        perTransactionCap: null
+      - performanceTier: tier1
+        rate: 3.0
+        monthlyCap: null
+        perTransactionCap: null
+      - performanceTier: tier2
+        rate: 3.0
+        monthlyCap: null
+        perTransactionCap: null
+      - performanceTier: tier3
+        rate: 3.0
+        monthlyCap: null
+        perTransactionCap: null
+    conditions:
+      specificMerchants:
+        - 학원
+        - 취미교실
+        - 자기계발
+  - category: "education"
+    label: "온라인강의/서점/문구 5% 청구할인"
+    type: discount
+    tiers:
+      - performanceTier: tier0
+        rate: 0
+        monthlyCap: null
+        perTransactionCap: null
+      - performanceTier: tier1
+        rate: 5.0
+        monthlyCap: null
+        perTransactionCap: null
+      - performanceTier: tier2
+        rate: 5.0
+        monthlyCap: null
+        perTransactionCap: null
+      - performanceTier: tier3
+        rate: 5.0
+        monthlyCap: null
+        perTransactionCap: null
+    conditions:
+      specificMerchants:
+        - 온라인강의
+        - 서점
+        - 문구
+  - category: "sports"
+    label: "수영장/요가/레포츠클럽 3% 청구할인"
+    type: discount
+    tiers:
+      - performanceTier: tier1
+        rate: 3.0
+        monthlyCap: null
+        perTransactionCap: null
+      - performanceTier: tier2
+        rate: 3.0
+        monthlyCap: null
+        perTransactionCap: null
+      - performanceTier: tier3
+        rate: 3.0
+        monthlyCap: null
+        perTransactionCap: null
+
+globalConstraints:
+  monthlyTotalDiscountCap: 30000
+  minimumAnnualSpending: null

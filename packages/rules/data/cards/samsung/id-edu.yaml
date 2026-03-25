@@ -1,0 +1,81 @@
+card:
+  id: "samsung-id-edu"
+  issuer: "samsung"
+  name: "iD EDU"
+  nameKo: "삼성 iD EDU 카드"
+  type: credit
+  annualFee:
+    domestic: 15000
+    international: 15000
+  url: "https://www.samsungcard.com/personal/card/cardfinder/UHPPCA0102M0.jsp?code=AAP1756&click=hubca_id_AAP1756"
+  lastUpdated: "2026-03-25"
+  source: manual
+
+performanceTiers:
+  - id: tier0
+    label: "무실적"
+    minSpending: 0
+    maxSpending: 299999
+  - id: tier1
+    label: "전월 30만원 이상"
+    minSpending: 300000
+    maxSpending: null
+
+performanceExclusions:
+  - tax_payment
+  - gift_card_purchase
+  - short_term_loan
+  - long_term_loan
+  - annual_fee
+
+rewards:
+  - category: "education"
+    label: "학원/학습지/인터넷강의 10% 결제일 할인 (월 최대 7만원)"
+    type: discount
+    tiers:
+      - performanceTier: tier0
+        rate: 0
+        monthlyCap: null
+        perTransactionCap: null
+      - performanceTier: tier1
+        rate: 10.0
+        monthlyCap: 70000
+        perTransactionCap: null
+    conditions:
+      specificMerchants:
+        - 학원
+        - 씽크빅
+        - 교원
+        - 대교
+        - 한솔교육
+        - 엘리하이
+        - 밀크T
+        - 이투스
+        - 엠베스트
+        - 대성마이맥
+  - category: "apartment_mgmt"
+    label: "아파트관리비 5,000원 할인"
+    type: discount
+    tiers:
+      - performanceTier: tier1
+        rate: null
+        fixedAmount: 5000
+        monthlyCap: 5000
+        perTransactionCap: null
+  - category: "dining"
+    label: "배달앱 5% 결제일 할인"
+    type: discount
+    tiers:
+      - performanceTier: tier1
+        rate: 5.0
+        monthlyCap: 5000
+        perTransactionCap: null
+    conditions:
+      specificMerchants:
+        - 배달의민족
+        - 쿠팡이츠
+        - 요기요
+
+globalConstraints:
+  monthlyTotalDiscountCap: 80000
+  minimumAnnualSpending: null

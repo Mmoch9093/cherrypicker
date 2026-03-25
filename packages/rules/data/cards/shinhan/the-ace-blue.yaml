@@ -1,0 +1,60 @@
+card:
+  id: "shinhan-the-ace-blue"
+  issuer: "shinhan"
+  name: "The ACE BLUE LABEL"
+  nameKo: "더 에이스 블루 라벨"
+  type: credit
+  annualFee:
+    domestic: 700000
+    international: 705000
+  url: "https://www.shinhancard.com/pconts/html/card/apply/premium/1188283_2205.html"
+  lastUpdated: "2026-03-25"
+  source: manual
+
+performanceTiers:
+  - id: tier0
+    label: "무실적"
+    minSpending: 0
+    maxSpending: 499999
+  - id: tier1
+    label: "전월 50만원 이상"
+    minSpending: 500000
+    maxSpending: null
+
+performanceExclusions:
+  - tax_payment
+  - gift_card_purchase
+
+rewards:
+  - category: "uncategorized"
+    label: "전 가맹점 기본 마이신한포인트 적립"
+    type: points
+    tiers:
+      - performanceTier: tier0
+        rate: 1.0
+        monthlyCap: null
+        perTransactionCap: null
+      - performanceTier: tier1
+        rate: 3.0
+        monthlyCap: null
+        perTransactionCap: null
+  - category: "travel"
+    label: "해외/면세점 추가 적립"
+    type: points
+    tiers:
+      - performanceTier: tier0
+        rate: 2.0
+        monthlyCap: null
+        perTransactionCap: null
+      - performanceTier: tier1
+        rate: 2.0
+        monthlyCap: null
+        perTransactionCap: null
+    conditions:
+      specificMerchants:
+        - 해외가맹점
+        - 면세점
+
+globalConstraints:
+  monthlyTotalDiscountCap: null
+  minimumAnnualSpending: null

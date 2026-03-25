@@ -1,0 +1,66 @@
+card:
+  id: "lotte-loca-for-edu"
+  issuer: "lotte"
+  name: "LOCA for Edu"
+  nameKo: "LOCA for 에듀"
+  type: credit
+  annualFee:
+    domestic: 15000
+    international: 20000
+  url: "https://www.lottecard.co.kr/app/LPCDADB_V100.lc?vtCdKndC=P13403-A13403"
+  lastUpdated: "2026-03-25"
+  source: manual
+
+performanceTiers:
+  - id: tier0
+    label: "무실적"
+    minSpending: 0
+    maxSpending: 1499999
+  - id: tier1
+    label: "전월 150만원 이상"
+    minSpending: 1500000
+    maxSpending: null
+
+performanceExclusions:
+  - tax_payment
+  - gift_card
+
+rewards:
+  - category: "education"
+    label: "학원/학습지/유치원 5% 청구할인 (건당 10만원 이상)"
+    type: discount
+    tiers:
+      - performanceTier: tier0
+        rate: 0
+        monthlyCap: null
+        perTransactionCap: null
+      - performanceTier: tier1
+        rate: 5.0
+        monthlyCap: null
+        perTransactionCap: null
+    conditions:
+      minTransaction: 100000
+      specificMerchants:
+        - 학원
+        - 학습지
+        - 유치원
+  - category: "education"
+    label: "서점/문구 10% 청구할인"
+    type: discount
+    tiers:
+      - performanceTier: tier0
+        rate: 0
+        monthlyCap: null
+        perTransactionCap: null
+      - performanceTier: tier1
+        rate: 10.0
+        monthlyCap: null
+        perTransactionCap: null
+    conditions:
+      specificMerchants:
+        - 서점
+        - 문구
+
+globalConstraints:
+  monthlyTotalDiscountCap: 15000
+  minimumAnnualSpending: null

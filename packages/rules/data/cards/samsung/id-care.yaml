@@ -1,0 +1,73 @@
+card:
+  id: "samsung-id-care"
+  issuer: "samsung"
+  name: "iD CARE"
+  nameKo: "삼성 iD CARE 카드"
+  type: credit
+  annualFee:
+    domestic: 20000
+    international: 20000
+  url: "https://www.samsungcard.com/personal/card/cardfinder/UHPPCA0102M0.jsp?code=AAP1765&click=hubca_id_AAP1765"
+  lastUpdated: "2026-03-25"
+  source: manual
+
+performanceTiers:
+  - id: tier0
+    label: "무실적"
+    minSpending: 0
+    maxSpending: 299999
+  - id: tier1
+    label: "전월 30만원 이상"
+    minSpending: 300000
+    maxSpending: null
+
+performanceExclusions:
+  - tax_payment
+  - gift_card_purchase
+  - short_term_loan
+  - long_term_loan
+  - annual_fee
+
+rewards:
+  - category: "medical"
+    label: "병원/약국/동물병원 5% 결제일 할인"
+    type: discount
+    tiers:
+      - performanceTier: tier0
+        rate: 5.0
+        monthlyCap: null
+        perTransactionCap: null
+      - performanceTier: tier1
+        rate: 5.0
+        monthlyCap: null
+        perTransactionCap: null
+    conditions:
+      specificMerchants:
+        - 병원
+        - 의원
+        - 약국
+        - 동물병원
+  - category: "apartment_mgmt"
+    label: "아파트관리비/이동통신/4대 사회보험 5% 결제일 할인"
+    type: discount
+    tiers:
+      - performanceTier: tier0
+        rate: 0
+        monthlyCap: null
+        perTransactionCap: null
+      - performanceTier: tier1
+        rate: 5.0
+        monthlyCap: null
+        perTransactionCap: null
+    conditions:
+      specificMerchants:
+        - 아파트관리비
+        - 이동통신
+        - 국민연금
+        - 건강보험
+        - 고용보험
+        - 산재보험
+
+globalConstraints:
+  monthlyTotalDiscountCap: 15000
+  minimumAnnualSpending: null

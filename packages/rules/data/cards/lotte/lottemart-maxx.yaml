@@ -1,0 +1,83 @@
+card:
+  id: "lotte-lottemart-maxx"
+  issuer: "lotte"
+  name: "롯데마트 MAXX"
+  nameKo: "롯데마트&MAXX 카드"
+  type: credit
+  annualFee:
+    domestic: 15000
+    international: 15000
+  url: "https://www.lottecard.co.kr/app/LPCDADB_V100.lc?vtCdKndC=P14304-A14304"
+  lastUpdated: "2026-03-25"
+  source: manual
+
+performanceTiers:
+  - id: tier0
+    label: "무실적"
+    minSpending: 0
+    maxSpending: 299999
+  - id: tier1
+    label: "전월 30만원 이상"
+    minSpending: 300000
+    maxSpending: 999999
+  - id: tier2
+    label: "전월 100만원 이상"
+    minSpending: 1000000
+    maxSpending: null
+
+performanceExclusions:
+  - tax_payment
+  - gift_card
+
+rewards:
+  - category: "grocery"
+    label: "롯데마트/MAXX 5% 할인"
+    type: discount
+    tiers:
+      - performanceTier: tier0
+        rate: 0
+        monthlyCap: null
+        perTransactionCap: null
+      - performanceTier: tier1
+        rate: 5.0
+        monthlyCap: null
+        perTransactionCap: null
+      - performanceTier: tier2
+        rate: 10.0
+        monthlyCap: null
+        perTransactionCap: null
+    conditions:
+      specificMerchants:
+        - 롯데마트
+        - MAXX
+        - 롯데마트몰
+  - category: "uncategorized"
+    label: "전 가맹점 0.5% 결제일 할인"
+    type: discount
+    tiers:
+      - performanceTier: tier1
+        rate: 0.5
+        monthlyCap: 5000
+        perTransactionCap: null
+      - performanceTier: tier2
+        rate: 0.5
+        monthlyCap: 5000
+        perTransactionCap: null
+  - category: "apartment_mgmt"
+    label: "아파트관리비 월 2,000원 결제일 할인"
+    type: discount
+    tiers:
+      - performanceTier: tier1
+        rate: null
+        fixedAmount: 2000
+        monthlyCap: 2000
+        perTransactionCap: null
+      - performanceTier: tier2
+        rate: null
+        fixedAmount: 2000
+        monthlyCap: 2000
+        perTransactionCap: null
+
+globalConstraints:
+  monthlyTotalDiscountCap: 50000
+  minimumAnnualSpending: null

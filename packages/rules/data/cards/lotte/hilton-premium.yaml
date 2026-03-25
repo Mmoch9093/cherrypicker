@@ -1,0 +1,60 @@
+card:
+  id: "lotte-hilton-premium"
+  issuer: "lotte"
+  name: "Hilton Honors Amex Premium"
+  nameKo: "힐튼 아너스 아멕스 프리미엄"
+  type: credit
+  annualFee:
+    domestic: 497000
+    international: 497000
+  url: "https://www.lottecard.co.kr/app/LPCDXAA_V022.lc?vtCdKndC=P14735-A14735"
+  lastUpdated: "2026-03-25"
+  source: manual
+
+performanceTiers:
+  - id: tier0
+    label: "무실적"
+    minSpending: 0
+    maxSpending: null
+
+performanceExclusions:
+  - tax_payment
+  - gift_card
+
+rewards:
+  - category: "travel"
+    label: "힐튼 호텔 이용 시 힐튼 아너스 포인트 적립"
+    type: points
+    tiers:
+      - performanceTier: tier0
+        rate: 1.2
+        monthlyCap: null
+        perTransactionCap: null
+    conditions:
+      specificMerchants:
+        - 힐튼 호텔
+  - category: "grocery"
+    label: "슈퍼마켓/음식점/백화점 힐튼 아너스 포인트 적립"
+    type: points
+    tiers:
+      - performanceTier: tier0
+        rate: 0.6
+        monthlyCap: null
+        perTransactionCap: null
+    conditions:
+      specificMerchants:
+        - 슈퍼마켓
+        - 음식점
+        - 백화점
+  - category: "uncategorized"
+    label: "전 가맹점 힐튼 아너스 포인트 기본 적립"
+    type: points
+    tiers:
+      - performanceTier: tier0
+        rate: 0.3
+        monthlyCap: null
+        perTransactionCap: null
+
+globalConstraints:
+  monthlyTotalDiscountCap: null
+  minimumAnnualSpending: null

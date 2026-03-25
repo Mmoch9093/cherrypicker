@@ -1,0 +1,49 @@
+card:
+  id: "kb-coupang-rocket-check"
+  issuer: "kb"
+  name: "쿠팡 로켓 체크"
+  nameKo: "KB국민 쿠팡 와우 체크카드"
+  type: check
+  annualFee:
+    domestic: 0
+    international: 0
+  url: "https://card.kbcard.com/CRD/DVIEW/HCAMCXPRICAC0076?mainCC=a&cooperationcode=09292"
+  lastUpdated: "2026-03-25"
+  source: manual
+
+performanceTiers:
+  - id: tier0
+    label: "무실적"
+    minSpending: 0
+    maxSpending: null
+
+performanceExclusions:
+  - tax_payment
+  - gift_card_purchase
+
+rewards:
+  - category: "online_shopping"
+    label: "쿠팡/쿠팡이츠/쿠팡플레이 2% 쿠팡캐시 적립"
+    type: cashback
+    tiers:
+      - performanceTier: tier0
+        rate: 2.0
+        monthlyCap: 20000
+        perTransactionCap: null
+    conditions:
+      specificMerchants:
+        - 쿠팡
+        - 쿠팡이츠
+        - 쿠팡플레이
+  - category: "uncategorized"
+    label: "국내외 전 가맹점 1.2% 쿠팡캐시 적립"
+    type: cashback
+    tiers:
+      - performanceTier: tier0
+        rate: 1.2
+        monthlyCap: null
+        perTransactionCap: null
+
+globalConstraints:
+  monthlyTotalDiscountCap: null
+  minimumAnnualSpending: null

@@ -1,0 +1,60 @@
+card:
+  id: "lotte-weekly-check"
+  issuer: "lotte"
+  name: "위클리 체크"
+  nameKo: "롯데카드 위클리 체크카드"
+  type: check
+  annualFee:
+    domestic: 0
+    international: 0
+  url: "https://m.card-gorilla.com/card/detail/399"
+  lastUpdated: "2026-03-25"
+  source: manual
+
+performanceTiers:
+  - id: tier0
+    label: "평일 5만원 미만"
+    minSpending: 0
+    maxSpending: 49999
+  - id: tier1
+    label: "평일 5~10만원"
+    minSpending: 50000
+    maxSpending: 99999
+  - id: tier2
+    label: "평일 10~20만원"
+    minSpending: 100000
+    maxSpending: 199999
+  - id: tier3
+    label: "평일 20만원 이상"
+    minSpending: 200000
+    maxSpending: null
+
+performanceExclusions:
+  - tax_payment
+  - gift_card
+
+rewards:
+  - category: "uncategorized"
+    label: "주말 캐시백 (평일 5~10만원 사용 시 0.5%)"
+    type: cashback
+    tiers:
+      - performanceTier: tier0
+        rate: 0
+        monthlyCap: null
+        perTransactionCap: null
+      - performanceTier: tier1
+        rate: 0.5
+        monthlyCap: 20000
+        perTransactionCap: null
+      - performanceTier: tier2
+        rate: 1.0
+        monthlyCap: 20000
+        perTransactionCap: null
+      - performanceTier: tier3
+        rate: 2.0
+        monthlyCap: 20000
+        perTransactionCap: null
+
+globalConstraints:
+  monthlyTotalDiscountCap: 20000
+  minimumAnnualSpending: null

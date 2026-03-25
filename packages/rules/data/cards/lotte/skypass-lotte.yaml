@@ -1,0 +1,47 @@
+card:
+  id: "lotte-skypass-lotte"
+  issuer: "lotte"
+  name: "SKYPASS 롯데 아멕스카드"
+  nameKo: "SKYPASS 롯데 아멕스카드"
+  type: credit
+  annualFee:
+    domestic: 37000
+    international: 37000
+  url: "https://jiwon3.lottecard.co.kr/app/LPCDADB_V100.lc?vtCdKndC=P00428-B01293"
+  lastUpdated: "2026-03-25"
+  source: manual
+
+performanceTiers:
+  - id: tier0
+    label: "무실적"
+    minSpending: 0
+    maxSpending: null
+
+performanceExclusions:
+  - tax_payment
+  - gift_card
+
+rewards:
+  - category: "uncategorized"
+    label: "국내 이용 1,000원당 1마일 스카이패스 적립"
+    type: mileage
+    tiers:
+      - performanceTier: tier0
+        rate: 0.1
+        monthlyCap: null
+        perTransactionCap: null
+  - category: "travel"
+    label: "해외 이용 1,000원당 2마일 스카이패스 적립"
+    type: mileage
+    tiers:
+      - performanceTier: tier0
+        rate: 0.2
+        monthlyCap: null
+        perTransactionCap: null
+    conditions:
+      specificMerchants:
+        - 해외가맹점
+
+globalConstraints:
+  monthlyTotalDiscountCap: null
+  minimumAnnualSpending: null

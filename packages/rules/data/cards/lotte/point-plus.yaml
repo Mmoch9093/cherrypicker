@@ -1,0 +1,52 @@
+card:
+  id: "lotte-point-plus"
+  issuer: "lotte"
+  name: "롯데포인트 플러스"
+  nameKo: "롯데포인트 플러스 카드"
+  type: credit
+  annualFee:
+    domestic: 15000
+    international: 15000
+  url: "https://jiwon3.lottecard.co.kr/app/LPCDADB_V100.lc?vtCdKndC=P00276-A00276"
+  lastUpdated: "2026-03-25"
+  source: manual
+
+performanceTiers:
+  - id: tier0
+    label: "무실적"
+    minSpending: 0
+    maxSpending: null
+
+performanceExclusions:
+  - tax_payment
+  - gift_card
+
+rewards:
+  - category: "uncategorized"
+    label: "L.POINT 제휴사 이용 시 L.POINT 더블 적립"
+    type: points
+    tiers:
+      - performanceTier: tier0
+        rate: 1.0
+        monthlyCap: null
+        perTransactionCap: null
+    conditions:
+      specificMerchants:
+        - 롯데백화점
+        - 롯데마트
+        - 롯데슈퍼
+        - 롯데시네마
+        - 올리브영
+        - 세븐일레븐
+  - category: "department_store"
+    label: "롯데백화점 6개월 할부 무이자"
+    type: points
+    tiers:
+      - performanceTier: tier0
+        rate: 0
+        monthlyCap: null
+        perTransactionCap: null
+
+globalConstraints:
+  monthlyTotalDiscountCap: null
+  minimumAnnualSpending: null

@@ -1,0 +1,67 @@
+card:
+  id: "kb-need-auto-slim"
+  issuer: "kb"
+  name: "NEED AutoSlim"
+  nameKo: "KB국민 NEED AutoSlim 카드"
+  type: credit
+  annualFee:
+    domestic: 20000
+    international: 20000
+  url: "https://card.kbcard.com/CRD/DVIEW/HCAMCXPRICAC0076?mainCC=a&cooperationcode=09063"
+  lastUpdated: "2026-03-25"
+  source: manual
+
+performanceTiers:
+  - id: tier0
+    label: "무실적"
+    minSpending: 0
+    maxSpending: 499999
+  - id: tier1
+    label: "전월 50만원 이상"
+    minSpending: 500000
+    maxSpending: null
+
+performanceExclusions:
+  - tax_payment
+  - gift_card_purchase
+
+rewards:
+  - category: "transportation"
+    label: "주유 10% 청구할인"
+    type: discount
+    tiers:
+      - performanceTier: tier0
+        rate: 0
+        monthlyCap: null
+        perTransactionCap: null
+      - performanceTier: tier1
+        rate: 10.0
+        monthlyCap: 10000
+        perTransactionCap: null
+    conditions:
+      specificMerchants:
+        - SK에너지
+        - GS칼텍스
+        - 현대오일뱅크
+        - S-Oil
+  - category: "transportation"
+    label: "자동차 정비/세차/주차 5% 청구할인"
+    type: discount
+    tiers:
+      - performanceTier: tier0
+        rate: 0
+        monthlyCap: null
+        perTransactionCap: null
+      - performanceTier: tier1
+        rate: 5.0
+        monthlyCap: 5000
+        perTransactionCap: null
+    conditions:
+      specificMerchants:
+        - 자동차정비
+        - 세차
+        - 주차
+
+globalConstraints:
+  monthlyTotalDiscountCap: 20000
+  minimumAnnualSpending: null

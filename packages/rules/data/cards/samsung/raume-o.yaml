@@ -1,0 +1,48 @@
+card:
+  id: "samsung-raume-o"
+  issuer: "samsung"
+  name: "RAUME O"
+  nameKo: "라움 오"
+  type: credit
+  annualFee:
+    domestic: 2000000
+    international: 2000000
+  url: "https://www.samsungcard.com/home/card/cardinfo/PGHPPCCCardCardinfoDetails001?code=AAP0093"
+  lastUpdated: "2026-03-25"
+  source: manual
+
+performanceTiers:
+  - id: tier0
+    label: "무실적"
+    minSpending: 0
+    maxSpending: null
+
+performanceExclusions:
+  - tax_payment
+  - gift_card_purchase
+
+rewards:
+  - category: "uncategorized"
+    label: "전 가맹점 RAUME 포인트 적립"
+    type: points
+    tiers:
+      - performanceTier: tier0
+        rate: 0.5
+        monthlyCap: null
+        perTransactionCap: null
+  - category: "travel"
+    label: "해외/면세점 추가 포인트 적립"
+    type: points
+    tiers:
+      - performanceTier: tier0
+        rate: 2.0
+        monthlyCap: null
+        perTransactionCap: null
+    conditions:
+      specificMerchants:
+        - 해외가맹점
+        - 면세점
+
+globalConstraints:
+  monthlyTotalDiscountCap: null
+  minimumAnnualSpending: null

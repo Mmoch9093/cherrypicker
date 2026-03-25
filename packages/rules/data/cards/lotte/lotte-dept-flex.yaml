@@ -1,0 +1,83 @@
+card:
+  id: "lotte-lotte-dept-flex"
+  issuer: "lotte"
+  name: "롯데백화점 FLEX"
+  nameKo: "롯데백화점 FLEX카드"
+  type: credit
+  annualFee:
+    domestic: 20000
+    international: 20000
+  url: "https://m.lottecard.co.kr/app/LPCDXAA_V005.lc"
+  lastUpdated: "2026-03-25"
+  source: manual
+
+performanceTiers:
+  - id: tier0
+    label: "무실적"
+    minSpending: 0
+    maxSpending: null
+
+performanceExclusions:
+  - tax_payment
+  - gift_card
+
+rewards:
+  - category: "department_store"
+    label: "롯데백화점 해외명품 L.POINT 7% 적립"
+    type: points
+    tiers:
+      - performanceTier: tier0
+        rate: 7.0
+        monthlyCap: null
+        perTransactionCap: null
+    conditions:
+      specificMerchants:
+        - 롯데백화점 명품관
+  - category: "department_store"
+    label: "롯데백화점 7% 현장 할인"
+    type: discount
+    tiers:
+      - performanceTier: tier0
+        rate: 7.0
+        monthlyCap: null
+        perTransactionCap: null
+    conditions:
+      specificMerchants:
+        - 롯데백화점
+  - category: "subscription"
+    label: "스트리밍 30% 할인"
+    type: discount
+    tiers:
+      - performanceTier: tier0
+        rate: 30.0
+        monthlyCap: null
+        perTransactionCap: null
+    conditions:
+      specificMerchants:
+        - 넷플릭스
+        - 유튜브프리미엄
+        - 쿠팡로켓와우
+  - category: "dining"
+    label: "커피전문점 50% 할인"
+    type: discount
+    tiers:
+      - performanceTier: tier0
+        rate: 50.0
+        monthlyCap: null
+        perTransactionCap: null
+    conditions:
+      specificMerchants:
+        - 스타벅스
+        - 투썸플레이스
+  - category: "uncategorized"
+    label: "전 가맹점 0.5% 적립"
+    type: points
+    tiers:
+      - performanceTier: tier0
+        rate: 0.5
+        monthlyCap: null
+        perTransactionCap: null
+
+globalConstraints:
+  monthlyTotalDiscountCap: null
+  minimumAnnualSpending: null

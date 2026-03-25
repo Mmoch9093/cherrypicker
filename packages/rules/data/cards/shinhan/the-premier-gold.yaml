@@ -1,0 +1,56 @@
+card:
+  id: "shinhan-the-premier-gold"
+  issuer: "shinhan"
+  name: "The PREMIER GOLD EDITION"
+  nameKo: "더 프리미어 골드 에디션"
+  type: credit
+  annualFee:
+    domestic: 297000
+    international: 297000
+  url: "https://www.shinhancard.com/pconts/html/card/apply/premium/1188306_2205.html"
+  lastUpdated: "2026-03-25"
+  source: manual
+
+performanceTiers:
+  - id: tier0
+    label: "무실적"
+    minSpending: 0
+    maxSpending: 999999
+  - id: tier1
+    label: "연 1,200만원 이상"
+    minSpending: 1000000
+    maxSpending: null
+
+performanceExclusions:
+  - tax_payment
+  - gift_card_purchase
+
+rewards:
+  - category: "travel"
+    label: "항공 마일리지 적립 (스카이패스 1,500원당 1마일)"
+    type: mileage
+    tiers:
+      - performanceTier: tier0
+        rate: 0.067
+        monthlyCap: null
+        perTransactionCap: null
+      - performanceTier: tier1
+        rate: 0.067
+        monthlyCap: null
+        perTransactionCap: null
+  - category: "uncategorized"
+    label: "전 가맹점 기본 적립"
+    type: points
+    tiers:
+      - performanceTier: tier0
+        rate: 1.0
+        monthlyCap: null
+        perTransactionCap: null
+      - performanceTier: tier1
+        rate: 1.0
+        monthlyCap: null
+        perTransactionCap: null
+
+globalConstraints:
+  monthlyTotalDiscountCap: null
+  minimumAnnualSpending: null

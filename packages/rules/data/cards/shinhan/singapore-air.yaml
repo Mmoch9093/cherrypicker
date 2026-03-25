@@ -1,0 +1,48 @@
+card:
+  id: "shinhan-singapore-air"
+  issuer: "shinhan"
+  name: "Singapore Air KrisFlyer The Best"
+  nameKo: "싱가포르항공 크리스플라이어 더 베스트 신한카드"
+  type: credit
+  annualFee:
+    domestic: 37000
+    international: 40000
+  url: "https://www.shinhancard.com/pconts/html/card/apply/premium/1221024_2205.html"
+  lastUpdated: "2026-03-25"
+  source: manual
+
+performanceTiers:
+  - id: tier0
+    label: "무실적"
+    minSpending: 0
+    maxSpending: null
+
+performanceExclusions:
+  - tax_payment
+  - gift_card_purchase
+
+rewards:
+  - category: "uncategorized"
+    label: "전 가맹점 크리스플라이어 마일리지 적립 (1,500원당 2마일)"
+    type: mileage
+    tiers:
+      - performanceTier: tier0
+        rate: 0.133
+        monthlyCap: null
+        perTransactionCap: null
+  - category: "travel"
+    label: "해외/면세점 추가 마일리지 적립 (1,500원당 0.5마일 추가)"
+    type: mileage
+    tiers:
+      - performanceTier: tier0
+        rate: 0.033
+        monthlyCap: null
+        perTransactionCap: null
+    conditions:
+      specificMerchants:
+        - 해외가맹점
+        - 면세점
+
+globalConstraints:
+  monthlyTotalDiscountCap: null
+  minimumAnnualSpending: null

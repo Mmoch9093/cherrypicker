@@ -1,0 +1,111 @@
+card:
+  id: "kb-nori-teen-check"
+  issuer: "kb"
+  name: "틴업 체크"
+  nameKo: "KB 틴업 체크카드"
+  type: check
+  annualFee:
+    domestic: 0
+    international: 0
+  url: "https://m.kbcard.com/CRD/DVIEW/MCAMCXHIACRC0002?mainCC=b&allianceCode=09659&solicitorcode=7031404016"
+  lastUpdated: "2026-03-25"
+  source: manual
+
+performanceTiers:
+  - id: tier0
+    label: "무실적 (만 12~15세)"
+    minSpending: 0
+    maxSpending: 99999
+  - id: tier1
+    label: "전월 10만원 이상 (만 16~18세)"
+    minSpending: 100000
+    maxSpending: 199999
+  - id: tier2
+    label: "전월 20만원 이상 (만 19세 이상)"
+    minSpending: 200000
+    maxSpending: null
+
+performanceExclusions:
+  - tax_payment
+  - gift_card_purchase
+
+rewards:
+  - category: "convenience_store"
+    label: "편의점/다이소/올리브영 5% 할인"
+    type: discount
+    tiers:
+      - performanceTier: tier0
+        rate: 5.0
+        monthlyCap: 1000
+        perTransactionCap: null
+      - performanceTier: tier1
+        rate: 5.0
+        monthlyCap: 1000
+        perTransactionCap: null
+      - performanceTier: tier2
+        rate: 5.0
+        monthlyCap: 1000
+        perTransactionCap: null
+    conditions:
+      specificMerchants:
+        - 편의점
+        - 다이소
+        - 올리브영
+  - category: "education"
+    label: "스터디카페/문구 5% 할인"
+    type: discount
+    tiers:
+      - performanceTier: tier0
+        rate: 5.0
+        monthlyCap: 1000
+        perTransactionCap: null
+      - performanceTier: tier1
+        rate: 5.0
+        monthlyCap: 1000
+        perTransactionCap: null
+      - performanceTier: tier2
+        rate: 5.0
+        monthlyCap: 1000
+        perTransactionCap: null
+    conditions:
+      specificMerchants:
+        - 스터디카페
+        - 독서실
+        - 문구
+  - category: "entertainment"
+    label: "PC방/모바일 앱스토어 5% 할인 (만 16세 이상)"
+    type: discount
+    tiers:
+      - performanceTier: tier1
+        rate: 5.0
+        monthlyCap: 1000
+        perTransactionCap: null
+      - performanceTier: tier2
+        rate: 5.0
+        monthlyCap: 1000
+        perTransactionCap: null
+    conditions:
+      specificMerchants:
+        - PC방
+        - 앱스토어
+        - 구글플레이
+  - category: "uncategorized"
+    label: "KB Pay 오프라인 결제 2% 할인"
+    type: discount
+    tiers:
+      - performanceTier: tier0
+        rate: 2.0
+        monthlyCap: 5000
+        perTransactionCap: null
+      - performanceTier: tier1
+        rate: 2.0
+        monthlyCap: 5000
+        perTransactionCap: null
+      - performanceTier: tier2
+        rate: 2.0
+        monthlyCap: 5000
+        perTransactionCap: null
+
+globalConstraints:
+  monthlyTotalDiscountCap: 10000
+  minimumAnnualSpending: null

@@ -1,0 +1,81 @@
+card:
+  id: "samsung-naverpay-taptap"
+  issuer: "samsung"
+  name: "네이버페이 taptap"
+  nameKo: "삼성카드 네이버페이 taptap"
+  type: credit
+  annualFee:
+    domestic: 15000
+    international: 15000
+  url: "https://www.samsungcard.com/home/card/cardinfo/PGHPPCCCardCardinfoDetails001?code=AAP1544"
+  lastUpdated: "2026-03-25"
+  source: manual
+
+performanceTiers:
+  - id: tier0
+    label: "무실적"
+    minSpending: 0
+    maxSpending: 299999
+  - id: tier1
+    label: "전월 30만원 이상"
+    minSpending: 300000
+    maxSpending: null
+
+performanceExclusions:
+  - tax_payment
+  - gift_card_purchase
+  - short_term_loan
+  - long_term_loan
+  - annual_fee
+
+rewards:
+  - category: "online_shopping"
+    label: "네이버페이 온라인 간편결제 10% 네이버페이 포인트 적립"
+    type: points
+    tiers:
+      - performanceTier: tier0
+        rate: 0
+        monthlyCap: null
+        perTransactionCap: null
+      - performanceTier: tier1
+        rate: 10.0
+        monthlyCap: null
+        perTransactionCap: null
+    conditions:
+      specificMerchants:
+        - 네이버페이 온라인
+  - category: "dining"
+    label: "커피전문점/편의점/배달앱 5% 네이버페이 포인트 적립"
+    type: points
+    tiers:
+      - performanceTier: tier0
+        rate: 0
+        monthlyCap: null
+        perTransactionCap: null
+      - performanceTier: tier1
+        rate: 5.0
+        monthlyCap: null
+        perTransactionCap: null
+    conditions:
+      specificMerchants:
+        - 커피전문점
+        - 편의점
+        - 배달의민족
+        - 쿠팡이츠
+        - 요기요
+  - category: "uncategorized"
+    label: "국내외 오프라인 가맹점 0.5% 네이버페이 포인트 적립"
+    type: points
+    tiers:
+      - performanceTier: tier0
+        rate: 0.5
+        monthlyCap: null
+        perTransactionCap: null
+      - performanceTier: tier1
+        rate: 0.5
+        monthlyCap: null
+        perTransactionCap: null
+
+globalConstraints:
+  monthlyTotalDiscountCap: null
+  minimumAnnualSpending: null

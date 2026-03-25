@@ -1,0 +1,56 @@
+card:
+  id: "kb-bev-iii"
+  issuer: "kb"
+  name: "BeV III"
+  nameKo: "KB국민 베브3 카드"
+  type: credit
+  annualFee:
+    domestic: 200000
+    international: 210000
+  url: "https://m.kbcard.com/CRD/DVIEW/MCAMCXHIACRC0002?allianceCode=09310&mainCC=b"
+  lastUpdated: "2026-03-25"
+  source: manual
+
+performanceTiers:
+  - id: tier0
+    label: "무실적"
+    minSpending: 0
+    maxSpending: null
+
+performanceExclusions:
+  - tax_payment
+  - gift_card_purchase
+
+rewards:
+  - category: "uncategorized"
+    label: "주중(월~목) 전 가맹점 1.1% 포인트리 적립"
+    type: points
+    tiers:
+      - performanceTier: tier0
+        rate: 1.1
+        monthlyCap: null
+        perTransactionCap: null
+  - category: "uncategorized"
+    label: "주말(금~일) 전 가맹점 1.3% 포인트리 적립"
+    type: points
+    tiers:
+      - performanceTier: tier0
+        rate: 1.3
+        monthlyCap: null
+        perTransactionCap: null
+  - category: "transportation"
+    label: "전 주유소 리터당 100원 할인 (월 40만원 한도)"
+    type: discount
+    tiers:
+      - performanceTier: tier0
+        rate: 3.0
+        monthlyCap: 10000
+        perTransactionCap: null
+    conditions:
+      specificMerchants:
+        - 주유소
+        - 충전소
+
+globalConstraints:
+  monthlyTotalDiscountCap: null
+  minimumAnnualSpending: null

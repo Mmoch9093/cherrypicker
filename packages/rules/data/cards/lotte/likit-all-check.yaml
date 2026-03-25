@@ -1,0 +1,55 @@
+card:
+  id: "lotte-likit-all-check"
+  issuer: "lotte"
+  name: "LIKIT ALL 체크"
+  nameKo: "롯데카드 LIKIT ALL 체크카드"
+  type: check
+  annualFee:
+    domestic: 0
+    international: 0
+  url: "https://www.lottecard.co.kr/app/LPCDADB_V100.lc?vtCdKndC=C12667-A12667"
+  lastUpdated: "2026-03-25"
+  source: manual
+
+performanceTiers:
+  - id: tier0
+    label: "무실적"
+    minSpending: 0
+    maxSpending: 299999
+  - id: tier1
+    label: "전월 30만원 이상"
+    minSpending: 300000
+    maxSpending: null
+
+performanceExclusions:
+  - tax_payment
+  - gift_card
+  - apartment_mgmt
+  - tuition
+  - utility_bills
+
+rewards:
+  - category: "uncategorized"
+    label: "전 가맹점 0.5% 캐시백"
+    type: cashback
+    tiers:
+      - performanceTier: tier0
+        rate: 0
+        monthlyCap: null
+        perTransactionCap: null
+      - performanceTier: tier1
+        rate: 0.5
+        monthlyCap: null
+        perTransactionCap: null
+  - category: "uncategorized"
+    label: "주말/공휴일 0.2% 추가 캐시백"
+    type: cashback
+    tiers:
+      - performanceTier: tier1
+        rate: 0.2
+        monthlyCap: null
+        perTransactionCap: null
+
+globalConstraints:
+  monthlyTotalDiscountCap: null
+  minimumAnnualSpending: null

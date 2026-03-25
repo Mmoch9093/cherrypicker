@@ -1,0 +1,92 @@
+card:
+  id: "kb-you-prime"
+  issuer: "kb"
+  name: "YOU Prime"
+  nameKo: "KB YOU Prime 카드"
+  type: credit
+  annualFee:
+    domestic: 97000
+    international: 97000
+  url: "https://m.kbcard.com/CRD/DVIEW/MCAMCXHIACRC0002?amp;allianceCode=09016&mainCC=b"
+  lastUpdated: "2026-03-25"
+  source: manual
+
+performanceTiers:
+  - id: tier0
+    label: "무실적"
+    minSpending: 0
+    maxSpending: 499999
+  - id: tier1
+    label: "전월 50만원 이상"
+    minSpending: 500000
+    maxSpending: null
+
+performanceExclusions:
+  - tax_payment
+  - gift_card_purchase
+
+rewards:
+  - category: "transportation"
+    label: "주유 10% 청구할인 (일상팩 선택 시)"
+    type: discount
+    tiers:
+      - performanceTier: tier0
+        rate: 0
+        monthlyCap: null
+        perTransactionCap: null
+      - performanceTier: tier1
+        rate: 10.0
+        monthlyCap: 10000
+        perTransactionCap: null
+    conditions:
+      specificMerchants:
+        - 주유소
+  - category: "dining"
+    label: "배달앱 10% 청구할인 (일상팩 선택 시)"
+    type: discount
+    tiers:
+      - performanceTier: tier0
+        rate: 0
+        monthlyCap: null
+        perTransactionCap: null
+      - performanceTier: tier1
+        rate: 10.0
+        monthlyCap: 10000
+        perTransactionCap: null
+    conditions:
+      specificMerchants:
+        - 배달의민족
+        - 쿠팡이츠
+        - 요기요
+  - category: "telecom"
+    label: "이동통신 10% 청구할인 (일상팩 선택 시)"
+    type: discount
+    tiers:
+      - performanceTier: tier0
+        rate: 0
+        monthlyCap: null
+        perTransactionCap: null
+      - performanceTier: tier1
+        rate: 10.0
+        monthlyCap: 10000
+        perTransactionCap: null
+  - category: "education"
+    label: "학원비 10% 청구할인 (가족팩 선택 시)"
+    type: discount
+    tiers:
+      - performanceTier: tier0
+        rate: 0
+        monthlyCap: null
+        perTransactionCap: null
+      - performanceTier: tier1
+        rate: 10.0
+        monthlyCap: 10000
+        perTransactionCap: null
+    conditions:
+      specificMerchants:
+        - 학원
+        - 학습지
+
+globalConstraints:
+  monthlyTotalDiscountCap: 60000
+  minimumAnnualSpending: null
