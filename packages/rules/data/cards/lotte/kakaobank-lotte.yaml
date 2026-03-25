@@ -1,0 +1,70 @@
+card:
+  id: lotte-kakaobank-lotte
+  issuer: lotte
+  name: Kakaobank Lotte Card
+  nameKo: 카카오뱅크 롯데카드
+  type: credit
+  annualFee:
+    domestic: 10000
+    international: 10000
+  url: ""
+  lastUpdated: "2026-03-25"
+  source: manual
+
+performanceTiers:
+  - id: tier0
+    label: "무실적"
+    minSpending: 0
+    maxSpending: 299999
+  - id: tier1
+    label: "전월 30만원 이상"
+    minSpending: 300000
+    maxSpending: null
+
+performanceExclusions:
+  - tax_payment
+  - gift_card
+
+rewards:
+  - category: "uncategorized"
+    label: "전 가맹점 캐시백"
+    type: cashback
+    tiers:
+      - performanceTier: tier0
+        rate: 0
+        monthlyCap: null
+        perTransactionCap: null
+      - performanceTier: tier1
+        rate: 0.5
+        monthlyCap: null
+        perTransactionCap: null
+
+  - category: "online_shopping"
+    label: "온라인 간편결제 추가 캐시백"
+    type: cashback
+    tiers:
+      - performanceTier: tier0
+        rate: 0
+        monthlyCap: null
+        perTransactionCap: null
+      - performanceTier: tier1
+        rate: 1.0
+        monthlyCap: 5000
+        perTransactionCap: null
+
+  - category: "convenience_store"
+    label: "편의점 추가 캐시백"
+    type: cashback
+    tiers:
+      - performanceTier: tier0
+        rate: 0
+        monthlyCap: null
+        perTransactionCap: null
+      - performanceTier: tier1
+        rate: 5.0
+        monthlyCap: 3000
+        perTransactionCap: null
+
+globalConstraints:
+  monthlyTotalDiscountCap: 15000
+  minimumAnnualSpending: null

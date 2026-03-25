@@ -1,0 +1,47 @@
+card:
+  id: hana-skypass-check
+  issuer: hana
+  name: Hana Skypass Check Card
+  nameKo: 하나카드 스카이패스 체크카드
+  type: check
+  annualFee:
+    domestic: 10000
+    international: 10000
+  url: ""
+  lastUpdated: "2026-03-25"
+  source: manual
+
+performanceTiers:
+  - id: tier0
+    label: 무실적
+    minSpending: 0
+    maxSpending: null
+
+performanceExclusions:
+  - tax_payment
+  - gift_card
+
+rewards:
+  - category: uncategorized
+    label: 국내 가맹점 1,500원당 1마일 대한항공 적립
+    type: points
+    tiers:
+      - performanceTier: tier0
+        rate: 0.067
+        monthlyCap: null
+        perTransactionCap: null
+
+  - category: travel
+    label: 해외 가맹점 1,500원당 2마일 대한항공 적립
+    type: points
+    tiers:
+      - performanceTier: tier0
+        rate: 0.133
+        monthlyCap: null
+        perTransactionCap: null
+    conditions:
+      paymentType: overseas
+
+globalConstraints:
+  monthlyTotalDiscountCap: null
+  minimumAnnualSpending: null

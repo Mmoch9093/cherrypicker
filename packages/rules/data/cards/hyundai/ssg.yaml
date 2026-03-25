@@ -1,0 +1,83 @@
+card:
+  id: hyundai-ssg
+  issuer: hyundai
+  name: SSG.COM Hyundai Card
+  nameKo: SSG.COM 현대카드
+  type: credit
+  annualFee:
+    domestic: 15000
+    international: 15000
+  url: ""
+  lastUpdated: "2026-03-25"
+  source: manual
+
+performanceTiers:
+  - id: tier0
+    label: 무실적
+    minSpending: 0
+    maxSpending: 299999
+
+  - id: tier1
+    label: 전월 30만원 이상
+    minSpending: 300000
+    maxSpending: null
+
+performanceExclusions:
+  - tax_payment
+  - utility_bills
+  - apartment_mgmt
+  - tuition
+  - gift_card
+
+rewards:
+  - category: online_shopping
+    label: SSG.COM 3% SSG MONEY 적립
+    type: points
+    tiers:
+      - performanceTier: tier0
+        rate: 0
+        monthlyCap: null
+        perTransactionCap: null
+      - performanceTier: tier1
+        rate: 3.0
+        monthlyCap: 30000
+        perTransactionCap: null
+    conditions:
+      specificMerchants:
+        - SSG닷컴
+        - 쓱닷컴
+        - SSG.COM
+
+  - category: grocery
+    label: 이마트/트레이더스 1% SSG MONEY 적립
+    type: points
+    tiers:
+      - performanceTier: tier0
+        rate: 0
+        monthlyCap: null
+        perTransactionCap: null
+      - performanceTier: tier1
+        rate: 1.0
+        monthlyCap: 10000
+        perTransactionCap: null
+    conditions:
+      specificMerchants:
+        - 이마트
+        - 트레이더스
+
+  - category: uncategorized
+    label: 전 가맹점 기본 적립
+    type: points
+    tiers:
+      - performanceTier: tier0
+        rate: 0
+        monthlyCap: null
+        perTransactionCap: null
+      - performanceTier: tier1
+        rate: 0.5
+        monthlyCap: null
+        perTransactionCap: null
+
+globalConstraints:
+  monthlyTotalDiscountCap: null
+  minimumAnnualSpending: null

@@ -1,0 +1,68 @@
+card:
+  id: samsung-ssg
+  issuer: samsung
+  name: SSG.COM Samsung Card
+  nameKo: SSG.COM 삼성카드
+  type: credit
+  annualFee:
+    domestic: 15000
+    international: 15000
+  url: https://www.samsungcard.com/personal/card/cardfinder/UHPPCA0102M0.jsp?code=AAP1683
+  lastUpdated: "2026-03-25"
+  source: manual
+
+performanceTiers:
+  - id: tier0
+    label: 무실적
+    minSpending: 0
+    maxSpending: 299999
+
+  - id: tier1
+    label: 전월 30만원 이상
+    minSpending: 300000
+    maxSpending: null
+
+performanceExclusions:
+  - tax_payment
+  - gift_card
+  - short_term_loan
+
+rewards:
+  - category: online_shopping
+    label: SSG.COM 10% SSG MONEY 적립
+    type: points
+    tiers:
+      - performanceTier: tier0
+        rate: 0
+        monthlyCap: null
+        perTransactionCap: null
+      - performanceTier: tier1
+        rate: 10.0
+        monthlyCap: 30000
+        perTransactionCap: null
+    conditions:
+      specificMerchants:
+        - SSG닷컴
+        - 쓱닷컴
+        - SSG.COM
+
+  - category: grocery
+    label: 이마트/트레이더스 1% SSG MONEY 적립
+    type: points
+    tiers:
+      - performanceTier: tier0
+        rate: 0
+        monthlyCap: null
+        perTransactionCap: null
+      - performanceTier: tier1
+        rate: 1.0
+        monthlyCap: 10000
+        perTransactionCap: null
+    conditions:
+      specificMerchants:
+        - 이마트
+        - 트레이더스
+
+globalConstraints:
+  monthlyTotalDiscountCap: 40000
+  minimumAnnualSpending: null

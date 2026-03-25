@@ -1,0 +1,64 @@
+card:
+  id: lotte-naverpay-shopping
+  issuer: lotte
+  name: Naver Pay Shopping & Lotte Card
+  nameKo: 네이버페이 쇼핑엔로카
+  type: credit
+  annualFee:
+    domestic: 10000
+    international: 10000
+  url: ""
+  lastUpdated: "2026-03-25"
+  source: manual
+
+performanceTiers:
+  - id: tier0
+    label: 무실적
+    minSpending: 0
+    maxSpending: 299999
+
+  - id: tier1
+    label: 전월 30만원 이상
+    minSpending: 300000
+    maxSpending: null
+
+performanceExclusions:
+  - tax_payment
+  - gift_card
+  - short_term_loan
+
+rewards:
+  - category: online_shopping
+    label: 네이버페이 결제 시 1.5% 네이버페이 포인트 적립
+    type: points
+    tiers:
+      - performanceTier: tier0
+        rate: 0
+        monthlyCap: null
+        perTransactionCap: null
+      - performanceTier: tier1
+        rate: 1.5
+        monthlyCap: 15000
+        perTransactionCap: null
+    conditions:
+      specificMerchants:
+        - 네이버
+        - 네이버쇼핑
+        - 네이버페이
+
+  - category: uncategorized
+    label: 일반 가맹점 0.5% 적립
+    type: points
+    tiers:
+      - performanceTier: tier0
+        rate: 0
+        monthlyCap: null
+        perTransactionCap: null
+      - performanceTier: tier1
+        rate: 0.5
+        monthlyCap: 10000
+        perTransactionCap: null
+
+globalConstraints:
+  monthlyTotalDiscountCap: 15000
+  minimumAnnualSpending: null

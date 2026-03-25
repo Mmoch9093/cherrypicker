@@ -1,0 +1,34 @@
+card:
+  id: woori-k-pass
+  issuer: woori
+  name: K-Pass Woori Card
+  nameKo: K-패스 우리카드
+  type: credit
+  annualFee:
+    domestic: 2000
+    international: 2000
+  url: ""
+  lastUpdated: "2026-03-25"
+  source: manual
+
+performanceTiers:
+  - id: tier0
+    label: 무실적
+    minSpending: 0
+    maxSpending: null
+
+performanceExclusions: []
+
+rewards:
+  - category: public_transit
+    label: 대중교통 이용금액 환급 (일반 20%, 청년 30%, 저소득 53%)
+    type: discount
+    tiers:
+      - performanceTier: tier0
+        rate: 20.0
+        monthlyCap: null
+        perTransactionCap: null
+
+globalConstraints:
+  monthlyTotalDiscountCap: null
+  minimumAnnualSpending: null

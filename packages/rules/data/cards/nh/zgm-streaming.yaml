@@ -1,0 +1,87 @@
+card:
+  id: nh-zgm-streaming
+  issuer: nh
+  name: zgm.streaming
+  nameKo: 지금 스트리밍 카드
+  type: credit
+  annualFee:
+    domestic: 12000
+    international: 12000
+  url: ""
+  lastUpdated: "2026-03-25"
+  source: manual
+
+performanceTiers:
+  - id: tier0
+    label: "무실적"
+    minSpending: 0
+    maxSpending: 399999
+  - id: tier1
+    label: "전월 40만원 이상"
+    minSpending: 400000
+    maxSpending: null
+
+performanceExclusions:
+  - tax_payment
+  - gift_card_purchase
+
+rewards:
+  - category: "entertainment"
+    label: "스트리밍 할인 (넷플릭스/웨이브/티빙/멜론 등)"
+    type: discount
+    tiers:
+      - performanceTier: tier0
+        rate: 0
+        monthlyCap: null
+        perTransactionCap: null
+      - performanceTier: tier1
+        rate: 50.0
+        monthlyCap: 7000
+        perTransactionCap: null
+    conditions:
+      specificMerchants:
+        - 넷플릭스
+        - 웨이브
+        - 티빙
+        - 멜론
+        - 지니뮤직
+        - 스포티파이
+
+  - category: "subscription"
+    label: "멤버십 할인"
+    type: discount
+    tiers:
+      - performanceTier: tier0
+        rate: 0
+        monthlyCap: null
+        perTransactionCap: null
+      - performanceTier: tier1
+        rate: null
+        fixedAmount: 7000
+        monthlyCap: 7000
+        perTransactionCap: null
+    conditions:
+      specificMerchants:
+        - 네이버플러스멤버십
+        - 쿠팡로켓와우
+        - SSG닷컴
+
+  - category: "dining"
+    label: "스타벅스 사이렌오더 할인"
+    type: discount
+    tiers:
+      - performanceTier: tier0
+        rate: 0
+        monthlyCap: null
+        perTransactionCap: null
+      - performanceTier: tier1
+        rate: 50.0
+        monthlyCap: 5000
+        perTransactionCap: null
+    conditions:
+      specificMerchants:
+        - 스타벅스
+
+globalConstraints:
+  monthlyTotalDiscountCap: 20000
+  minimumAnnualSpending: null

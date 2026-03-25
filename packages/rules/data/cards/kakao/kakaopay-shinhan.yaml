@@ -1,0 +1,72 @@
+card:
+  id: kakao-kakaopay-shinhan
+  issuer: kakao
+  name: Kakao Pay Shinhan Card Time
+  nameKo: 카카오뱅크 신한카드 Time
+  type: credit
+  annualFee:
+    domestic: 15000
+    international: 18000
+  url: https://www.kakaobank.com/products/creditCard/detail?card_gds_code=000100015
+  lastUpdated: "2026-03-25"
+  source: manual
+
+performanceTiers:
+  - id: tier0
+    label: 무실적
+    minSpending: 0
+    maxSpending: 299999
+
+  - id: tier1
+    label: 전월 30만원 이상
+    minSpending: 300000
+    maxSpending: null
+
+performanceExclusions:
+  - tax_payment
+  - gift_card
+  - short_term_loan
+
+rewards:
+  - category: dining
+    label: 점심시간(11-14시) 외식 5% 할인
+    type: discount
+    tiers:
+      - performanceTier: tier0
+        rate: 0
+        monthlyCap: null
+        perTransactionCap: null
+      - performanceTier: tier1
+        rate: 5.0
+        monthlyCap: 10000
+        perTransactionCap: null
+
+  - category: public_transit
+    label: 대중교통 5% 할인
+    type: discount
+    tiers:
+      - performanceTier: tier0
+        rate: 0
+        monthlyCap: null
+        perTransactionCap: null
+      - performanceTier: tier1
+        rate: 5.0
+        monthlyCap: 5000
+        perTransactionCap: null
+
+  - category: entertainment
+    label: OTT 스트리밍 5% 할인
+    type: discount
+    tiers:
+      - performanceTier: tier0
+        rate: 0
+        monthlyCap: null
+        perTransactionCap: null
+      - performanceTier: tier1
+        rate: 5.0
+        monthlyCap: 5000
+        perTransactionCap: null
+
+globalConstraints:
+  monthlyTotalDiscountCap: 20000
+  minimumAnnualSpending: null

@@ -1,0 +1,43 @@
+card:
+  id: kbank-k-pass-check
+  issuer: kbank
+  name: K Bank ONE K-Pass Check Card
+  nameKo: 케이뱅크 ONE K-패스 체크카드
+  type: check
+  annualFee:
+    domestic: 0
+    international: 0
+  url: ""
+  lastUpdated: "2026-03-25"
+  source: manual
+
+performanceTiers:
+  - id: tier0
+    label: 무실적
+    minSpending: 0
+    maxSpending: null
+
+performanceExclusions: []
+
+rewards:
+  - category: public_transit
+    label: 대중교통 이용금액 환급 (일반 20%, 청년 30%, 저소득 53%)
+    type: discount
+    tiers:
+      - performanceTier: tier0
+        rate: 20.0
+        monthlyCap: null
+        perTransactionCap: null
+
+  - category: uncategorized
+    label: 국내 전 가맹점 0.2% 캐시백
+    type: discount
+    tiers:
+      - performanceTier: tier0
+        rate: 0.2
+        monthlyCap: null
+        perTransactionCap: null
+
+globalConstraints:
+  monthlyTotalDiscountCap: null
+  minimumAnnualSpending: null

@@ -1,0 +1,47 @@
+card:
+  id: hyundai-costco-check
+  issuer: hyundai
+  name: Costco Hyundai Check Card
+  nameKo: 코스트코 현대카드 체크
+  type: check
+  annualFee:
+    domestic: 0
+    international: 0
+  url: ""
+  lastUpdated: "2026-03-25"
+  source: manual
+
+performanceTiers:
+  - id: tier0
+    label: 무실적
+    minSpending: 0
+    maxSpending: null
+
+performanceExclusions: []
+
+rewards:
+  - category: grocery
+    label: 코스트코 1.5% 적립
+    type: points
+    tiers:
+      - performanceTier: tier0
+        rate: 1.5
+        monthlyCap: null
+        perTransactionCap: null
+    conditions:
+      specificMerchants:
+        - 코스트코
+        - COSTCO
+
+  - category: uncategorized
+    label: 전 가맹점 0.5% 적립
+    type: points
+    tiers:
+      - performanceTier: tier0
+        rate: 0.5
+        monthlyCap: null
+        perTransactionCap: null
+
+globalConstraints:
+  monthlyTotalDiscountCap: null
+  minimumAnnualSpending: null

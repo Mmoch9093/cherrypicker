@@ -1,0 +1,79 @@
+card:
+  id: lotte-loca-for-travel
+  issuer: lotte
+  name: LOCA for Travel
+  nameKo: LOCA for 트래블
+  type: credit
+  annualFee:
+    domestic: 15000
+    international: 15000
+  url: ""
+  lastUpdated: "2026-03-25"
+  source: manual
+
+performanceTiers:
+  - id: tier0
+    label: 무실적
+    minSpending: 0
+    maxSpending: 299999
+
+  - id: tier1
+    label: 전월 30만원 이상
+    minSpending: 300000
+    maxSpending: null
+
+performanceExclusions:
+  - tax_payment
+  - gift_card
+  - short_term_loan
+
+rewards:
+  - category: travel
+    label: 해외 가맹점 2% 할인 + 수수료 면제
+    type: discount
+    tiers:
+      - performanceTier: tier0
+        rate: 0
+        monthlyCap: null
+        perTransactionCap: null
+      - performanceTier: tier1
+        rate: 2.0
+        monthlyCap: 20000
+        perTransactionCap: null
+    conditions:
+      paymentType: overseas
+
+  - category: travel
+    label: 숙박앱(야놀자/여기어때) 5% 할인
+    type: discount
+    tiers:
+      - performanceTier: tier0
+        rate: 0
+        monthlyCap: null
+        perTransactionCap: null
+      - performanceTier: tier1
+        rate: 5.0
+        monthlyCap: 10000
+        perTransactionCap: null
+    conditions:
+      specificMerchants:
+        - 야놀자
+        - 여기어때
+        - 데일리호텔
+
+  - category: uncategorized
+    label: 국내 전 가맹점 0.5% 할인
+    type: discount
+    tiers:
+      - performanceTier: tier0
+        rate: 0
+        monthlyCap: null
+        perTransactionCap: null
+      - performanceTier: tier1
+        rate: 0.5
+        monthlyCap: 5000
+        perTransactionCap: null
+
+globalConstraints:
+  monthlyTotalDiscountCap: 35000
+  minimumAnnualSpending: null

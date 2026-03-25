@@ -1,0 +1,96 @@
+card:
+  id: hana-1q-my-edu
+  issuer: hana
+  name: 1Q My Edu
+  nameKo: 하나 1Q My Edu
+  type: credit
+  annualFee:
+    domestic: 15000
+    international: 17000
+  url: "https://m.hanacard.co.kr/MPACMM101M.web?CD_PD_SEQ=11004"
+  lastUpdated: "2026-03-25"
+  source: manual
+
+performanceTiers:
+  - id: tier0
+    label: "무실적"
+    minSpending: 0
+    maxSpending: 299999
+  - id: tier1
+    label: "전월 30만원 이상"
+    minSpending: 300000
+    maxSpending: null
+
+performanceExclusions:
+  - tax_payment
+  - gift_card_purchase
+
+rewards:
+  - category: "education"
+    label: "학원비 적립"
+    type: points
+    tiers:
+      - performanceTier: tier0
+        rate: 0
+        monthlyCap: null
+        perTransactionCap: null
+      - performanceTier: tier1
+        rate: 5.0
+        monthlyCap: 10000
+        perTransactionCap: null
+
+  - category: "education"
+    label: "인터넷서적 적립"
+    type: points
+    tiers:
+      - performanceTier: tier0
+        rate: 0
+        monthlyCap: null
+        perTransactionCap: null
+      - performanceTier: tier1
+        rate: 7.0
+        monthlyCap: 5000
+        perTransactionCap: null
+
+  - category: "grocery"
+    label: "대형마트 적립"
+    type: points
+    tiers:
+      - performanceTier: tier0
+        rate: 0
+        monthlyCap: null
+        perTransactionCap: null
+      - performanceTier: tier1
+        rate: 7.0
+        monthlyCap: 5000
+        perTransactionCap: null
+
+  - category: "public_transit"
+    label: "대중교통 적립"
+    type: points
+    tiers:
+      - performanceTier: tier0
+        rate: 0
+        monthlyCap: null
+        perTransactionCap: null
+      - performanceTier: tier1
+        rate: 7.0
+        monthlyCap: 5000
+        perTransactionCap: null
+
+  - category: "telecom"
+    label: "통신비 적립"
+    type: points
+    tiers:
+      - performanceTier: tier0
+        rate: 0
+        monthlyCap: null
+        perTransactionCap: null
+      - performanceTier: tier1
+        rate: 7.0
+        monthlyCap: 5000
+        perTransactionCap: null
+
+globalConstraints:
+  monthlyTotalDiscountCap: null
+  minimumAnnualSpending: null

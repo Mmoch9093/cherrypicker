@@ -1,0 +1,52 @@
+card:
+  id: samsung-ssg-check
+  issuer: samsung
+  name: SSG.COM Samsung Check Card
+  nameKo: SSG.COM 삼성카드 체크
+  type: check
+  annualFee:
+    domestic: 0
+    international: 0
+  url: ""
+  lastUpdated: "2026-03-25"
+  source: manual
+
+performanceTiers:
+  - id: tier0
+    label: 무실적
+    minSpending: 0
+    maxSpending: null
+
+performanceExclusions: []
+
+rewards:
+  - category: online_shopping
+    label: SSG.COM 5% SSG MONEY 적립
+    type: points
+    tiers:
+      - performanceTier: tier0
+        rate: 5.0
+        monthlyCap: 15000
+        perTransactionCap: null
+    conditions:
+      specificMerchants:
+        - SSG닷컴
+        - 쓱닷컴
+        - SSG.COM
+
+  - category: grocery
+    label: 이마트/트레이더스 0.5% SSG MONEY 적립
+    type: points
+    tiers:
+      - performanceTier: tier0
+        rate: 0.5
+        monthlyCap: 5000
+        perTransactionCap: null
+    conditions:
+      specificMerchants:
+        - 이마트
+        - 트레이더스
+
+globalConstraints:
+  monthlyTotalDiscountCap: 20000
+  minimumAnnualSpending: null

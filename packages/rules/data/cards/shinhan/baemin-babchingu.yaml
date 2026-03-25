@@ -1,0 +1,64 @@
+card:
+  id: shinhan-baemin-babchingu
+  issuer: shinhan
+  name: Baemin Shinhan Card Babchingu
+  nameKo: 배민 신한카드 밥친구
+  type: credit
+  annualFee:
+    domestic: 12000
+    international: 15000
+  url: https://www.shinhancard.com/pconts/html/card/apply/credit/1234575_2207.html
+  lastUpdated: "2026-03-25"
+  source: manual
+
+performanceTiers:
+  - id: tier0
+    label: 무실적
+    minSpending: 0
+    maxSpending: 199999
+
+  - id: tier1
+    label: 전월 20만원 이상
+    minSpending: 200000
+    maxSpending: null
+
+performanceExclusions:
+  - tax_payment
+  - gift_card
+  - short_term_loan
+  - long_term_loan
+
+rewards:
+  - category: dining
+    label: 배달의민족 음식배달/장보기 5% 할인
+    type: discount
+    tiers:
+      - performanceTier: tier0
+        rate: 0
+        monthlyCap: null
+        perTransactionCap: null
+      - performanceTier: tier1
+        rate: 5.0
+        monthlyCap: 30000
+        perTransactionCap: null
+    conditions:
+      specificMerchants:
+        - 배달의민족
+        - 배민
+
+  - category: uncategorized
+    label: 국내외 전 가맹점 1% 할인
+    type: discount
+    tiers:
+      - performanceTier: tier0
+        rate: 0
+        monthlyCap: null
+        perTransactionCap: null
+      - performanceTier: tier1
+        rate: 1.0
+        monthlyCap: 10000
+        perTransactionCap: null
+
+globalConstraints:
+  monthlyTotalDiscountCap: 40000
+  minimumAnnualSpending: null

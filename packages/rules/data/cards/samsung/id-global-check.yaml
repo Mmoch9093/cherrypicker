@@ -1,0 +1,45 @@
+card:
+  id: samsung-id-global-check
+  issuer: samsung
+  name: Samsung iD GLOBAL Check Card
+  nameKo: 삼성 iD GLOBAL 체크카드
+  type: check
+  annualFee:
+    domestic: 0
+    international: 0
+  url: ""
+  lastUpdated: "2026-03-25"
+  source: manual
+
+performanceTiers:
+  - id: tier0
+    label: 무실적
+    minSpending: 0
+    maxSpending: null
+
+performanceExclusions: []
+
+rewards:
+  - category: travel
+    label: 해외 가맹점 이용 수수료 면제 + 0.5% 캐시백
+    type: discount
+    tiers:
+      - performanceTier: tier0
+        rate: 0.5
+        monthlyCap: 10000
+        perTransactionCap: null
+    conditions:
+      paymentType: overseas
+
+  - category: uncategorized
+    label: 국내 가맹점 0.2% 캐시백
+    type: discount
+    tiers:
+      - performanceTier: tier0
+        rate: 0.2
+        monthlyCap: null
+        perTransactionCap: null
+
+globalConstraints:
+  monthlyTotalDiscountCap: null
+  minimumAnnualSpending: null

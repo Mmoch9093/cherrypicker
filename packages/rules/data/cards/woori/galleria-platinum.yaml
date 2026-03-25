@@ -1,0 +1,75 @@
+card:
+  id: woori-galleria-platinum
+  issuer: woori
+  name: Galleria Platinum
+  nameKo: 갤러리아 플래티넘 우리카드
+  type: credit
+  annualFee:
+    domestic: 30000
+    international: 30000
+  url: ""
+  lastUpdated: "2026-03-25"
+  source: manual
+
+performanceTiers:
+  - id: tier0
+    label: "무실적"
+    minSpending: 0
+    maxSpending: 499999
+  - id: tier1
+    label: "전월 50만원 이상"
+    minSpending: 500000
+    maxSpending: null
+
+performanceExclusions:
+  - tax_payment
+
+rewards:
+  - category: "offline_shopping"
+    label: "갤러리아백화점 현장할인"
+    type: discount
+    tiers:
+      - performanceTier: tier0
+        rate: 0
+        monthlyCap: null
+        perTransactionCap: null
+      - performanceTier: tier1
+        rate: 5.0
+        monthlyCap: 50000
+        perTransactionCap: null
+    conditions:
+      specificMerchants:
+        - 갤러리아백화점
+
+  - category: "offline_shopping"
+    label: "갤러리아백화점 청구할인"
+    type: discount
+    tiers:
+      - performanceTier: tier0
+        rate: 0
+        monthlyCap: null
+        perTransactionCap: null
+      - performanceTier: tier1
+        rate: 7.0
+        monthlyCap: 50000
+        perTransactionCap: null
+    conditions:
+      specificMerchants:
+        - 갤러리아백화점
+
+  - category: "uncategorized"
+    label: "생활영역 청구할인"
+    type: discount
+    tiers:
+      - performanceTier: tier0
+        rate: 0
+        monthlyCap: null
+        perTransactionCap: null
+      - performanceTier: tier1
+        rate: 3.0
+        monthlyCap: 30000
+        perTransactionCap: null
+
+globalConstraints:
+  monthlyTotalDiscountCap: null
+  minimumAnnualSpending: null

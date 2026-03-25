@@ -1,0 +1,48 @@
+card:
+  id: shinhan-naverpay-linefriends
+  issuer: shinhan
+  name: Naver Pay Line Friends Shinhan Card
+  nameKo: 네이버페이 라인프렌즈 신한카드
+  type: credit
+  annualFee:
+    domestic: 7000
+    international: 10000
+  url: https://www.shinhancard.com/pconts/html/card/apply/credit/1196945_2207.html
+  lastUpdated: "2026-03-25"
+  source: manual
+
+performanceTiers:
+  - id: tier0
+    label: 무실적
+    minSpending: 0
+    maxSpending: null
+
+performanceExclusions: []
+
+rewards:
+  - category: online_shopping
+    label: 네이버 결제 시 2% 네이버페이 포인트 적립
+    type: points
+    tiers:
+      - performanceTier: tier0
+        rate: 2.0
+        monthlyCap: null
+        perTransactionCap: null
+    conditions:
+      specificMerchants:
+        - 네이버
+        - 네이버쇼핑
+        - 네이버페이
+
+  - category: uncategorized
+    label: 네이버 외 국내외 가맹점 0.5% 적립
+    type: points
+    tiers:
+      - performanceTier: tier0
+        rate: 0.5
+        monthlyCap: null
+        perTransactionCap: null
+
+globalConstraints:
+  monthlyTotalDiscountCap: null
+  minimumAnnualSpending: null

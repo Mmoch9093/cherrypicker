@@ -1,0 +1,86 @@
+card:
+  id: hana-1q-daily-plus
+  issuer: hana
+  name: 1Q Daily+
+  nameKo: 하나 1Q Daily+
+  type: credit
+  annualFee:
+    domestic: 10000
+    international: 10000
+  url: "https://m.hanacard.co.kr/MPACMM101M.web?CD_PD_SEQ=9367"
+  lastUpdated: "2026-03-25"
+  source: manual
+
+performanceTiers:
+  - id: tier0
+    label: "무실적"
+    minSpending: 0
+    maxSpending: 299999
+  - id: tier1
+    label: "전월 30만원 이상"
+    minSpending: 300000
+    maxSpending: null
+
+performanceExclusions:
+  - tax_payment
+  - gift_card_purchase
+
+rewards:
+  - category: "uncategorized"
+    label: "국내가맹점 기본 적립"
+    type: points
+    tiers:
+      - performanceTier: tier0
+        rate: 0
+        monthlyCap: null
+        perTransactionCap: null
+      - performanceTier: tier1
+        rate: 0.5
+        monthlyCap: null
+        perTransactionCap: null
+
+  - category: "online_shopping"
+    label: "온라인쇼핑 추가 적립"
+    type: points
+    tiers:
+      - performanceTier: tier0
+        rate: 0
+        monthlyCap: null
+        perTransactionCap: null
+      - performanceTier: tier1
+        rate: null
+        fixedAmount: 5000
+        monthlyCap: 5000
+        perTransactionCap: null
+
+  - category: "telecom"
+    label: "통신/교통/공과금 적립"
+    type: points
+    tiers:
+      - performanceTier: tier0
+        rate: 0
+        monthlyCap: null
+        perTransactionCap: null
+      - performanceTier: tier1
+        rate: null
+        fixedAmount: 5000
+        monthlyCap: 5000
+        perTransactionCap: null
+
+  - category: "dining"
+    label: "커피전문점 할인"
+    type: discount
+    tiers:
+      - performanceTier: tier0
+        rate: 0
+        monthlyCap: null
+        perTransactionCap: null
+      - performanceTier: tier1
+        rate: null
+        fixedAmount: 4000
+        monthlyCap: 4000
+        perTransactionCap: null
+
+globalConstraints:
+  monthlyTotalDiscountCap: null
+  minimumAnnualSpending: null

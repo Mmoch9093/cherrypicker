@@ -1,0 +1,61 @@
+card:
+  id: shinhan-sol-travel-j-check
+  issuer: shinhan
+  name: SOL Travel J Check
+  nameKo: SOL트래블J 체크카드
+  type: check
+  annualFee:
+    domestic: 0
+    international: 0
+  url: "https://www.shinhancard.com/pconts/html/card/apply/check/1232877_2206.html"
+  lastUpdated: "2026-03-25"
+  source: manual
+
+performanceTiers:
+  - id: tier0
+    label: "무실적"
+    minSpending: 0
+    maxSpending: null
+
+performanceExclusions: []
+
+rewards:
+  - category: "travel"
+    label: "해외 가맹점 캐시백"
+    type: cashback
+    tiers:
+      - performanceTier: tier0
+        rate: 0.5
+        monthlyCap: null
+        perTransactionCap: null
+
+  - category: "dining"
+    label: "일본 돈키호테/스타벅스 할인"
+    type: discount
+    tiers:
+      - performanceTier: tier0
+        rate: 50.0
+        monthlyCap: 5000
+        perTransactionCap: null
+    conditions:
+      specificMerchants:
+        - 돈키호테
+        - 스타벅스
+
+  - category: "convenience_store"
+    label: "일본 편의점 할인"
+    type: discount
+    tiers:
+      - performanceTier: tier0
+        rate: 5.0
+        monthlyCap: 5000
+        perTransactionCap: null
+    conditions:
+      specificMerchants:
+        - 세븐일레븐
+        - 패밀리마트
+        - 로손
+
+globalConstraints:
+  monthlyTotalDiscountCap: null
+  minimumAnnualSpending: null

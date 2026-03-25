@@ -1,0 +1,34 @@
+card:
+  id: lotte-loca-nanuki
+  issuer: lotte
+  name: LOCA Nanuki
+  nameKo: 로카 나누기 카드
+  type: credit
+  annualFee:
+    domestic: 20000
+    international: 20000
+  url: ""
+  lastUpdated: "2026-03-25"
+  source: manual
+
+performanceTiers:
+  - id: tier0
+    label: "무실적"
+    minSpending: 0
+    maxSpending: null
+
+performanceExclusions: []
+
+rewards:
+  - category: "uncategorized"
+    label: "전 가맹점 기본 할인"
+    type: discount
+    tiers:
+      - performanceTier: tier0
+        rate: 0.7
+        monthlyCap: null
+        perTransactionCap: null
+
+globalConstraints:
+  monthlyTotalDiscountCap: null
+  minimumAnnualSpending: null

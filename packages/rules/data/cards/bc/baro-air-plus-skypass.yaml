@@ -1,0 +1,44 @@
+card:
+  id: bc-baro-air-plus-skypass
+  issuer: bc
+  name: Baro Air Plus SKYPASS
+  nameKo: BC 바로 에어 플러스 스카이패스
+  type: credit
+  annualFee:
+    domestic: 19000
+    international: 19000
+  url: ""
+  lastUpdated: "2026-03-25"
+  source: manual
+
+performanceTiers:
+  - id: tier0
+    label: "무실적"
+    minSpending: 0
+    maxSpending: null
+
+performanceExclusions: []
+
+rewards:
+  - category: "uncategorized"
+    label: "전 가맹점 스카이패스 마일리지 적립"
+    type: points
+    tiers:
+      - performanceTier: tier0
+        rate: 1.0
+        monthlyCap: null
+        perTransactionCap: null
+
+  - category: "uncategorized"
+    label: "100만원당 추가 마일리지"
+    type: points
+    tiers:
+      - performanceTier: tier0
+        rate: null
+        fixedAmount: 300
+        monthlyCap: null
+        perTransactionCap: null
+
+globalConstraints:
+  monthlyTotalDiscountCap: null
+  minimumAnnualSpending: null

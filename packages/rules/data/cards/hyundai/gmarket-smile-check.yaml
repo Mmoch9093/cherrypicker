@@ -1,0 +1,48 @@
+card:
+  id: hyundai-gmarket-smile-check
+  issuer: hyundai
+  name: G-Market Smile Hyundai Check Card
+  nameKo: G마켓 스마일 현대카드 체크
+  type: check
+  annualFee:
+    domestic: 0
+    international: 0
+  url: ""
+  lastUpdated: "2026-03-25"
+  source: manual
+
+performanceTiers:
+  - id: tier0
+    label: 무실적
+    minSpending: 0
+    maxSpending: null
+
+performanceExclusions: []
+
+rewards:
+  - category: online_shopping
+    label: G마켓/옥션 2% 스마일캐시 적립
+    type: points
+    tiers:
+      - performanceTier: tier0
+        rate: 2.0
+        monthlyCap: 10000
+        perTransactionCap: null
+    conditions:
+      specificMerchants:
+        - G마켓
+        - 지마켓
+        - 옥션
+
+  - category: uncategorized
+    label: 전 가맹점 0.2% 스마일캐시 적립
+    type: points
+    tiers:
+      - performanceTier: tier0
+        rate: 0.2
+        monthlyCap: null
+        perTransactionCap: null
+
+globalConstraints:
+  monthlyTotalDiscountCap: null
+  minimumAnnualSpending: null

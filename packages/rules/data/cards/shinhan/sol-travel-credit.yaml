@@ -1,0 +1,89 @@
+card:
+  id: shinhan-sol-travel-credit
+  issuer: shinhan
+  name: SOL Travel Credit
+  nameKo: SOL트래블 신용카드
+  type: credit
+  annualFee:
+    domestic: 15000
+    international: 15000
+  url: "https://www.shinhancard.com/pconts/html/card/travel/travel_credit.html"
+  lastUpdated: "2026-03-25"
+  source: manual
+
+performanceTiers:
+  - id: tier0
+    label: "무실적"
+    minSpending: 0
+    maxSpending: 299999
+  - id: tier1
+    label: "전월 30만원 이상"
+    minSpending: 300000
+    maxSpending: 599999
+  - id: tier2
+    label: "전월 60만원 이상"
+    minSpending: 600000
+    maxSpending: null
+
+performanceExclusions:
+  - tax_payment
+  - short_term_loan
+  - long_term_loan
+  - annual_fee
+  - gift_card_purchase
+
+rewards:
+  - category: "uncategorized"
+    label: "국내 가맹점 기본 적립"
+    type: points
+    tiers:
+      - performanceTier: tier0
+        rate: 0.5
+        monthlyCap: null
+        perTransactionCap: null
+      - performanceTier: tier1
+        rate: 1.0
+        monthlyCap: null
+        perTransactionCap: null
+      - performanceTier: tier2
+        rate: 2.0
+        monthlyCap: null
+        perTransactionCap: null
+
+  - category: "travel"
+    label: "해외 이용 적립"
+    type: points
+    tiers:
+      - performanceTier: tier0
+        rate: 2.0
+        monthlyCap: null
+        perTransactionCap: null
+      - performanceTier: tier1
+        rate: 2.0
+        monthlyCap: null
+        perTransactionCap: null
+      - performanceTier: tier2
+        rate: 2.0
+        monthlyCap: null
+        perTransactionCap: null
+
+  - category: "public_transit"
+    label: "해외 대중교통 할인"
+    type: discount
+    tiers:
+      - performanceTier: tier0
+        rate: 0
+        monthlyCap: null
+        perTransactionCap: null
+      - performanceTier: tier1
+        rate: 1.0
+        monthlyCap: 10000
+        perTransactionCap: null
+      - performanceTier: tier2
+        rate: 1.0
+        monthlyCap: 10000
+        perTransactionCap: null
+
+globalConstraints:
+  monthlyTotalDiscountCap: null
+  minimumAnnualSpending: null

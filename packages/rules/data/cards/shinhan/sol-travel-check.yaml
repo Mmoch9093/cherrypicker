@@ -1,0 +1,43 @@
+card:
+  id: shinhan-sol-travel-check
+  issuer: shinhan
+  name: SOL Travel Check
+  nameKo: SOL트래블 체크카드
+  type: check
+  annualFee:
+    domestic: 0
+    international: 0
+  url: "https://www.shinhancard.com/pconts/html/card/apply/check/1225714_2206.html"
+  lastUpdated: "2026-03-25"
+  source: manual
+
+performanceTiers:
+  - id: tier0
+    label: "무실적"
+    minSpending: 0
+    maxSpending: null
+
+performanceExclusions: []
+
+rewards:
+  - category: "travel"
+    label: "해외 가맹점 캐시백"
+    type: cashback
+    tiers:
+      - performanceTier: tier0
+        rate: 0.5
+        monthlyCap: null
+        perTransactionCap: null
+
+  - category: "uncategorized"
+    label: "국내 가맹점 적립"
+    type: points
+    tiers:
+      - performanceTier: tier0
+        rate: 0.2
+        monthlyCap: null
+        perTransactionCap: null
+
+globalConstraints:
+  monthlyTotalDiscountCap: null
+  minimumAnnualSpending: null
