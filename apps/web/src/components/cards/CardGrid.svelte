@@ -56,7 +56,7 @@
   onMount(() => {
     getCards()
       .then((result) => { cards = result; })
-      .catch((e) => { error = e instanceof Error ? e.message : '카드 목록 로드 실패'; })
+      .catch((e) => { error = e instanceof Error ? e.message : '카드를 불러오지 못했어요'; })
       .finally(() => { loading = false; });
   });
 </script>

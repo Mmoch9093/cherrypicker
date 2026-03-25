@@ -101,7 +101,7 @@
     <div class="space-y-2.5">
       <!-- Single card bar -->
       <div class="flex items-center gap-3">
-        <div class="w-24 shrink-0 text-xs text-[var(--color-text-muted)]">단일 카드</div>
+        <div class="w-24 shrink-0 text-xs text-[var(--color-text-muted)]">카드 한 장</div>
         <div class="flex-1 h-6 overflow-hidden rounded-lg bg-gray-100">
           <div
             class="h-full rounded-lg bg-gray-400 transition-all duration-700"
@@ -237,7 +237,7 @@
       <Icon name="banknotes" size={40} />
     </div>
     <div class="text-sm font-medium text-[var(--color-text-muted)]">아직 비교 데이터가 없어요</div>
-    <div class="text-xs text-[var(--color-text-muted)]">명세서를 올리면 얼마나 아낄 수 있는지 보여 드려요</div>
+    <div class="text-xs text-[var(--color-text-muted)]">명세서를 올리면 얼마나 아끼는지 보여줘요</div>
     <a
       href={import.meta.env.BASE_URL ?? '/'}
       class="mt-3 inline-flex items-center gap-1 rounded-lg bg-[var(--color-primary)] px-4 py-2 text-xs font-medium text-white hover:bg-[var(--color-primary-dark)] transition-colors"

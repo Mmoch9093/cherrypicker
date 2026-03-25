@@ -165,7 +165,7 @@
       <Icon name="credit-card" size={40} />
     </div>
     <div class="text-sm font-medium text-[var(--color-text-muted)]">아직 추천 결과가 없어요</div>
-    <div class="text-xs text-[var(--color-text-muted)]">명세서를 올리면 항목별로 어떤 카드가 좋은지 알려 드려요</div>
+    <div class="text-xs text-[var(--color-text-muted)]">명세서를 올리면 어떤 카드가 좋은지 알려줘요</div>
     <a
       href={import.meta.env.BASE_URL ?? '/'}
       class="mt-3 inline-flex items-center gap-1 rounded-lg bg-[var(--color-primary)] px-4 py-2 text-xs font-medium text-white hover:bg-[var(--color-primary-dark)] transition-colors"

@@ -131,9 +131,9 @@
 {:else if categories.length > 0}
   <!-- Summary row -->
   <div class="mt-4 mb-3 flex items-center gap-2 text-sm text-[var(--color-text-muted)]">
-    <span>총 <strong class="text-[var(--color-text)]">{categories.length}개</strong> 카테고리</span>
+    <span>총 <strong class="text-[var(--color-text)]">{categories.length}개</strong> 항목</span>
     <span class="text-[var(--color-border)]">·</span>
-    <span>최다 지출: <strong class="text-[var(--color-text)]">{topCategoryName}</strong></span>
+    <span>가장 많이 쓴 곳: <strong class="text-[var(--color-text)]">{topCategoryName}</strong></span>
   </div>
 
   <div class="space-y-2">

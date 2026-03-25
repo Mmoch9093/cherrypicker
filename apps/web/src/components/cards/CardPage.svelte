@@ -82,7 +82,7 @@
   <!-- Card grid view -->
   <div class="mb-8">
     <h1 class="text-3xl font-extrabold tracking-tight">카드 목록</h1>
-    <p class="mt-2 text-[var(--color-text-muted)]">등록된 카드별 혜택을 둘러보세요</p>
+    <p class="mt-2 text-[var(--color-text-muted)]">어떤 카드가 있는지 살펴보세요</p>
   </div>
   <CardGrid onSelectCard={selectCard} />
 {/if}

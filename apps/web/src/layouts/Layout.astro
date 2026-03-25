@@ -4,7 +4,7 @@ interface Props {
   description?: string;
 }
 
-const { title, description = '신용카드 혜택 최적화 도구' } = Astro.props;
+const { title, description = '내 소비에 맞는 카드 조합 찾기' } = Astro.props;
 const pathname = Astro.url.pathname;
 const base = import.meta.env.BASE_URL;
 
@@ -62,7 +62,7 @@ function isActive(href: string) {
           <a
             href={`${base}results`}
             class={`transition-colors hover:text-[var(--color-primary)] ${isActive(`${base}results`) ? 'font-semibold text-[var(--color-primary)]' : 'text-[var(--color-text-muted)]'}`}
-          >최적화 결과</a>
+          >추천 결과</a>
 
           <!-- Dark mode toggle -->
           <button
@@ -130,7 +130,7 @@ function isActive(href: string) {
             href={`${base}results`}
             onclick="document.getElementById('mobile-menu')?.classList.add('hidden')"
             class={`rounded-lg px-3 py-2.5 text-sm transition-colors hover:bg-[var(--color-primary-light)] hover:text-[var(--color-primary)] ${isActive(`${base}results`) ? 'bg-[var(--color-primary-light)] font-semibold text-[var(--color-primary)]' : 'text-[var(--color-text-muted)]'}`}
-          >최적화 결과</a>
+          >추천 결과</a>
         </div>
       </div>
     </nav>
@@ -152,7 +152,7 @@ function isActive(href: string) {
             <p class="mt-1 text-sm text-[var(--color-text-muted)]">내 소비 패턴에 딱 맞는 카드 조합</p>
           </div>
           <div class="text-center text-sm text-[var(--color-text-muted)]">
-            <span class="font-semibold text-[var(--color-text)]">454+</span> 카드 혜택 데이터 수록 &nbsp;·&nbsp;
+            <span class="font-semibold text-[var(--color-text)]">454+</span> 카드 수록 &nbsp;·&nbsp;
             <span class="font-semibold text-[var(--color-text)]">24</span>개 카드사 &nbsp;·&nbsp;
             <span class="font-semibold text-[var(--color-text)]">16</span>개 카테고리
           </div>
