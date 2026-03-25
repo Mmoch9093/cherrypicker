@@ -26,6 +26,6 @@ export async function getCards(filters?: {
 
 export async function getCardDetail(cardId: string) {
   const card = await getCardById(cardId);
-  if (!card) throw new Error('카드를 찾을 수 없습니다');
+  if (!card) throw new Error('카드를 찾을 수 없어요');
   return card;
 }

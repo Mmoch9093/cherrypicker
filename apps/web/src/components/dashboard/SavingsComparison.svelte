@@ -190,7 +190,7 @@
       onclick={() => (showBreakdown = !showBreakdown)}
     >
       <span class="transition-transform duration-200 inline-block {showBreakdown ? 'rotate-90' : ''}">▶</span>
-      카드별 혜택 상세 보기
+      카드별 상세 보기
     </button>
 
     {#if showBreakdown}
@@ -236,7 +236,7 @@
     <div class="opacity-40 text-[var(--color-text-muted)]">
       <Icon name="banknotes" size={40} />
     </div>
-    <div class="text-sm font-medium text-[var(--color-text-muted)]">절약 비교 데이터가 없습니다</div>
-    <div class="text-xs text-[var(--color-text-muted)]">명세서를 업로드하면 카드별 혜택 비교가 표시됩니다</div>
+    <div class="text-sm font-medium text-[var(--color-text-muted)]">아직 비교 데이터가 없어요</div>
+    <div class="text-xs text-[var(--color-text-muted)]">명세서를 올리면 절약 금액을 비교할 수 있어요</div>
   </div>
 {/if}

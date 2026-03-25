@@ -164,7 +164,7 @@
             </tr>
           {:else if isExpanded}
             <tr class="border-b border-[var(--color-border)] last:border-0 bg-gray-50">
-              <td colspan="6" class="px-6 py-3 text-xs text-[var(--color-text-muted)]">대안 카드 없음</td>
+              <td colspan="6" class="px-6 py-3 text-xs text-[var(--color-text-muted)]">대안 없음</td>
             </tr>
           {/if}
         {/each}
@@ -176,7 +176,7 @@
     <div class="opacity-40 text-[var(--color-text-muted)]">
       <Icon name="credit-card" size={40} />
     </div>
-    <div class="text-sm font-medium text-[var(--color-text-muted)]">카드 추천 데이터가 없습니다</div>
-    <div class="text-xs text-[var(--color-text-muted)]">명세서를 업로드하면 카테고리별 최적 카드가 표시됩니다</div>
+    <div class="text-sm font-medium text-[var(--color-text-muted)]">아직 추천 결과가 없어요</div>
+    <div class="text-xs text-[var(--color-text-muted)]">명세서를 올리면 카테고리별 추천 카드가 나와요</div>
   </div>
 {/if}

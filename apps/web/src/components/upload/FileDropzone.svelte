@@ -46,6 +46,12 @@
     { value: 'suhyup', label: '수협은행' },
     { value: 'jb', label: '전북은행' },
     { value: 'kwangju', label: '광주은행' },
+    { value: 'jeju', label: '제주은행' },
+    { value: 'sc', label: 'SC제일' },
+    { value: 'mg', label: '새마을금고' },
+    { value: 'cu', label: '신협' },
+    { value: 'kdb', label: 'KDB산업' },
+    { value: 'epost', label: '우체국' },
   ];
 
   function fileIconName(file: File): string {

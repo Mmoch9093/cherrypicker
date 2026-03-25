@@ -70,7 +70,7 @@
       <input
         type="text"
         bind:value={searchQuery}
-        placeholder="카드 이름, 카드사로 검색..."
+        placeholder="카드 이름으로 검색"
         class="w-full rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] py-2 pl-9 pr-4 text-sm outline-none focus:border-[var(--color-primary)] focus:ring-2 focus:ring-[var(--color-primary)]/20 transition-all"
       />
     </div>
@@ -126,7 +126,7 @@
     <div class="flex h-48 flex-col items-center justify-center gap-2 text-[var(--color-text-muted)]">
       {#if searchQuery.trim() || typeFilter !== 'all'}
         <span class="text-[var(--color-text-muted)] opacity-40"><Icon name="magnifying-glass" size={40} /></span>
-        <p class="text-sm">검색 결과가 없습니다</p>
+        <p class="text-sm">검색 결과가 없어요</p>
         <button
           class="mt-1 text-xs text-[var(--color-primary)] hover:underline"
           onclick={() => { searchQuery = ''; typeFilter = 'all'; }}
@@ -135,7 +135,7 @@
         </button>
       {:else}
         <span class="text-[var(--color-text-muted)] opacity-40"><Icon name="credit-card" size={40} /></span>
-        <p class="text-sm">등록된 카드가 없습니다</p>
+        <p class="text-sm">등록된 카드가 없어요</p>
       {/if}
     </div>
   {:else}

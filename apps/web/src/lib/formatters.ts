@@ -56,6 +56,12 @@ export function formatIssuerNameKo(issuer: string): string {
     suhyup: '수협은행',
     jb: '전북은행',
     kwangju: '광주은행',
+    jeju: '제주은행',
+    sc: 'SC제일은행',
+    mg: 'MG새마을금고',
+    cu: '신협',
+    kdb: 'KDB산업은행',
+    epost: '우체국',
   };
   return names[issuer] ?? issuer;
 }
@@ -114,6 +120,12 @@ export function getIssuerColor(issuer: string): string {
     suhyup: '#0054a6',
     jb: '#005baa',
     kwangju: '#00a651',
+    jeju: '#ff6b00',
+    sc: '#0072ce',
+    mg: '#00843d',
+    cu: '#003478',
+    kdb: '#00274c',
+    epost: '#e60012',
   };
   return colors[issuer] ?? '#6b7280';
 }

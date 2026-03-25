@@ -67,7 +67,7 @@
         if (gen === fetchGeneration) card = result;
       })
       .catch((e) => {
-        if (gen === fetchGeneration) error = e instanceof Error ? e.message : '카드 정보 로드 실패';
+        if (gen === fetchGeneration) error = e instanceof Error ? e.message : '카드 정보를 불러올 수 없어요';
       })
       .finally(() => {
         if (gen === fetchGeneration) loading = false;
@@ -213,7 +213,7 @@
                       {formatRewardRate(row.tier)}
                     </td>
                     <td class="px-4 py-2.5 text-right text-[var(--color-text-muted)]">
-                      {row.tier.monthlyCap !== null ? formatWon(row.tier.monthlyCap) : '한도 없음'}
+                      {row.tier.monthlyCap !== null ? formatWon(row.tier.monthlyCap) : '무제한'}
                     </td>
                     <td class="px-4 py-2.5 text-[var(--color-text-muted)]">{row.tier.performanceTier}</td>
                   </tr>
@@ -243,7 +243,7 @@
     <!-- Same issuer cards link -->
     <div class="rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] p-4">
       <p class="text-sm text-[var(--color-text-muted)]">
-        같은 카드사의 다른 카드도 확인해보세요
+        같은 카드사의 다른 카드
       </p>
       <a
         href="{base}cards"
@@ -255,5 +255,5 @@
     </div>
   </div>
 {:else}
-  <div class="text-[var(--color-text-muted)]">카드를 찾을 수 없습니다</div>
+  <div class="text-[var(--color-text-muted)]">카드를 찾을 수 없어요</div>
 {/if}

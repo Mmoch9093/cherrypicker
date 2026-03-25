@@ -167,7 +167,7 @@ function createAnalysisStore() {
         result = analysisResult;
         persistToStorage(analysisResult);
       } catch (e) {
-        error = e instanceof Error ? e.message : '분석 중 오류가 발생했습니다';
+        error = e instanceof Error ? e.message : '분석 중 문제가 생겼어요';
         result = null;
       } finally {
         loading = false;

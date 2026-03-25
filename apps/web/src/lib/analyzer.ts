@@ -13,7 +13,7 @@ export async function analyzeFile(
   const parseResult = await parseFile(file, options?.bank as any);
 
   if (parseResult.transactions.length === 0) {
-    throw new Error('거래 내역을 찾을 수 없습니다');
+    throw new Error('거래 내역을 찾을 수 없어요');
   }
 
   // 2. Load categories and build matcher
