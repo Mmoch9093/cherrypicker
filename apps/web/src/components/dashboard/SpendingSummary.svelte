@@ -15,7 +15,7 @@
   function getTopCategory(assignments: typeof analysisStore.assignments): string {
     if (!assignments.length) return '-';
     const top = [...assignments].sort((a, b) => b.spending - a.spending)[0];
-    return top.categoryNameKo;
+    return top?.categoryNameKo ?? '-';
   }
 </script>
 

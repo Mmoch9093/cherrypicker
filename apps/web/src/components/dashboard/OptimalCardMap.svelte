@@ -113,15 +113,9 @@
               </div>
             </td>
             <td class="py-3">
-              {#if a.rate > 0}
-                <span class="inline-flex text-[var(--color-text-muted)]" title="할인/캐시백">
-                  <Icon name="banknotes" size={16} />
-                </span>
-              {:else}
-                <span class="inline-flex text-[var(--color-text-muted)]" title="포인트">
-                  <Icon name="percent" size={16} />
-                </span>
-              {/if}
+              <span class="inline-flex text-[var(--color-text-muted)]">
+                <Icon name="tag" size={16} />
+              </span>
             </td>
             <td class="py-3 text-right">
               <div class="flex flex-col items-end gap-1">

@@ -3,10 +3,20 @@
   import CardGrid from './CardGrid.svelte';
   import CardDetail from './CardDetail.svelte';
   import Icon from '../ui/Icon.svelte';
+  import { getCardById } from '../../lib/cards.js';
 
   const base = import.meta.env.BASE_URL ?? '/';
 
   let selectedCardId = $state<string | null>(null);
+  let cardName = $state<string>('');
+
+  $effect(() => {
+    if (selectedCardId) {
+      getCardById(selectedCardId).then(c => { cardName = c?.nameKo ?? selectedCardId ?? ''; });
+    } else {
+      cardName = '';
+    }
+  });
 
   function selectCard(id: string) {
     selectedCardId = id;
@@ -16,7 +26,7 @@
 
   function goBack() {
     selectedCardId = null;
-    window.location.hash = '';
+    history.replaceState(null, '', window.location.pathname + window.location.search);
   }
 
   onMount(() => {
@@ -50,7 +60,7 @@
       </li>
       <li class="select-none text-[var(--color-border)]">/</li>
       <li class="font-medium text-[var(--color-text)]" aria-current="page">
-        {selectedCardId}
+        {cardName || selectedCardId}
       </li>
     </ol>
   </nav>

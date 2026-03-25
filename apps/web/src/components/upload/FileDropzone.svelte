@@ -1,7 +1,11 @@
 <script lang="ts">
+  import { onDestroy } from 'svelte';
   import { analysisStore } from '../../lib/store.svelte.js';
   import { formatFileSize } from '../../lib/formatters.js';
   import Icon from '../ui/Icon.svelte';
+
+  let navigateTimeout: ReturnType<typeof setTimeout> | null = null;
+  onDestroy(() => { if (navigateTimeout) clearTimeout(navigateTimeout); });
 
   let isDragOver = $state(false);
   let uploadedFile = $state<File | null>(null);
@@ -106,7 +110,7 @@
 
       uploadStatus = 'success';
 
-      setTimeout(() => {
+      navigateTimeout = setTimeout(() => {
         window.location.href = import.meta.env.BASE_URL + 'dashboard';
       }, 1200);
     } catch (e) {

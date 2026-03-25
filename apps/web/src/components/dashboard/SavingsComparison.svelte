@@ -131,6 +131,7 @@
   <!-- Three cards -->
   <div class="grid gap-5 md:grid-cols-3">
     <!-- Left: Single best card -->
+    {#if opt.bestSingleCard}
     <div class="rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] p-5">
       <div class="mb-3 flex items-center justify-between">
         <div class="text-xs font-medium text-[var(--color-text-muted)]">카드 한 장으로 받는 혜택</div>
@@ -150,6 +151,7 @@
         월 혜택{#if opt.totalSpending > 0}, 혜택률 {((opt.bestSingleCard.totalReward / opt.totalSpending) * 100).toFixed(2)}%{/if}
       </div>
     </div>
+    {/if}
 
     <!-- Center: Cherry-pick (highlighted) -->
     <div class="rounded-xl border-2 border-[var(--color-primary)] bg-gradient-to-br from-blue-50 to-blue-100 p-5 shadow-md">
