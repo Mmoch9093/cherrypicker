@@ -6,7 +6,7 @@ export default defineConfig({
   integrations: [svelte()],
   output: 'static',
   site: 'https://hletrd.github.io',
-  base: '/cherrypicker',
+  base: '/cherrypicker/',
   vite: {
     plugins: [tailwindcss()],
   },
