@@ -1,11 +1,51 @@
 <script lang="ts">
-  import { onDestroy } from 'svelte';
+  import { onMount, onDestroy } from 'svelte';
   import { analysisStore } from '../../lib/store.svelte.js';
   import { formatFileSize } from '../../lib/formatters.js';
   import Icon from '../ui/Icon.svelte';
 
   let navigateTimeout: ReturnType<typeof setTimeout> | null = null;
   onDestroy(() => { if (navigateTimeout) clearTimeout(navigateTimeout); });
+
+  // Page-wide drag & drop: 화면 아무 데나 파일을 던져도 작동
+  onMount(() => {
+    let dragCount = 0;
+    function onDragEnter(e: DragEvent) {
+      e.preventDefault();
+      dragCount++;
+      if (dragCount === 1) isDragOver = true;
+    }
+    function onDragLeave(e: DragEvent) {
+      e.preventDefault();
+      dragCount--;
+      if (dragCount <= 0) { dragCount = 0; isDragOver = false; }
+    }
+    function onDragOver(e: DragEvent) { e.preventDefault(); }
+    function onPageDrop(e: DragEvent) {
+      e.preventDefault();
+      dragCount = 0;
+      isDragOver = false;
+      const file = e.dataTransfer?.files[0];
+      if (file && isValidFile(file)) {
+        uploadedFile = file;
+        uploadStatus = 'idle';
+        errorMessage = '';
+      } else if (file) {
+        errorMessage = 'CSV, Excel, PDF 파일만 지원합니다';
+        uploadStatus = 'error';
+      }
+    }
+    document.addEventListener('dragenter', onDragEnter);
+    document.addEventListener('dragleave', onDragLeave);
+    document.addEventListener('dragover', onDragOver);
+    document.addEventListener('drop', onPageDrop);
+    return () => {
+      document.removeEventListener('dragenter', onDragEnter);
+      document.removeEventListener('dragleave', onDragLeave);
+      document.removeEventListener('dragover', onDragOver);
+      document.removeEventListener('drop', onPageDrop);
+    };
+  });
 
   let isDragOver = $state(false);
   let uploadedFile = $state<File | null>(null);
@@ -177,7 +217,7 @@
       {isDragOver
         ? 'animate-pulse border-[var(--color-primary)] bg-[var(--color-primary-light)] shadow-inner'
         : uploadedFile
-          ? 'border-green-400 bg-green-50'
+          ? 'border-green-400 bg-green-50 dark:bg-green-900/20'
           : 'border-dashed border-[var(--color-border)] hover:border-[var(--color-primary)]/50'}"
     ondragover={(e) => { e.preventDefault(); isDragOver = true; }}
     ondragleave={() => (isDragOver = false)}
@@ -199,7 +239,7 @@
         <div class="text-[var(--color-text-muted)]">
           <Icon name={fileIconName(uploadedFile)} size={40} />
         </div>
-        <p class="text-base font-semibold">{uploadedFile.name}</p>
+        <p class="text-base font-semibold text-[var(--color-text)]">{uploadedFile.name}</p>
         <p class="text-sm text-[var(--color-text-muted)]">{formatFileSize(uploadedFile.size)}</p>
         <button
           class="mt-1 text-sm text-[var(--color-primary)] hover:underline"

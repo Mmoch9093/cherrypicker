@@ -86,7 +86,9 @@ export async function optimizeFromTransactions(
     cardRules = cardRules.filter(r => options.cardIds!.includes(r.card.id));
   }
 
-  const previousMonthSpending = options?.previousMonthSpending ?? 500000;
+  // 전월실적 기본값: 사용자가 입력하지 않으면 이번 달 총 지출과 같다고 가정
+  const totalSpendingThisMonth = transactions.reduce((sum, tx) => sum + Math.abs(tx.amount), 0);
+  const previousMonthSpending = options?.previousMonthSpending ?? totalSpendingThisMonth;
   const cardPreviousSpending = new Map<string, number>(
     cardRules.map(r => [r.card.id, previousMonthSpending]),
   );
