@@ -21,22 +21,54 @@ function splitLine(line: string, delimiter: string): string[] {
 
 function parseDateToISO(raw: string): string {
   const cleaned = raw.trim();
-  const fullMatch = cleaned.match(/^(\d{4})[.\-\/\s](\d{2})[.\-\/\s](\d{2})/);
-  if (fullMatch) return `${fullMatch[1]}-${fullMatch[2]}-${fullMatch[3]}`;
+
+  // YYYY-MM-DD or YYYY.MM.DD or YYYY/MM/DD
+  const fullMatch = cleaned.match(/^(\d{4})[.\-\/\s](\d{1,2})[.\-\/\s](\d{1,2})/);
+  if (fullMatch) return `${fullMatch[1]}-${fullMatch[2]!.padStart(2, '0')}-${fullMatch[3]!.padStart(2, '0')}`;
+
+  // YYYYMMDD
   if (/^\d{8}$/.test(cleaned)) return `${cleaned.slice(0, 4)}-${cleaned.slice(4, 6)}-${cleaned.slice(6, 8)}`;
+
+  // YY-MM-DD or YY.MM.DD
+  const shortYearMatch = cleaned.match(/^(\d{2})[.\-\/](\d{2})[.\-\/](\d{2})$/);
+  if (shortYearMatch) {
+    const year = parseInt(shortYearMatch[1]!, 10);
+    const fullYear = year >= 50 ? 1900 + year : 2000 + year;
+    return `${fullYear}-${shortYearMatch[2]}-${shortYearMatch[3]}`;
+  }
+
   // MM/DD or MM.DD — assume current year
-  const shortMatch = cleaned.match(/^(\d{2})[.\-\/](\d{2})$/);
+  const shortMatch = cleaned.match(/^(\d{1,2})[.\-\/](\d{1,2})$/);
   if (shortMatch) {
     const year = new Date().getFullYear();
-    return `${year}-${shortMatch[1]}-${shortMatch[2]}`;
+    const month = shortMatch[1]!.padStart(2, '0');
+    const day = shortMatch[2]!.padStart(2, '0');
+    return `${year}-${month}-${day}`;
   }
+
+  // 2024년 1월 15일
+  const koreanFull = cleaned.match(/(\d{4})년\s*(\d{1,2})월\s*(\d{1,2})일/);
+  if (koreanFull) return `${koreanFull[1]}-${koreanFull[2]!.padStart(2, '0')}-${koreanFull[3]!.padStart(2, '0')}`;
+
+  // 1월 15일
+  const koreanShort = cleaned.match(/(\d{1,2})월\s*(\d{1,2})일/);
+  if (koreanShort) {
+    const year = new Date().getFullYear();
+    return `${year}-${koreanShort[1]!.padStart(2, '0')}-${koreanShort[2]!.padStart(2, '0')}`;
+  }
+
   return cleaned;
 }
 
 function parseAmount(raw: string): number {
-  const cleaned = raw.trim().replace(/원$/, '').replace(/,/g, '');
+  let cleaned = raw.trim();
+  // Handle (1,234) format for negative amounts
+  const isNegative = cleaned.startsWith('(') && cleaned.endsWith(')');
+  if (isNegative) cleaned = cleaned.slice(1, -1);
+  cleaned = cleaned.replace(/원$/, '').replace(/,/g, '').replace(/\s/g, '');
   const parsed = parseInt(cleaned, 10);
-  return Number.isNaN(parsed) ? 0 : parsed;
+  if (Number.isNaN(parsed)) return 0;
+  return isNegative ? -parsed : parsed;
 }
 
 // ---------------------------------------------------------------------------
@@ -44,9 +76,12 @@ function parseAmount(raw: string): number {
 // ---------------------------------------------------------------------------
 
 const DATE_PATTERNS = [
-  /^\d{4}[.\-\/]\d{2}[.\-\/]\d{2}$/,
-  /^\d{2}[.\-\/]\d{2}$/,
-  /^\d{4}\d{2}\d{2}$/,
+  /^\d{4}[.\-\/]\d{1,2}[.\-\/]\d{1,2}$/,      // 2024-01-15
+  /^\d{2}[.\-\/]\d{2}[.\-\/]\d{2}$/,           // 24-01-15 (YY-MM-DD)
+  /^\d{1,2}[.\-\/]\d{1,2}$/,                   // 01/15 (MM/DD)
+  /^\d{4}\d{2}\d{2}$/,                          // 20240115
+  /^\d{4}년\s*\d{1,2}월\s*\d{1,2}일$/,         // 2024년 1월 15일
+  /^\d{1,2}월\s*\d{1,2}일$/,                   // 1월 15일
 ];
 
 const AMOUNT_PATTERNS = [
@@ -74,7 +109,7 @@ function parseGenericCSV(content: string, bank: BankId | null): ParseResult {
 
   // Find header row
   let headerIdx = 0;
-  for (let i = 0; i < Math.min(5, lines.length); i++) {
+  for (let i = 0; i < Math.min(20, lines.length); i++) {
     const cells = splitLine(lines[i] ?? '', delimiter);
     const hasNonNumeric = cells.some((c) => /[가-힣a-zA-Z]/.test(c));
     if (hasNonNumeric) {
@@ -94,12 +129,18 @@ function parseGenericCSV(content: string, bank: BankId | null): ParseResult {
 
   for (let i = 0; i < headers.length; i++) {
     const h = headers[i] ?? '';
-    if (/이용일|거래일|날짜|일시/.test(h) && dateCol === -1) dateCol = i;
-    else if (/이용처|가맹점|상호|이용가맹점/.test(h) && merchantCol === -1) merchantCol = i;
-    else if (/이용금액|거래금액|금액/.test(h) && amountCol === -1) amountCol = i;
-    else if (/할부/.test(h) && installmentsCol === -1) installmentsCol = i;
-    else if (/업종|카테고리|분류/.test(h) && categoryCol === -1) categoryCol = i;
-    else if (/비고|적요|메모/.test(h) && memoCol === -1) memoCol = i;
+    // Date columns
+    if (/이용일|거래일|날짜|일시|이용일자|거래일시|결제일|승인일|매출일/.test(h) && dateCol === -1) dateCol = i;
+    // Merchant columns
+    else if (/이용처|가맹점|상호|이용가맹점|가맹점명|거래처|매출처|사용처|결제처/.test(h) && merchantCol === -1) merchantCol = i;
+    // Amount columns
+    else if (/이용금액|거래금액|금액|결제금액|승인금액|매출금액|이용액|합계/.test(h) && amountCol === -1) amountCol = i;
+    // Installments
+    else if (/할부|할부개월|할부기간|할부월/.test(h) && installmentsCol === -1) installmentsCol = i;
+    // Category
+    else if (/업종|카테고리|분류|업종분류|업종명/.test(h) && categoryCol === -1) categoryCol = i;
+    // Memo
+    else if (/비고|적요|메모|내용|설명|참고/.test(h) && memoCol === -1) memoCol = i;
   }
 
   if (dateCol === -1 || merchantCol === -1 || amountCol === -1) {
@@ -125,6 +166,9 @@ function parseGenericCSV(content: string, bank: BankId | null): ParseResult {
   for (let i = headerIdx + 1; i < lines.length; i++) {
     const line = lines[i] ?? '';
     if (!line.trim()) continue;
+
+    // Skip summary/total rows
+    if (/합계|총계|소계|total|sum/i.test(line)) continue;
 
     const cells = splitLine(line, delimiter);
 

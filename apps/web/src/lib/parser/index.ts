@@ -16,21 +16,25 @@ export async function parseFile(file: File, bank?: BankId): Promise<ParseResult>
   switch (format) {
     case 'csv': {
       let content: string;
-      try {
-        content = await file.text();
-        // Check for encoding issues (replacement chars)
-        const replacementCount = (content.match(/\uFFFD/g) ?? []).length;
-        if (replacementCount > 5) {
-          // Try EUC-KR decoding
-          const buffer = await file.arrayBuffer();
-          const decoder = new TextDecoder('euc-kr');
-          content = decoder.decode(buffer);
-        }
-      } catch {
-        const buffer = await file.arrayBuffer();
-        const decoder = new TextDecoder('euc-kr');
-        content = decoder.decode(buffer);
+      const buffer = await file.arrayBuffer();
+      const ENCODINGS = ['utf-8', 'euc-kr', 'cp949'] as const;
+      let bestContent = '';
+      let bestReplacements = Infinity;
+
+      for (const encoding of ENCODINGS) {
+        try {
+          const decoder = new TextDecoder(encoding);
+          const decoded = decoder.decode(buffer);
+          const replacementCount = (decoded.match(/\uFFFD/g) ?? []).length;
+          if (replacementCount < bestReplacements) {
+            bestReplacements = replacementCount;
+            bestContent = decoded;
+          }
+          if (replacementCount < 5) break;
+        } catch { continue; }
       }
+
+      content = bestContent || new TextDecoder('utf-8').decode(buffer);
       // Auto-detect bank from content if not specified
       const detectedBank = bank ?? detectBankFromText(content);
       return parseCSV(content, detectedBank ?? undefined);

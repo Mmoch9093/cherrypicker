@@ -46,6 +46,62 @@ const BANK_SIGNATURES: BankSignature[] = [
     bankId: 'bc',
     patterns: [/BC카드/, /비씨카드/],
   },
+  {
+    bankId: 'kakao',
+    patterns: [/카카오뱅크/, /카카오페이/, /kakaobank/i],
+  },
+  {
+    bankId: 'toss',
+    patterns: [/토스뱅크/, /토스/, /tossbank/i],
+  },
+  {
+    bankId: 'kbank',
+    patterns: [/케이뱅크/, /K뱅크/, /kbank/i],
+  },
+  {
+    bankId: 'bnk',
+    patterns: [/BNK/, /부산은행/, /경남은행/],
+  },
+  {
+    bankId: 'dgb',
+    patterns: [/DGB/, /iM뱅크/, /대구은행/],
+  },
+  {
+    bankId: 'suhyup',
+    patterns: [/수협/, /Sh수협/, /suhyup/i],
+  },
+  {
+    bankId: 'jb',
+    patterns: [/전북은행/, /JB/, /jbbank/i],
+  },
+  {
+    bankId: 'kwangju',
+    patterns: [/광주은행/, /kjbank/i],
+  },
+  {
+    bankId: 'jeju',
+    patterns: [/제주은행/, /jejubank/i],
+  },
+  {
+    bankId: 'sc',
+    patterns: [/SC제일/, /스탠다드차타드/, /scbank/i],
+  },
+  {
+    bankId: 'mg',
+    patterns: [/새마을금고/, /MG/, /kfcc/i],
+  },
+  {
+    bankId: 'cu',
+    patterns: [/신협/, /cu\b/i],
+  },
+  {
+    bankId: 'kdb',
+    patterns: [/산업은행/, /KDB/, /kdbbank/i],
+  },
+  {
+    bankId: 'epost',
+    patterns: [/우체국/, /우정사업/, /epost/i],
+  },
 ];
 
 export function detectFormatFromFile(file: File): 'csv' | 'xlsx' | 'pdf' {

@@ -5,9 +5,10 @@ import { detectBank } from './detect.js';
 // Table parser (ported from packages/parser/src/pdf/table-parser.ts)
 // ---------------------------------------------------------------------------
 
-const DATE_PATTERN = /\d{4}[.\-\/]\d{2}[.\-\/]\d{2}/;
+const DATE_PATTERN = /(?:\d{4}[.\-\/]\d{1,2}[.\-\/]\d{1,2}|\d{2}[.\-\/]\d{2}[.\-\/]\d{2})/;
 const AMOUNT_PATTERN = /[\d,]+원?/;
-const STRICT_DATE_PATTERN = /(\d{4})[.\-\/](\d{2})[.\-\/](\d{2})/;
+const STRICT_DATE_PATTERN = /(\d{4})[.\-\/](\d{1,2})[.\-\/](\d{1,2})/;
+const SHORT_YEAR_DATE_PATTERN = /(\d{2})[.\-\/](\d{2})[.\-\/](\d{2})/;
 const STRICT_AMOUNT_PATTERN = /^-?[\d,]+원?$/;
 
 interface Column {
@@ -123,7 +124,20 @@ function filterTransactionRows(rows: string[][]): string[][] {
 
 function parseDateToISO(raw: string): string {
   const match = raw.match(STRICT_DATE_PATTERN);
-  if (match) return `${match[1]}-${match[2]}-${match[3]}`;
+  if (match) return `${match[1]}-${match[2]!.padStart(2, '0')}-${match[3]!.padStart(2, '0')}`;
+
+  // YY.MM.DD or YY-MM-DD
+  const shortMatch = raw.match(SHORT_YEAR_DATE_PATTERN);
+  if (shortMatch) {
+    const year = parseInt(shortMatch[1]!, 10);
+    const fullYear = year >= 50 ? 1900 + year : 2000 + year;
+    return `${fullYear}-${shortMatch[2]}-${shortMatch[3]}`;
+  }
+
+  // Korean date formats
+  const koreanFull = raw.match(/(\d{4})년\s*(\d{1,2})월\s*(\d{1,2})일/);
+  if (koreanFull) return `${koreanFull[1]}-${koreanFull[2]!.padStart(2, '0')}-${koreanFull[3]!.padStart(2, '0')}`;
+
   return raw;
 }
 
@@ -133,7 +147,8 @@ function parseAmount(raw: string): number {
 
 function findDateCell(row: string[]): { idx: number; value: string } | null {
   for (let i = 0; i < row.length; i++) {
-    if (STRICT_DATE_PATTERN.test(row[i] ?? '')) return { idx: i, value: row[i] ?? '' };
+    const cell = row[i] ?? '';
+    if (STRICT_DATE_PATTERN.test(cell) || SHORT_YEAR_DATE_PATTERN.test(cell)) return { idx: i, value: cell };
   }
   return null;
 }
@@ -249,8 +264,46 @@ export async function parsePDF(buffer: ArrayBuffer, bank?: BankId): Promise<Pars
     };
   }
 
-  // No LLM fallback in browser — return empty with error
-  errors.push({ message: '구조화된 파싱 실패: PDF에서 거래 내역을 추출할 수 없습니다.' });
+  // Fallback: scan every line for date + amount patterns
+  const fallbackTransactions: RawTransaction[] = [];
+  const lines = text.split('\n');
+  const fallbackDatePattern = /(\d{4}[.\-\/]\d{1,2}[.\-\/]\d{1,2}|\d{2}[.\-\/]\d{2}[.\-\/]\d{2})/;
+  const fallbackAmountPattern = /([\d,]+)원?/;
+
+  for (const line of lines) {
+    const dateMatch = line.match(fallbackDatePattern);
+    const amountMatch = line.match(fallbackAmountPattern);
+    if (dateMatch && amountMatch) {
+      // Extract merchant: everything between date and amount
+      const dateEnd = line.indexOf(dateMatch[0]) + dateMatch[0].length;
+      const amountStart = line.indexOf(amountMatch[0]);
+      if (amountStart > dateEnd) {
+        const between = line.slice(dateEnd, amountStart).trim();
+        if (between) {
+          const amount = parseInt(amountMatch[1]!.replace(/,/g, ''), 10) || 0;
+          if (amount > 0) {
+            fallbackTransactions.push({
+              date: parseDateToISO(dateMatch[1]!),
+              merchant: between.replace(/\s+/g, ' ').trim(),
+              amount,
+            });
+          }
+        }
+      }
+    }
+  }
+
+  if (fallbackTransactions.length > 0) {
+    return {
+      bank: resolvedBank,
+      format: 'pdf',
+      transactions: fallbackTransactions,
+      errors,
+    };
+  }
+
+  // No transactions found at all
+  errors.push({ message: 'PDF에서 거래를 찾지 못했어요. CSV나 Excel 파일로 다시 시도해 보세요.' });
 
   return {
     bank: resolvedBank,
