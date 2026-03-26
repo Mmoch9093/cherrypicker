@@ -3,6 +3,8 @@
   import { formatWon } from '../../lib/formatters.js';
   import Icon from '../ui/Icon.svelte';
   import type { CategorizedTx } from '../../lib/analyzer.js';
+  import * as aiCategorizer from '../../lib/categorizer-ai.js';
+  import { onMount } from 'svelte';
 
   // Category options for dropdown
   const CATEGORIES = [
@@ -55,6 +57,72 @@
   let reoptimizing = $state(false);
   let filterUncategorized = $state(false);
   let searchQuery = $state('');
+  let aiStatus = $state<string>('');
+  let aiProgress = $state<number>(0);
+  let aiRunning = $state(false);
+  let aiAvailable = $state(false);
+
+  // Check if AI is available on mount (browser only)
+  onMount(() => {
+    aiAvailable = aiCategorizer.isAvailable();
+  });
+
+  async function runAICategorization() {
+    aiRunning = true;
+    aiStatus = '모델 불러오는 중';
+    aiProgress = 0;
+
+    try {
+      await aiCategorizer.initialize((p) => {
+        aiStatus = p.status;
+        if (p.progress) aiProgress = p.progress;
+      });
+
+      // Get uncategorized/low-confidence items
+      const targets = editedTxs.filter(tx => tx.category === 'uncategorized' || tx.confidence < 0.5);
+
+      if (targets.length === 0) {
+        aiStatus = '분류할 항목이 없어요';
+        setTimeout(() => { aiStatus = ''; }, 2000);
+        return;
+      }
+
+      aiStatus = `${targets.length}건 분류 중`;
+
+      const results = await aiCategorizer.categorizeBatch(
+        targets.map(tx => ({ id: tx.id, name: tx.merchant })),
+        (done, total) => {
+          aiProgress = Math.round((done / total) * 100);
+          aiStatus = `${done}/${total}건 분류 중`;
+        },
+      );
+
+      // Apply results
+      let changed = 0;
+      for (const [txId, result] of results) {
+        if (result.category !== 'uncategorized') {
+          const tx = editedTxs.find(t => t.id === txId);
+          if (tx) {
+            tx.category = result.category;
+            tx.confidence = result.confidence;
+            changed++;
+          }
+        }
+      }
+
+      if (changed > 0) {
+        hasEdits = true;
+        aiStatus = `${changed}건 분류 완료`;
+      } else {
+        aiStatus = '새로 분류된 항목이 없어요';
+      }
+      setTimeout(() => { aiStatus = ''; }, 3000);
+    } catch (e) {
+      aiStatus = e instanceof Error ? e.message : '분류 중 문제가 생겼어요';
+    } finally {
+      aiRunning = false;
+    }
+  }
 
   // Sync from store when transactions change
   $effect(() => {
@@ -137,6 +205,25 @@
             <input type="checkbox" bind:checked={filterUncategorized} class="rounded" />
             미분류만 보기
           </label>
+          {#if aiAvailable && uncategorizedCount > 0}
+            <button
+              onclick={runAICategorization}
+              disabled={aiRunning}
+              class="flex items-center gap-1 rounded-lg border border-purple-300 bg-purple-50 px-3 py-1.5 text-xs font-medium text-purple-700 hover:bg-purple-100 disabled:opacity-50 transition-colors"
+            >
+              {#if aiRunning}
+                <svg class="h-3 w-3 animate-spin" viewBox="0 0 24 24" fill="none">
+                  <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                  <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 0 1 8-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 0 1 4 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
+                {aiStatus}
+                {#if aiProgress > 0}({aiProgress}%){/if}
+              {:else}
+                <Icon name="sparkles" size={12} />
+                미분류 항목 AI 분류
+              {/if}
+            </button>
+          {/if}
           {#if hasEdits}
             <button
               onclick={applyEdits}
