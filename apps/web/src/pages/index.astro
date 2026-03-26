@@ -1,6 +1,19 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import FileDropzone from '../components/upload/FileDropzone.svelte';
+import { readFile } from 'fs/promises';
+import { resolve } from 'path';
+
+let totalCards = 561;
+let totalIssuers = 24;
+let totalCategories = 16;
+try {
+  const raw = await readFile(resolve(process.cwd(), 'public/data/cards.json'), 'utf-8');
+  const data = JSON.parse(raw);
+  totalCards = data.meta?.totalCards ?? totalCards;
+  totalIssuers = data.meta?.totalIssuers ?? totalIssuers;
+  totalCategories = data.meta?.categories?.length ?? totalCategories;
+} catch {}
 ---
 
 <Layout title="홈">
@@ -27,16 +40,16 @@ import FileDropzone from '../components/upload/FileDropzone.svelte';
   <div class="mx-auto mt-0 max-w-2xl -mb-4">
     <div class="flex divide-x divide-[var(--color-border)] rounded-b-2xl border border-t-0 border-[var(--color-border)] bg-[var(--color-surface)] shadow-sm animate-[fadeIn_0.5s_0.2s_ease_both]" style="opacity:0;animation-fill-mode:forwards;">
       <div class="flex flex-1 flex-col items-center py-4">
-        <span class="text-2xl font-bold text-[var(--color-primary)] animate-[countUp_0.5s_0.3s_ease_both]" style="opacity:0;animation-fill-mode:forwards;">454+</span>
+        <span class="text-2xl font-bold text-[var(--color-primary)] animate-[countUp_0.5s_0.3s_ease_both]" style="opacity:0;animation-fill-mode:forwards;">{totalCards}+</span>
         <span class="mt-0.5 text-xs text-[var(--color-text-muted)]">카드</span>
       </div>
       <div class="flex flex-1 flex-col items-center py-4">
-        <span class="text-2xl font-bold text-[var(--color-primary)] animate-[countUp_0.5s_0.4s_ease_both]" style="opacity:0;animation-fill-mode:forwards;">24개</span>
+        <span class="text-2xl font-bold text-[var(--color-primary)] animate-[countUp_0.5s_0.4s_ease_both]" style="opacity:0;animation-fill-mode:forwards;">{totalIssuers}개</span>
         <span class="mt-0.5 text-xs text-[var(--color-text-muted)]">카드사</span>
       </div>
       <div class="flex flex-1 flex-col items-center py-4">
-        <span class="text-2xl font-bold text-[var(--color-primary)] animate-[countUp_0.5s_0.5s_ease_both]" style="opacity:0;animation-fill-mode:forwards;">16개</span>
-        <span class="mt-0.5 text-xs text-[var(--color-text-muted)]">카테고리</span>
+        <span class="text-2xl font-bold text-[var(--color-primary)] animate-[countUp_0.5s_0.5s_ease_both]" style="opacity:0;animation-fill-mode:forwards;">{totalCategories}개</span>
+        <span class="mt-0.5 text-xs text-[var(--color-text-muted)]">항목</span>
       </div>
     </div>
   </div>
