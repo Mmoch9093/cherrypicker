@@ -94,6 +94,12 @@
       </div>
     </div>
   </div>
+  {#if analysisStore.result?.monthlyBreakdown && analysisStore.result.monthlyBreakdown.length > 1}
+    <div class="col-span-full mt-2 rounded-lg bg-[var(--color-bg)] px-3 py-2 text-xs text-[var(--color-text-muted)]">
+      {analysisStore.result.monthlyBreakdown.length}개월 데이터 분석 ·
+      전월실적 {formatWon(analysisStore.result.monthlyBreakdown[analysisStore.result.monthlyBreakdown.length - 2]?.spending ?? 0)} 기준
+    </div>
+  {/if}
   {#if analysisStore.result && !dismissed}
     <div class="mt-3 flex items-center gap-2 rounded-lg bg-amber-50 px-3 py-2 text-xs text-amber-700 border border-amber-200">
       <span>탭을 닫으면 결과가 사라져요. 저장하려면 리포트를 PDF로 내려받으세요.</span>

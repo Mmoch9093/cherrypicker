@@ -1,7 +1,7 @@
 // Shared Svelte 5 state store for analysis results across dashboard components
 // Must be .svelte.ts so that $state runes are compiled properly
 
-import { analyzeFile, optimizeFromTransactions } from './analyzer.js';
+import { analyzeMultipleFiles, optimizeFromTransactions } from './analyzer.js';
 import type { CategorizedTx } from './analyzer.js';
 
 // --- Types matching the API response shape ---
@@ -71,6 +71,7 @@ export interface AnalysisResult {
   parseErrors: { line?: number; message: string; raw?: string }[];
   transactions?: CategorizedTx[];
   optimization: OptimizationResult;
+  monthlyBreakdown?: { month: string; spending: number; transactionCount: number }[];
 }
 
 export interface AnalyzeOptions {
@@ -163,12 +164,13 @@ function createAnalysisStore() {
       persistToStorage(r);
     },
 
-    async analyze(file: File, options?: AnalyzeOptions): Promise<void> {
+    async analyze(files: File | File[], options?: AnalyzeOptions): Promise<void> {
       loading = true;
       error = null;
 
       try {
-        const analysisResult = await analyzeFile(file, options);
+        const fileArray = Array.isArray(files) ? files : [files];
+        const analysisResult = await analyzeMultipleFiles(fileArray, options);
         result = analysisResult;
         persistToStorage(analysisResult);
       } catch (e) {

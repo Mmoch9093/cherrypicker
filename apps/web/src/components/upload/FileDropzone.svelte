@@ -25,14 +25,9 @@
       e.preventDefault();
       dragCount = 0;
       isDragOver = false;
-      const file = e.dataTransfer?.files[0];
-      if (file && isValidFile(file)) {
-        uploadedFile = file;
-        uploadStatus = 'idle';
-        errorMessage = '';
-      } else if (file) {
-        errorMessage = 'CSV, Excel, PDF 파일만 지원합니다';
-        uploadStatus = 'error';
+      const files = e.dataTransfer?.files;
+      if (files && files.length > 0) {
+        addFiles(Array.from(files));
       }
     }
     document.addEventListener('dragenter', onDragEnter);
@@ -48,7 +43,7 @@
   });
 
   let isDragOver = $state(false);
-  let uploadedFile = $state<File | null>(null);
+  let uploadedFiles = $state<File[]>([]);
   let fileInputEl = $state<HTMLInputElement | null>(null);
   let uploadStatus = $state<'idle' | 'uploading' | 'success' | 'error'>('idle');
   let errorMessage = $state('');
@@ -59,7 +54,7 @@
   let currentStep = $derived.by(() => {
     if (uploadStatus === 'success') return 4;
     if (uploadStatus === 'uploading') return 3;
-    if (uploadedFile) return 2;
+    if (uploadedFiles.length > 0) return 2;
     return 1;
   });
 
@@ -112,40 +107,72 @@
     return ACCEPTED_EXTENSIONS.some((ext) => file.name.toLowerCase().endsWith(ext));
   }
 
+  function addFiles(newFiles: File[]) {
+    const invalid: string[] = [];
+    const valid: File[] = [];
+    for (const f of newFiles) {
+      if (isValidFile(f)) {
+        // Avoid duplicates by name
+        if (!uploadedFiles.some(existing => existing.name === f.name)) {
+          valid.push(f);
+        }
+      } else {
+        invalid.push(f.name);
+      }
+    }
+    if (valid.length > 0) {
+      uploadedFiles = [...uploadedFiles, ...valid];
+      uploadStatus = 'idle';
+      errorMessage = '';
+    }
+    if (invalid.length > 0) {
+      errorMessage = `CSV, Excel, PDF 파일만 지원합니다 (제외됨: ${invalid.join(', ')})`;
+      uploadStatus = 'error';
+    }
+  }
+
+  function removeFile(index: number) {
+    uploadedFiles = uploadedFiles.filter((_, i) => i !== index);
+    if (uploadedFiles.length === 0) {
+      uploadStatus = 'idle';
+      errorMessage = '';
+      if (fileInputEl) fileInputEl.value = '';
+    }
+  }
+
+  function clearAllFiles() {
+    uploadedFiles = [];
+    uploadStatus = 'idle';
+    errorMessage = '';
+    if (fileInputEl) fileInputEl.value = '';
+  }
+
   function handleDrop(e: DragEvent) {
     e.preventDefault();
     isDragOver = false;
-    const file = e.dataTransfer?.files[0];
-    if (file && isValidFile(file)) {
-      uploadedFile = file;
-      uploadStatus = 'idle';
-      errorMessage = '';
-    } else {
-      errorMessage = 'CSV, Excel, PDF 파일만 지원합니다';
-      uploadStatus = 'error';
+    const files = e.dataTransfer?.files;
+    if (files && files.length > 0) {
+      addFiles(Array.from(files));
     }
   }
 
   function handleFileInput(e: Event) {
     const target = e.target as HTMLInputElement;
-    const file = target.files?.[0];
-    if (file && isValidFile(file)) {
-      uploadedFile = file;
-      uploadStatus = 'idle';
-      errorMessage = '';
-    } else if (file) {
-      errorMessage = 'CSV, Excel, PDF 파일만 지원합니다';
-      uploadStatus = 'error';
+    const files = target.files;
+    if (files && files.length > 0) {
+      addFiles(Array.from(files));
     }
+    // Reset input so same file can be re-added after removal
+    target.value = '';
   }
 
   async function handleUpload() {
-    if (!uploadedFile) return;
+    if (uploadedFiles.length === 0) return;
     uploadStatus = 'uploading';
     errorMessage = '';
 
     try {
-      await analysisStore.analyze(uploadedFile, {
+      await analysisStore.analyze(uploadedFiles, {
         bank: bank || undefined,
         previousMonthSpending: previousSpending ? parseInt(previousSpending, 10) : undefined,
       });
@@ -213,10 +240,10 @@
   <!-- Drop zone -->
   <!-- svelte-ignore a11y_no_static_element_interactions -->
   <div
-    class="rounded-2xl border-2 p-10 text-center transition-all duration-200
+    class="rounded-2xl border-2 p-6 text-center transition-all duration-200
       {isDragOver
         ? 'animate-pulse border-[var(--color-primary)] bg-[var(--color-primary-light)] shadow-inner'
-        : uploadedFile
+        : uploadedFiles.length > 0
           ? 'border-green-400 bg-green-50 dark:bg-green-900/20'
           : 'border-dashed border-[var(--color-border)] hover:border-[var(--color-primary)]/50'}"
     ondragover={(e) => { e.preventDefault(); isDragOver = true; }}
@@ -234,19 +261,45 @@
         <p class="text-base font-semibold text-green-700">분석 완료</p>
         <p class="text-sm text-green-600">대시보드로 이동할게요</p>
       </div>
-    {:else if uploadedFile}
-      <div class="flex flex-col items-center gap-2">
-        <div class="text-[var(--color-text-muted)]">
-          <Icon name={fileIconName(uploadedFile)} size={40} />
+    {:else if uploadedFiles.length > 0}
+      <!-- File list -->
+      <div class="flex flex-col gap-2">
+        {#each uploadedFiles as file, i}
+          <div class="flex items-center gap-3 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] px-3 py-2 text-left">
+            <div class="shrink-0 text-[var(--color-text-muted)]">
+              <Icon name={fileIconName(file)} size={20} />
+            </div>
+            <div class="min-w-0 flex-1">
+              <p class="truncate text-sm font-medium text-[var(--color-text)]">{file.name}</p>
+              <p class="text-xs text-[var(--color-text-muted)]">{formatFileSize(file.size)}</p>
+            </div>
+            <button
+              class="shrink-0 rounded-lg p-1 text-[var(--color-text-muted)] hover:bg-red-50 hover:text-red-500 transition-colors"
+              onclick={() => removeFile(i)}
+              aria-label="파일 제거"
+            >
+              <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+          </div>
+        {/each}
+        <!-- Add / clear buttons -->
+        <div class="mt-1 flex items-center gap-2">
+          <label class="inline-flex cursor-pointer items-center gap-1.5 rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] px-3 py-1.5 text-xs font-medium text-[var(--color-text-muted)] hover:border-[var(--color-primary)]/60 hover:text-[var(--color-primary)] transition-colors">
+            <svg class="h-3.5 w-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+            </svg>
+            파일 추가
+            <input type="file" class="hidden" accept=".csv,.xlsx,.xls,.pdf" multiple onchange={handleFileInput} bind:this={fileInputEl} />
+          </label>
+          <button
+            class="inline-flex items-center gap-1.5 rounded-lg border border-[var(--color-border)] px-3 py-1.5 text-xs font-medium text-[var(--color-text-muted)] hover:border-red-300 hover:text-red-500 transition-colors"
+            onclick={clearAllFiles}
+          >
+            전체 삭제
+          </button>
         </div>
-        <p class="text-base font-semibold text-[var(--color-text)]">{uploadedFile.name}</p>
-        <p class="text-sm text-[var(--color-text-muted)]">{formatFileSize(uploadedFile.size)}</p>
-        <button
-          class="mt-1 text-sm text-[var(--color-primary)] hover:underline"
-          onclick={() => { uploadedFile = null; uploadStatus = 'idle'; errorMessage = ''; if (fileInputEl) fileInputEl.value = ''; }}
-        >
-          다른 파일 선택
-        </button>
       </div>
     {:else}
       <div class="flex flex-col items-center gap-2">
@@ -254,17 +307,17 @@
           <Icon name={isDragOver ? 'folder-open' : 'arrow-up-tray'} size={40} />
         </div>
         <p class="mt-1 text-base font-medium">카드 명세서를 끌어다 놓으세요</p>
-        <p class="text-sm text-[var(--color-text-muted)]">CSV, Excel, PDF 지원</p>
+        <p class="text-sm text-[var(--color-text-muted)]">CSV, Excel, PDF 지원 · 여러 파일 동시 업로드 가능</p>
         <label class="mt-3 inline-block cursor-pointer rounded-xl bg-[var(--color-primary)] px-5 py-2.5 text-sm font-medium text-white shadow-sm hover:bg-[var(--color-primary-dark)] transition-colors">
           파일 선택
-          <input type="file" class="hidden" accept=".csv,.xlsx,.xls,.pdf" onchange={handleFileInput} bind:this={fileInputEl} />
+          <input type="file" class="hidden" accept=".csv,.xlsx,.xls,.pdf" multiple onchange={handleFileInput} bind:this={fileInputEl} />
         </label>
       </div>
     {/if}
   </div>
 
   <!-- Bank selector + Upload (shown after file selected, before success) -->
-  {#if uploadedFile && uploadStatus !== 'success'}
+  {#if uploadedFiles.length > 0 && uploadStatus !== 'success'}
     <div class="rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] p-4 space-y-4">
       <div>
         <p class="mb-2.5 text-xs font-semibold uppercase tracking-wide text-[var(--color-text-muted)]">카드사를 고르면 더 정확해요</p>
@@ -307,7 +360,11 @@
           />
           <span class="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-[var(--color-text-muted)]">원</span>
         </div>
-        <p class="mt-1 text-xs text-[var(--color-text-muted)]">입력하지 않으면 50만원으로 계산해요</p>
+        {#if uploadedFiles.length >= 2}
+          <p class="mt-1 text-xs text-[var(--color-text-muted)]">여러 달 업로드 시 전전월 실적이 자동으로 사용돼요. 직접 입력하면 덮어써요.</p>
+        {:else}
+          <p class="mt-1 text-xs text-[var(--color-text-muted)]">입력하지 않으면 50만원으로 계산해요</p>
+        {/if}
       </div>
 
       <!-- Upload button -->
@@ -328,7 +385,7 @@
             분석하는 중
           </span>
         {:else}
-          분석 시작
+          분석 시작 {uploadedFiles.length > 1 ? `(${uploadedFiles.length}개 파일)` : ''}
         {/if}
       </button>
 
