@@ -303,7 +303,7 @@ describe('calculateRewards - fixed amount and subcategory handling', () => {
     expect(telecom!.reward).toBe(2500);
   });
 
-  test('fixedAmount + unit rewards stay non-zero when explicit metadata exists', () => {
+  test('unsupported unit-based rewards stay explicit instead of being fabricated from spend amount', () => {
     const output = calculateRewards({
       transactions: [makeTx('t1', 'transportation', 50000)],
       previousMonthSpending: 300000,
@@ -311,7 +311,7 @@ describe('calculateRewards - fixed amount and subcategory handling', () => {
     });
     const transportation = output.rewards.find((reward) => reward.category === 'transportation');
     expect(transportation).toBeDefined();
-    expect(transportation!.reward).toBe(60);
+    expect(transportation!.reward).toBe(0);
   });
 
   test('subcategory-specific rules win over broad category rules', () => {

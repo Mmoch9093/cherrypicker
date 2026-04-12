@@ -15,7 +15,7 @@ interface ColumnConfig {
   memo?: string;
 }
 
-const BANK_COLUMN_CONFIGS: Record<BankId, ColumnConfig> = {
+export const BANK_COLUMN_CONFIGS: Record<BankId, ColumnConfig> = {
   hyundai: {
     date: '이용일',
     merchant: '이용처',

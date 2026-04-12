@@ -14,7 +14,7 @@ Turn the review findings into a practical recovery sequence that restores:
 
 - Phase 0 — Stop-ship guardrails: **in progress** (automatic remote PDF fallback disabled by default, browser AI runtime disabled, README/license baseline corrected)
 - Phase 1 — Repair the rule/data contract: **in progress** (runtime schema preserves `fixedAmount` / `unit` / `subcategory`, accepts current `web` / `prepaid` metadata, and `build-json` runs under Node; category taxonomy cleanup is still pending)
-- Phase 2 — Make the calculator correct on real rules: **in progress** (discount/cashback percentage rates normalize correctly, explicit fixed rewards are preserved, and unsupported unit semantics stay explicit instead of silently collapsing)
+- Phase 2 — Make the calculator correct on real rules: **in progress** (discount/cashback percentage rates normalize correctly, explicit fixed rewards work where enough data exists, and unsupported unit semantics are now excluded instead of being guessed from spend amount)
 - Phase 3 — Replace category-total optimization with transaction-aware optimization: **in progress** (optimizer constraints now preserve real transactions and greedy scoring is moving to marginal per-transaction assignment)
 - Phase 4 — Unify parser logic and restore web/CLI parity: **in progress** (bank signatures tightened, browser/backend XLSX configs aligned for newer banks, malformed amounts surface as errors instead of silently dropping rows)
 - Phase 5 — Security hardening: **in progress** (browser scripts are being externalized, CSP no longer requires inline scripts, and persisted analysis storage is being reduced to non-transaction summaries)
@@ -153,7 +153,7 @@ This is the foundation. Do this before trying to “improve the optimizer” or 
 ### Progress notes
 - 2026-04-12: calculator now normalizes percentage-style discount/cashback rates instead of treating them as raw multipliers.
 - 2026-04-12: fixed-amount rewards and subcategory-specific rules are evaluated before falling back to broader category logic.
-- 2026-04-12: unsupported unit semantics remain explicit rather than silently fabricating quantity data.
+- 2026-04-12: unit-based rewards that still lack quantity inputs (`won_per_liter`, bare `miles`) are now excluded instead of being guessed from transaction amount.
 
 ### Problems being fixed
 - reward calculator ignores parts of the rule model,
@@ -265,6 +265,7 @@ Minimum regression set should include:
 - 2026-04-12: parser hardening now rejects the noisiest bank-signature false positives (`토스`, `CU`, `MG`, `JB`-style merchant text) instead of treating them as bank headers.
 - 2026-04-12: browser/backend XLSX configs for the newer banks have been realigned, and malformed amount cells are surfaced as errors instead of being silently dropped as zero-value rows.
 - 2026-04-12: the web optimizer path now preserves parser-derived installments and `isOnline` flags instead of hardcoding them away during re-optimization.
+- 2026-04-12: added an automated parity check between browser and package XLSX column configs to catch future drift in the duplicated parser surfaces.
 
 ### Problems being fixed
 - browser and package parsers have forked,
