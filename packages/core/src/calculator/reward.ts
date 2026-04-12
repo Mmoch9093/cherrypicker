@@ -127,7 +127,7 @@ function calculateFixedReward(
     return fixedAmount;
   }
 
-  return fixedAmount;
+  return 0;
 }
 
 export function calculateRewards(input: CalculationInput): CalculationOutput {

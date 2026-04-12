@@ -75,6 +75,33 @@ const subcategoryFixture: CardRuleSet = {
   },
 };
 
+const cashbackFixture: CardRuleSet = {
+  card: {
+    id: 'fixture-cashback-card',
+    issuer: 'fixture',
+    name: 'Fixture Cashback Card',
+    nameKo: '캐시백 테스트 카드',
+    type: 'credit',
+    annualFee: { domestic: 0, international: 0 },
+    url: 'https://example.com/cashback-fixture',
+    lastUpdated: '2026-04-12',
+    source: 'manual',
+  },
+  performanceTiers: [{ id: 'tier0', label: '무실적', minSpending: 0, maxSpending: null }],
+  performanceExclusions: [],
+  rewards: [
+    {
+      category: 'grocery',
+      type: 'cashback',
+      tiers: [{ performanceTier: 'tier0', rate: 5, monthlyCap: null, perTransactionCap: null }],
+    },
+  ],
+  globalConstraints: {
+    monthlyTotalDiscountCap: null,
+    minimumAnnualSpending: null,
+  },
+};
+
 describe('calculateRewards - simple-plan (tier0, 1% on uncategorized, no cap)', () => {
   test('basic 1% discount calculation', () => {
     const output = calculateRewards({
@@ -254,6 +281,17 @@ describe('calculateRewards - mr-life (tiered, capped)', () => {
 });
 
 describe('calculateRewards - fixed amount and subcategory handling', () => {
+  test('cashback percentage rates are normalized before calculator math', () => {
+    const output = calculateRewards({
+      transactions: [makeTx('c1', 'grocery', 10000)],
+      previousMonthSpending: 0,
+      cardRule: cashbackFixture,
+    });
+    const grocery = output.rewards.find((reward) => reward.category === 'grocery');
+    expect(grocery).toBeDefined();
+    expect(grocery!.reward).toBe(500);
+  });
+
   test('fixed-amount telecom benefit applies once per eligible transaction', () => {
     const output = calculateRewards({
       transactions: [makeTx('t1', 'telecom', 55000)],

@@ -49,72 +49,160 @@ const CATEGORY_NAMES_KO: Record<string, string> = {
   uncategorized: '미분류',
 };
 
-interface CategoryCardScore {
+interface CardScore {
   cardId: string;
   cardName: string;
   reward: number;
   rate: number;
 }
 
-/**
- * Build synthetic per-category transactions so we can run calculateRewards
- * for a specific category only.
- */
-function makeCategoryTransactions(
-  category: string,
-  spending: number,
-): CategorizedTransaction[] {
-  return [
-    {
-      id: `synthetic-${category}`,
-      date: new Date().toISOString().slice(0, 10),
-      merchant: category,
-      amount: spending,
-      currency: 'KRW',
-      category,
-      confidence: 1.0,
-    },
-  ];
+interface TxAssignment {
+  tx: CategorizedTransaction;
+  assignedCardId: string;
+  assignedCardName: string;
+  reward: number;
+  rate: number;
+  alternatives: CardScore[];
 }
 
-/**
- * Score every card for a given category and spending amount.
- */
-function scoreCardsForCategory(
-  category: string,
-  spending: number,
+function getCardName(rule: CardRuleSet): string {
+  return rule.card.nameKo || rule.card.name;
+}
+
+function calculateCardOutput(
+  transactions: CategorizedTransaction[],
+  previousMonthSpending: number,
+  cardRule: CardRuleSet,
+) {
+  return calculateRewards({
+    transactions,
+    previousMonthSpending,
+    cardRule,
+  });
+}
+
+function scoreCardsForTransaction(
+  transaction: CategorizedTransaction,
   cardRules: CardRuleSet[],
   cardPreviousSpending: Map<string, number>,
-): CategoryCardScore[] {
-  const scores: CategoryCardScore[] = [];
+  assignedTransactionsByCard: Map<string, CategorizedTransaction[]>,
+): CardScore[] {
+  const scores: CardScore[] = [];
 
   for (const rule of cardRules) {
+    const currentTransactions = assignedTransactionsByCard.get(rule.card.id) ?? [];
     const previousMonthSpending = cardPreviousSpending.get(rule.card.id) ?? 0;
-    const output = calculateRewards({
-      transactions: makeCategoryTransactions(category, spending),
-      previousMonthSpending,
-      cardRule: rule,
-    });
 
-    const categoryResult = output.rewards.find((r) => r.category === category);
-    const reward = categoryResult?.reward ?? 0;
-    const rate = spending > 0 ? reward / spending : 0;
+    const before = calculateCardOutput(currentTransactions, previousMonthSpending, rule).totalReward;
+    const after = calculateCardOutput([...currentTransactions, transaction], previousMonthSpending, rule).totalReward;
+    const reward = Math.max(0, after - before);
+    const rate = transaction.amount > 0 ? reward / transaction.amount : 0;
 
     scores.push({
       cardId: rule.card.id,
-      cardName: rule.card.nameKo || rule.card.name,
+      cardName: getCardName(rule),
       reward,
       rate,
     });
   }
 
-  // Sort descending by reward
   return scores.sort((a, b) => b.reward - a.reward);
 }
 
+function buildAssignments(txAssignments: TxAssignment[]): CardAssignment[] {
+  const assignmentMap = new Map<string, CardAssignment>();
+  const alternativeRewardMap = new Map<string, Map<string, { cardName: string; reward: number }>>();
+
+  for (const assignment of txAssignments) {
+    const key = `${assignment.tx.category}::${assignment.assignedCardId}`;
+    const current = assignmentMap.get(key);
+
+    if (current) {
+      current.spending += assignment.tx.amount;
+      current.reward += assignment.reward;
+      current.rate = current.spending > 0 ? current.reward / current.spending : 0;
+    } else {
+      assignmentMap.set(key, {
+        category: assignment.tx.category,
+        categoryNameKo: CATEGORY_NAMES_KO[assignment.tx.category] ?? assignment.tx.category,
+        assignedCardId: assignment.assignedCardId,
+        assignedCardName: assignment.assignedCardName,
+        spending: assignment.tx.amount,
+        reward: assignment.reward,
+        rate: assignment.rate,
+        alternatives: [],
+      });
+    }
+
+    const alternativesForAssignment = alternativeRewardMap.get(key) ?? new Map<string, { cardName: string; reward: number }>();
+    for (const alternative of assignment.alternatives) {
+      const currentAlternative = alternativesForAssignment.get(alternative.cardId);
+      if (currentAlternative) {
+        currentAlternative.reward += alternative.reward;
+      } else {
+        alternativesForAssignment.set(alternative.cardId, {
+          cardName: alternative.cardName,
+          reward: alternative.reward,
+        });
+      }
+    }
+    alternativeRewardMap.set(key, alternativesForAssignment);
+  }
+
+  for (const [key, assignment] of assignmentMap) {
+    const alternatives = [...(alternativeRewardMap.get(key)?.entries() ?? [])]
+      .map(([cardId, value]) => ({
+        cardId,
+        cardName: value.cardName,
+        reward: value.reward,
+        rate: assignment.spending > 0 ? value.reward / assignment.spending : 0,
+      }))
+      .sort((a, b) => b.reward - a.reward)
+      .slice(0, 5);
+
+    assignment.alternatives = alternatives;
+  }
+
+  // Reporting still stays category-based, but now reflects the real set of
+  // transactions that ended up on each card instead of synthetic category totals.
+  return [...assignmentMap.values()].sort((a, b) => b.spending - a.spending);
+}
+
+function buildCardResults(
+  cardRules: CardRuleSet[],
+  cardPreviousSpending: Map<string, number>,
+  assignedTransactionsByCard: Map<string, CategorizedTransaction[]>,
+): CardRewardResult[] {
+  const cardResults: CardRewardResult[] = [];
+
+  for (const rule of cardRules) {
+    const assignedTransactions = assignedTransactionsByCard.get(rule.card.id) ?? [];
+    if (assignedTransactions.length === 0) continue;
+
+    const previousMonthSpending = cardPreviousSpending.get(rule.card.id) ?? 0;
+    const output = calculateCardOutput(assignedTransactions, previousMonthSpending, rule);
+    const totalSpending = assignedTransactions.reduce((sum, tx) => sum + tx.amount, 0);
+    const byCategory: CategoryReward[] = output.rewards;
+    const capsHit: CapInfo[] = output.capsHit;
+
+    cardResults.push({
+      cardId: rule.card.id,
+      cardName: getCardName(rule),
+      totalReward: output.totalReward,
+      totalSpending,
+      effectiveRate: totalSpending > 0 ? output.totalReward / totalSpending : 0,
+      byCategory,
+      performanceTier: output.performanceTier,
+      capsHit,
+    });
+  }
+
+  return cardResults;
+}
+
 /**
- * Greedy optimizer: assigns each category to the best card independently.
- * Categories are processed from highest spending to lowest to respect caps.
+ * Greedy optimizer: assigns each transaction to the card with the highest
+ * marginal reward while preserving the original transaction facts.
  */
 export function greedyOptimize(
   constraints: OptimizationConstraints,
@@ -123,106 +211,57 @@ export function greedyOptimize(
   const cardPreviousSpending = new Map(
     constraints.cards.map((c) => [c.cardId, c.previousMonthSpending]),
   );
+  const assignedTransactionsByCard = new Map<string, CategorizedTransaction[]>();
+  for (const rule of cardRules) {
+    assignedTransactionsByCard.set(rule.card.id, []);
+  }
 
-  // Sort categories by spending descending
-  const sortedCategories = [...constraints.categorySpending.entries()].sort(
-    (a, b) => b[1] - a[1],
-  );
+  const sortedTransactions = [...constraints.transactions]
+    .filter((tx) => tx.amount > 0)
+    .sort((a, b) => b.amount - a.amount);
 
-  const assignments: CardAssignment[] = [];
+  const txAssignments: TxAssignment[] = [];
 
-  for (const [category, spending] of sortedCategories) {
-    if (spending <= 0) continue;
-
-    const scores = scoreCardsForCategory(category, spending, cardRules, cardPreviousSpending);
+  for (const transaction of sortedTransactions) {
+    const scores = scoreCardsForTransaction(
+      transaction,
+      cardRules,
+      cardPreviousSpending,
+      assignedTransactionsByCard,
+    );
     const best = scores[0];
     if (!best) continue;
 
-    const MAX_ALTERNATIVES = 5;
-    const alternatives = scores.slice(1, 1 + MAX_ALTERNATIVES).map((s) => ({
-      cardId: s.cardId,
-      cardName: s.cardName,
-      reward: s.reward,
-      rate: s.rate,
-    }));
+    const currentTransactions = assignedTransactionsByCard.get(best.cardId) ?? [];
+    currentTransactions.push(transaction);
+    assignedTransactionsByCard.set(best.cardId, currentTransactions);
 
-    assignments.push({
-      category,
-      categoryNameKo: CATEGORY_NAMES_KO[category] ?? category,
+    txAssignments.push({
+      tx: transaction,
       assignedCardId: best.cardId,
       assignedCardName: best.cardName,
-      spending,
       reward: best.reward,
       rate: best.rate,
-      alternatives,
+      alternatives: scores.filter((score) => score.cardId !== best.cardId).slice(0, 5),
     });
   }
 
-  const totalReward = assignments.reduce((s, a) => s + a.reward, 0);
-  const totalSpending = assignments.reduce((s, a) => s + a.spending, 0);
+  const assignments = buildAssignments(txAssignments);
+  const cardResults = buildCardResults(cardRules, cardPreviousSpending, assignedTransactionsByCard);
+
+  const totalReward = cardResults.reduce((sum, cardResult) => sum + cardResult.totalReward, 0);
+  const totalSpending = txAssignments.reduce((sum, assignment) => sum + assignment.tx.amount, 0);
   const effectiveRate = totalSpending > 0 ? totalReward / totalSpending : 0;
 
-  // Build per-card results
-  const cardResultMap = new Map<string, { rule: CardRuleSet; categories: CardAssignment[] }>();
-  for (const rule of cardRules) {
-    cardResultMap.set(rule.card.id, { rule, categories: [] });
-  }
-  for (const assignment of assignments) {
-    const entry = cardResultMap.get(assignment.assignedCardId);
-    if (entry) {
-      entry.categories.push(assignment);
-    }
-  }
-
-  const cardResults: CardRewardResult[] = [];
-  for (const { rule, categories } of cardResultMap.values()) {
-    if (categories.length === 0) continue;
-    const cardTotalReward = categories.reduce((s, c) => s + c.reward, 0);
-    const cardTotalSpending = categories.reduce((s, c) => s + c.spending, 0);
-
-    const previousMonthSpending = cardPreviousSpending.get(rule.card.id) ?? 0;
-    const allTransactions: CategorizedTransaction[] = categories.map((c) =>
-      makeCategoryTransactions(c.category, c.spending)[0],
-    );
-    const output = calculateRewards({
-      transactions: allTransactions,
-      previousMonthSpending,
-      cardRule: rule,
-    });
-
-    const byCategory: CategoryReward[] = output.rewards;
-    const capsHit: CapInfo[] = output.capsHit;
-
-    cardResults.push({
-      cardId: rule.card.id,
-      cardName: rule.card.nameKo || rule.card.name,
-      totalReward: cardTotalReward,
-      totalSpending: cardTotalSpending,
-      effectiveRate: cardTotalSpending > 0 ? cardTotalReward / cardTotalSpending : 0,
-      byCategory,
-      performanceTier: output.performanceTier,
-      capsHit,
-    });
-  }
-
-  // Compute best single-card scenario for comparison
   let bestSingleCard = { cardId: '', cardName: '', totalReward: 0 };
   for (const rule of cardRules) {
     const previousMonthSpending = cardPreviousSpending.get(rule.card.id) ?? 0;
-    const allTransactions: CategorizedTransaction[] = sortedCategories
-      .filter(([, s]) => s > 0)
-      .map(([cat, spending]) => makeCategoryTransactions(cat, spending)[0]);
-
-    const output = calculateRewards({
-      transactions: allTransactions,
-      previousMonthSpending,
-      cardRule: rule,
-    });
+    const output = calculateCardOutput(sortedTransactions, previousMonthSpending, rule);
 
     if (output.totalReward > bestSingleCard.totalReward) {
       bestSingleCard = {
         cardId: rule.card.id,
-        cardName: rule.card.nameKo || rule.card.name,
+        cardName: getCardName(rule),
         totalReward: output.totalReward,
       };
     }

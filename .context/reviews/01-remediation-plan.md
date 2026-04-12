@@ -14,8 +14,8 @@ Turn the review findings into a practical recovery sequence that restores:
 
 - Phase 0 — Stop-ship guardrails: **in progress** (automatic remote PDF fallback disabled by default, browser AI runtime disabled, README/license baseline corrected)
 - Phase 1 — Repair the rule/data contract: **in progress** (runtime schema preserves `fixedAmount` / `unit` / `subcategory`, accepts current `web` / `prepaid` metadata, and `build-json` runs under Node; category taxonomy cleanup is still pending)
-- Phase 2 — Make the calculator correct on real rules: **in progress** (discount/cashback percentage rates normalize correctly, fixed-amount flat rewards work, and subcategory-aware matching has started)
-- Phase 3 — Replace category-total optimization with transaction-aware optimization: **pending**
+- Phase 2 — Make the calculator correct on real rules: **in progress** (discount/cashback percentage rates normalize correctly, explicit fixed rewards are preserved, and unsupported unit semantics stay explicit instead of silently collapsing)
+- Phase 3 — Replace category-total optimization with transaction-aware optimization: **in progress** (optimizer constraints now preserve real transactions and greedy scoring is moving to marginal per-transaction assignment)
 - Phase 4 — Unify parser logic and restore web/CLI parity: **in progress** (bank signatures tightened, browser/backend XLSX configs aligned for newer banks, malformed amounts surface as errors instead of silently dropping rows)
 - Phase 5 — Security hardening: **pending**
 - Phase 6 — Release discipline / tooling cleanup: **in progress** (deploy now gates on repo verification; npm lint/typecheck pass locally, Bun-backed test execution still needs full runtime verification)
@@ -149,6 +149,11 @@ This is the foundation. Do this before trying to “improve the optimizer” or 
 
 **Priority:** highest
 
+### Progress notes
+- 2026-04-12: calculator now normalizes percentage-style discount/cashback rates instead of treating them as raw multipliers.
+- 2026-04-12: fixed-amount rewards and subcategory-specific rules are evaluated before falling back to broader category logic.
+- 2026-04-12: unsupported unit semantics remain explicit rather than silently fabricating quantity data.
+
 ### Problems being fixed
 - reward calculator ignores parts of the rule model,
 - cap reporting is questionable,
@@ -204,6 +209,10 @@ Minimum regression set should include:
 ## Phase 3 — Replace category-total optimization with transaction-aware optimization
 
 **Priority:** highest
+
+### Progress notes
+- 2026-04-12: optimizer constraints now preserve the original transaction list so scoring can use merchant/subcategory/channel facts instead of synthetic category totals.
+- 2026-04-12: greedy scoring is being shifted to marginal per-transaction assignment; reporting still needs final cleanup once the full lane lands.
 
 ### Problems being fixed
 - optimizer currently destroys transaction-level facts,
