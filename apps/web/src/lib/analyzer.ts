@@ -12,6 +12,8 @@ export interface CategorizedTx {
   date: string;
   merchant: string;
   amount: number;
+  installments?: number;
+  isOnline?: boolean;
   category: string;
   subcategory: string | undefined;
   confidence: number;
@@ -43,6 +45,8 @@ export async function parseAndCategorize(
         date: tx.date,
         merchant: tx.merchant,
         amount: tx.amount,
+        installments: tx.installments,
+        isOnline: tx.isOnline,
         category: match.category,
         subcategory: match.subcategory,
         confidence: match.confidence,
@@ -72,8 +76,8 @@ export async function optimizeFromTransactions(
     merchant: tx.merchant,
     amount: tx.amount,
     currency: 'KRW',
-    installments: 0,
-    isOnline: false,
+    installments: tx.installments,
+    isOnline: tx.isOnline,
     rawCategory: tx.rawCategory,
     memo: tx.memo,
     category: tx.category,

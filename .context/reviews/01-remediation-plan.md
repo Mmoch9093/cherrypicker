@@ -264,6 +264,7 @@ Minimum regression set should include:
 ### Progress notes
 - 2026-04-12: parser hardening now rejects the noisiest bank-signature false positives (`토스`, `CU`, `MG`, `JB`-style merchant text) instead of treating them as bank headers.
 - 2026-04-12: browser/backend XLSX configs for the newer banks have been realigned, and malformed amount cells are surfaced as errors instead of being silently dropped as zero-value rows.
+- 2026-04-12: the web optimizer path now preserves parser-derived installments and `isOnline` flags instead of hardcoding them away during re-optimization.
 
 ### Problems being fixed
 - browser and package parsers have forked,
