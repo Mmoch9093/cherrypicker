@@ -25,25 +25,26 @@ function findTierRate(rule: RewardRule, tierId: string): RewardTierRate | undefi
   return rule.tiers.find((t) => t.performanceTier === tierId);
 }
 
-function groupByCategory(
-  transactions: CategorizedTransaction[],
-): Map<string, CategorizedTransaction[]> {
-  const map = new Map<string, CategorizedTransaction[]>();
-  for (const tx of transactions) {
-    const key = tx.category;
-    const existing = map.get(key);
-    if (existing) {
-      existing.push(tx);
-    } else {
-      map.set(key, [tx]);
-    }
-  }
-  return map;
+function buildCategoryKey(category: string, subcategory?: string): string {
+  return subcategory ? `${category}.${subcategory}` : category;
 }
 
-function findRule(rules: RewardRule[], category: string): RewardRule | undefined {
-  // Exact match first, then wildcard '*'
-  return rules.find((r) => r.category === category) ?? rules.find((r) => r.category === '*');
+function buildRuleKey(rule: RewardRule): string {
+  return buildCategoryKey(rule.category, rule.subcategory);
+}
+
+function findRule(rules: RewardRule[], tx: CategorizedTransaction): RewardRule | undefined {
+  if (tx.subcategory) {
+    const exact = rules.find(
+      (rule) => rule.category === tx.category && rule.subcategory === tx.subcategory,
+    );
+    if (exact) return exact;
+  }
+
+  return (
+    rules.find((rule) => rule.category === tx.category && rule.subcategory === undefined) ??
+    rules.find((rule) => rule.category === '*')
+  );
 }
 
 type RewardCalcFn = (
@@ -69,6 +70,61 @@ function getCalcFn(type: string): RewardCalcFn {
   }
 }
 
+function normalizeRate(ruleType: string, rate: number | null): number | null {
+  if (rate === null) return null;
+  if (ruleType === 'discount' || ruleType === 'cashback') {
+    return rate / 100;
+  }
+  return rate;
+}
+
+function applyMonthlyCap(
+  rawReward: number,
+  monthlyCap: number | null,
+  currentMonthUsed: number,
+): { reward: number; newMonthUsed: number; capReached: boolean } {
+  if (monthlyCap === null) {
+    return { reward: rawReward, newMonthUsed: currentMonthUsed + rawReward, capReached: false };
+  }
+
+  const remaining = Math.max(0, monthlyCap - currentMonthUsed);
+  const reward = Math.min(rawReward, remaining);
+  return {
+    reward,
+    newMonthUsed: currentMonthUsed + reward,
+    capReached: rawReward > remaining,
+  };
+}
+
+function calculateFixedReward(
+  tx: CategorizedTransaction,
+  tierRate: RewardTierRate,
+  ruleKey: string,
+  dayRewardTracker: Set<string>,
+): number {
+  const fixedAmount = tierRate.fixedAmount ?? 0;
+  if (fixedAmount <= 0) return 0;
+
+  if (tierRate.unit === 'won_per_day') {
+    const dayKey = `${ruleKey}:${tx.date}`;
+    if (dayRewardTracker.has(dayKey)) return 0;
+    dayRewardTracker.add(dayKey);
+    return fixedAmount;
+  }
+
+  if (tierRate.unit === 'mile_per_1500won') {
+    return Math.floor(tx.amount / 1500) * fixedAmount;
+  }
+
+  if (tierRate.unit === null || tierRate.unit === undefined) {
+    return fixedAmount;
+  }
+
+  // Units that depend on volume or other missing transaction metadata stay unsupported until the
+  // parser/runtime contract carries the necessary inputs.
+  return 0;
+}
+
 export function calculateRewards(input: CalculationInput): CalculationOutput {
   const { transactions, previousMonthSpending, cardRule } = input;
   const { card, performanceTiers, rewards: rewardRules, globalConstraints } = cardRule;
@@ -77,139 +133,136 @@ export function calculateRewards(input: CalculationInput): CalculationOutput {
   const tier = selectTier(performanceTiers, previousMonthSpending);
   const tierId = tier?.id ?? 'none';
 
-  // 2. Group transactions by category
-  const byCategory = groupByCategory(transactions);
-
-  // 3. Track monthly caps per category and global
-  const categoryMonthUsed = new Map<string, number>();
+  // 2. Track monthly caps per rule and global while accumulating per-category outputs
+  const ruleMonthUsed = new Map<string, number>();
+  const dayRewardTracker = new Set<string>();
   let globalMonthUsed = 0;
   const globalCap = globalConstraints.monthlyTotalDiscountCap;
 
-  const categoryRewards: CategoryReward[] = [];
+  const categoryRewards = new Map<string, CategoryReward>();
   const capsHit: CapInfo[] = [];
 
-  for (const [category, txList] of byCategory) {
-    const rule = findRule(rewardRules, category);
-    if (!rule || tierId === 'none') {
-      // No rule or no qualifying tier — zero reward for this category
-      const spending = txList.reduce((s, t) => s + t.amount, 0);
-      categoryRewards.push({
-        category,
-        categoryNameKo: category,
-        spending,
+  for (const tx of transactions) {
+    const categoryKey = buildCategoryKey(tx.category, tx.subcategory);
+    const rule = tierId === 'none' ? undefined : findRule(rewardRules, tx);
+    const rewardKey = rule ? buildRuleKey(rule) : categoryKey;
+    const bucket =
+      categoryRewards.get(categoryKey) ??
+      {
+        category: categoryKey,
+        categoryNameKo: categoryKey,
+        spending: 0,
         reward: 0,
         rate: 0,
-        rewardType: 'discount',
+        rewardType: rule?.type ?? 'discount',
         capReached: false,
-      });
+      };
+
+    bucket.spending += tx.amount;
+
+    if (!rule) {
+      categoryRewards.set(categoryKey, bucket);
       continue;
     }
 
     const tierRate = findTierRate(rule, tierId);
     if (!tierRate) {
-      const spending = txList.reduce((s, t) => s + t.amount, 0);
-      categoryRewards.push({
-        category,
-        categoryNameKo: category,
-        spending,
-        reward: 0,
-        rate: 0,
-        rewardType: rule.type,
-        capReached: false,
-      });
+      bucket.rewardType = rule.type;
+      categoryRewards.set(categoryKey, bucket);
       continue;
     }
 
-    const calcFn = getCalcFn(rule.type);
-    const monthlyCap = tierRate.monthlyCap;
-    const perTxCap = tierRate.perTransactionCap;
-
-    let catMonthUsed = categoryMonthUsed.get(category) ?? 0;
-    let categoryTotalReward = 0;
-    let categoryTotalSpending = 0;
-    let catCapReached = false;
-
-    for (const tx of txList) {
-      // Check conditions
-      if (rule.conditions?.minTransaction !== undefined && tx.amount < rule.conditions.minTransaction) {
-        continue;
-      }
-      if (rule.conditions?.excludeOnline && tx.isOnline) {
-        continue;
-      }
-      if (
-        rule.conditions?.specificMerchants &&
-        rule.conditions.specificMerchants.length > 0 &&
-        !rule.conditions.specificMerchants.some((m) => tx.merchant.includes(m))
-      ) {
-        continue;
-      }
-
-      categoryTotalSpending += tx.amount;
-
-      // Per-transaction cap: limit the amount that earns reward per transaction
-      const effectiveAmount = perTxCap !== null ? Math.min(tx.amount, perTxCap) : tx.amount;
-
-      // Category monthly cap
-      const catResult = calcFn(effectiveAmount, tierRate.rate ?? 0, monthlyCap, catMonthUsed);
-      catMonthUsed = catResult.newMonthUsed;
-      if (catResult.capReached) catCapReached = true;
-
-      // Global monthly cap
-      if (globalCap !== null) {
-        const globalRemaining = Math.max(0, globalCap - globalMonthUsed);
-        const globalCapped = Math.min(catResult.reward, globalRemaining);
-        if (catResult.reward > globalRemaining) {
-          // Global cap hit
-          capsHit.push({
-            category,
-            capType: 'monthly_total',
-            capAmount: globalCap,
-            actualReward: catResult.reward,
-            appliedReward: globalCapped,
-          });
-        }
-        globalMonthUsed += globalCapped;
-        categoryTotalReward += globalCapped;
-      } else {
-        categoryTotalReward += catResult.reward;
-      }
+    // Check conditions
+    if (rule.conditions?.minTransaction !== undefined && tx.amount < rule.conditions.minTransaction) {
+      bucket.rewardType = rule.type;
+      categoryRewards.set(categoryKey, bucket);
+      continue;
+    }
+    if (rule.conditions?.excludeOnline && tx.isOnline) {
+      bucket.rewardType = rule.type;
+      categoryRewards.set(categoryKey, bucket);
+      continue;
+    }
+    if (
+      rule.conditions?.specificMerchants &&
+      rule.conditions.specificMerchants.length > 0 &&
+      !rule.conditions.specificMerchants.some((merchant) => tx.merchant.includes(merchant))
+    ) {
+      bucket.rewardType = rule.type;
+      categoryRewards.set(categoryKey, bucket);
+      continue;
     }
 
-    categoryMonthUsed.set(category, catMonthUsed);
+    const normalizedRate = normalizeRate(rule.type, tierRate.rate);
+    const perTxCap = tierRate.perTransactionCap;
+    const monthlyCap = tierRate.monthlyCap;
+    const currentRuleMonthUsed = ruleMonthUsed.get(rewardKey) ?? 0;
 
-    if (catCapReached && monthlyCap !== null) {
+    let ruleResult: { reward: number; newMonthUsed: number; capReached: boolean };
+    const hasFixedReward = (tierRate.fixedAmount ?? 0) > 0;
+    if (normalizedRate !== null && normalizedRate > 0) {
+      const calcFn = getCalcFn(rule.type);
+      const effectiveAmount = perTxCap !== null ? Math.min(tx.amount, perTxCap) : tx.amount;
+      ruleResult = calcFn(effectiveAmount, normalizedRate, monthlyCap, currentRuleMonthUsed);
+    } else if (hasFixedReward) {
+      const rawFixedReward = calculateFixedReward(tx, tierRate, rewardKey, dayRewardTracker);
+      const effectiveFixedReward =
+        perTxCap !== null ? Math.min(rawFixedReward, perTxCap) : rawFixedReward;
+      ruleResult = applyMonthlyCap(effectiveFixedReward, monthlyCap, currentRuleMonthUsed);
+    } else {
+      ruleResult = applyMonthlyCap(0, monthlyCap, currentRuleMonthUsed);
+    }
+
+    ruleMonthUsed.set(rewardKey, ruleResult.newMonthUsed);
+    if (ruleResult.capReached) {
+      bucket.capReached = true;
+    }
+
+    let appliedReward = ruleResult.reward;
+    if (globalCap !== null) {
+      const globalRemaining = Math.max(0, globalCap - globalMonthUsed);
+      appliedReward = Math.min(ruleResult.reward, globalRemaining);
+      if (ruleResult.reward > globalRemaining) {
+        capsHit.push({
+          category: categoryKey,
+          capType: 'monthly_total',
+          capAmount: globalCap,
+          actualReward: ruleResult.reward,
+          appliedReward,
+        });
+      }
+      globalMonthUsed += appliedReward;
+    }
+
+    bucket.reward += appliedReward;
+    bucket.rewardType = rule.type;
+    bucket.capAmount = monthlyCap ?? undefined;
+
+    if (ruleResult.capReached && monthlyCap !== null) {
       capsHit.push({
-        category,
+        category: categoryKey,
         capType: 'monthly_category',
         capAmount: monthlyCap,
-        actualReward: categoryTotalReward + (catMonthUsed - (categoryMonthUsed.get(category) ?? 0)),
-        appliedReward: categoryTotalReward,
+        actualReward: ruleResult.reward,
+        appliedReward,
       });
     }
 
-    const effectiveRate =
-      categoryTotalSpending > 0 ? categoryTotalReward / categoryTotalSpending : 0;
-
-    categoryRewards.push({
-      category,
-      categoryNameKo: category,
-      spending: categoryTotalSpending,
-      reward: categoryTotalReward,
-      rate: effectiveRate,
-      rewardType: rule.type,
-      capReached: catCapReached,
-      capAmount: monthlyCap ?? undefined,
-    });
+    categoryRewards.set(categoryKey, bucket);
   }
 
-  const totalReward = categoryRewards.reduce((s, c) => s + c.reward, 0);
-  const totalSpending = categoryRewards.reduce((s, c) => s + c.spending, 0);
+  const categoryRewardList = [...categoryRewards.values()].map((bucket) => ({
+    ...bucket,
+    rate: bucket.spending > 0 ? bucket.reward / bucket.spending : 0,
+  }));
+
+  const totalReward = categoryRewardList.reduce((sum, categoryReward) => sum + categoryReward.reward, 0);
+  const totalSpending = categoryRewardList.reduce((sum, categoryReward) => sum + categoryReward.spending, 0);
 
   return {
     cardId: card.id,
     performanceTier: tierId,
-    rewards: categoryRewards,
+    rewards: categoryRewardList,
     totalReward,
     totalSpending,
     capsHit,

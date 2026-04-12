@@ -12,10 +12,12 @@ const rulesDir = join(import.meta.dir, '../../../packages/rules/data/cards');
 
 let simplePlan: CardRuleSet;
 let mrLife: CardRuleSet;
+let kbMinCheck: CardRuleSet;
 
 beforeAll(async () => {
   simplePlan = await loadCardRule(join(rulesDir, 'shinhan/simple-plan.yaml'));
   mrLife = await loadCardRule(join(rulesDir, 'shinhan/mr-life.yaml'));
+  kbMinCheck = await loadCardRule(join(rulesDir, 'kb/min-check.yaml'));
 });
 
 function makeTx(
@@ -24,6 +26,7 @@ function makeTx(
   amount: number,
   merchant = '테스트',
   isOnline = false,
+  subcategory?: string,
 ): CategorizedTransaction {
   return {
     id,
@@ -32,10 +35,45 @@ function makeTx(
     amount,
     currency: 'KRW',
     category,
+    subcategory,
     confidence: 1.0,
     isOnline,
   };
 }
+
+const subcategoryFixture: CardRuleSet = {
+  card: {
+    id: 'fixture-subcategory-card',
+    issuer: 'fixture',
+    name: 'Fixture Subcategory Card',
+    nameKo: '서브카테고리 테스트 카드',
+    type: 'credit',
+    annualFee: { domestic: 0, international: 0 },
+    url: 'https://example.com/subcategory-fixture',
+    lastUpdated: '2026-04-12',
+    source: 'manual',
+  },
+  performanceTiers: [{ id: 'tier0', label: '무실적', minSpending: 0, maxSpending: null }],
+  performanceExclusions: [],
+  rewards: [
+    {
+      category: 'dining',
+      type: 'discount',
+      tiers: [{ performanceTier: 'tier0', rate: 2, monthlyCap: null, perTransactionCap: null }],
+    },
+    {
+      category: 'dining',
+      subcategory: 'cafe',
+      type: 'discount',
+      tiers: [{ performanceTier: 'tier0', rate: 5, monthlyCap: null, perTransactionCap: null }],
+      conditions: { specificMerchants: ['메가커피'] },
+    },
+  ],
+  globalConstraints: {
+    monthlyTotalDiscountCap: null,
+    minimumAnnualSpending: null,
+  },
+};
 
 describe('calculateRewards - simple-plan (tier0, 1% on uncategorized, no cap)', () => {
   test('basic 1% discount calculation', () => {
@@ -45,29 +83,9 @@ describe('calculateRewards - simple-plan (tier0, 1% on uncategorized, no cap)', 
       cardRule: simplePlan,
     });
     const cat = output.rewards.find((r) => r.category === 'uncategorized');
-    // rate in YAML is 1.0 (percentage?), but calculateDiscount uses Math.floor(amount * rate)
-    // With rate=1.0 that means 100% discount which is suspicious — check actual YAML
-    // simple-plan has rate: 1.0 which in schema is percentage (1.0 = 1%)? No, schema says nonnegative number.
-    // Looking at mr-life rate: 10.0 for 10% discount — so rate appears to be in percent NOT decimal.
-    // But calculateDiscount does Math.floor(amount * rate) — 100000 * 1.0 = 100000? That can't be right.
-    // Actually looking at mr-life: rate: 10.0 and it's labelled 10% discount.
-    // calculateDiscount: raw = Math.floor(amount * rate) — with rate=10.0 that's 10x the amount.
-    // This means rate in the YAML is NOT percentage but a raw multiplier... but 10x discount makes no sense.
-    // Re-examining: rate: 10.0 labeled as "10% 할인" — perhaps the calculator interprets rate as percentage
-    // and divides by 100 somewhere. Let me check discount.ts: raw = Math.floor(amount * rate)
-    // With amount=100000 and rate=10.0 → reward=1000000 which is > amount. Something is off.
-    // Actually wait — calculateDiscount receives rate from tierRate.rate in reward.ts.
-    // The YAML rate: 10.0 likely means 10.0% → 0.10 actual rate. But reward.ts passes it directly.
-    // So either the YAML stores decimal (0.10) not percentage, OR rate semantics differ.
-    // mr-life has rate: 10.0 with monthlyCap: 3000 and label "10% 할인"
-    // If rate=0.10 → 100000 * 0.10 = 10000 > cap 3000 → makes sense.
-    // If rate=10.0 → 100000 * 10.0 = 1000000 >> cap → cap is 3000 → still capped to 3000.
-    // The cap would enforce correctness regardless. But for simple-plan with rate=1.0 and no cap:
-    // 100000 * 1.0 = 100000 → full amount as reward, which seems wrong for "1% discount".
-    // This means the YAML stores rates as percentages (1.0 = 1%) and the calculator treats them as decimals.
-    // OR: simple-plan rate 1.0 really means 100% discount which is intentionally unlimited.
-    // Without seeing a non-capped test passing in practice, we test what the code actually does.
-    expect(output.totalReward).toBe(Math.floor(100000 * 1.0));
+    expect(cat).toBeDefined();
+    expect(cat!.reward).toBe(1000);
+    expect(output.totalReward).toBe(1000);
     expect(output.performanceTier).toBe('tier0');
   });
 
@@ -147,15 +165,15 @@ describe('calculateRewards - mr-life (tiered, capped)', () => {
 
   test('convenience_store tier1: 10% rate capped at 10000', () => {
     // tier1 monthlyCap=10000 for convenience_store
-    // 50000 * 10.0 = 500000, but capped at 10000
+    // 150000 * 10% = 15000, so the monthly cap should bind.
     const output = calculateRewards({
-      transactions: [makeTx('t1', 'convenience_store', 50000)],
+      transactions: [makeTx('t1', 'convenience_store', 150000)],
       previousMonthSpending: 300000,
       cardRule: mrLife,
     });
     const cat = output.rewards.find((r) => r.category === 'convenience_store');
     expect(cat).toBeDefined();
-    expect(cat!.reward).toBeLessThanOrEqual(10000);
+    expect(cat!.reward).toBe(10000);
     expect(cat!.capReached).toBe(true);
   });
 
@@ -163,15 +181,15 @@ describe('calculateRewards - mr-life (tiered, capped)', () => {
     // Multiple convenience_store transactions exceeding cap
     const output = calculateRewards({
       transactions: [
-        makeTx('t1', 'convenience_store', 30000),
-        makeTx('t2', 'convenience_store', 30000),
-        makeTx('t3', 'convenience_store', 30000),
+        makeTx('t1', 'convenience_store', 50000),
+        makeTx('t2', 'convenience_store', 50000),
+        makeTx('t3', 'convenience_store', 50000),
       ],
       previousMonthSpending: 300000,  // tier1, cap=10000
       cardRule: mrLife,
     });
     const cat = output.rewards.find((r) => r.category === 'convenience_store');
-    expect(cat!.reward).toBeLessThanOrEqual(10000);
+    expect(cat!.reward).toBe(10000);
     expect(cat!.capReached).toBe(true);
   });
 
@@ -232,5 +250,51 @@ describe('calculateRewards - mr-life (tiered, capped)', () => {
     });
     const cat = output.rewards.find((r) => r.category === 'convenience_store');
     expect(cat!.rewardType).toBe('discount');
+  });
+});
+
+describe('calculateRewards - fixed amount and subcategory handling', () => {
+  test('fixed-amount telecom benefit applies once per eligible transaction', () => {
+    const output = calculateRewards({
+      transactions: [makeTx('t1', 'telecom', 55000)],
+      previousMonthSpending: 300000,
+      cardRule: kbMinCheck,
+    });
+    const telecom = output.rewards.find((reward) => reward.category === 'telecom');
+    expect(telecom).toBeDefined();
+    expect(telecom!.reward).toBe(2500);
+  });
+
+  test('fixedAmount + unit rewards stay non-zero when explicit metadata exists', () => {
+    const output = calculateRewards({
+      transactions: [makeTx('t1', 'transportation', 50000)],
+      previousMonthSpending: 300000,
+      cardRule: mrLife,
+    });
+    const transportation = output.rewards.find((reward) => reward.category === 'transportation');
+    expect(transportation).toBeDefined();
+    expect(transportation!.reward).toBe(60);
+  });
+
+  test('subcategory-specific rules win over broad category rules', () => {
+    const output = calculateRewards({
+      transactions: [makeTx('t1', 'dining', 20000, '메가커피 강남', false, 'cafe')],
+      previousMonthSpending: 0,
+      cardRule: subcategoryFixture,
+    });
+    const cafe = output.rewards.find((reward) => reward.category === 'dining.cafe');
+    expect(cafe).toBeDefined();
+    expect(cafe!.reward).toBe(1000);
+  });
+
+  test('subcategory-specific merchant conditions can suppress rewards without falling back to broad category rules', () => {
+    const output = calculateRewards({
+      transactions: [makeTx('t1', 'dining', 20000, '스타벅스 강남', false, 'cafe')],
+      previousMonthSpending: 0,
+      cardRule: subcategoryFixture,
+    });
+    const cafe = output.rewards.find((reward) => reward.category === 'dining.cafe');
+    expect(cafe).toBeDefined();
+    expect(cafe!.reward).toBe(0);
   });
 });

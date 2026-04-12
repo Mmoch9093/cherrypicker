@@ -14,7 +14,7 @@ Turn the review findings into a practical recovery sequence that restores:
 
 - Phase 0 — Stop-ship guardrails: **in progress** (automatic remote PDF fallback disabled by default, browser AI runtime disabled, README/license baseline corrected)
 - Phase 1 — Repair the rule/data contract: **in progress** (runtime schema preserves `fixedAmount` / `unit` / `subcategory`, accepts current `web` / `prepaid` metadata, and `build-json` runs under Node; category taxonomy cleanup is still pending)
-- Phase 2 — Make the calculator correct on real rules: **pending**
+- Phase 2 — Make the calculator correct on real rules: **in progress** (discount/cashback percentage rates normalize correctly, fixed-amount flat rewards work, and subcategory-aware matching has started)
 - Phase 3 — Replace category-total optimization with transaction-aware optimization: **pending**
 - Phase 4 — Unify parser logic and restore web/CLI parity: **pending**
 - Phase 5 — Security hardening: **pending**
@@ -193,6 +193,11 @@ Minimum regression set should include:
 
 ### Exit criteria
 - The calculator gives correct rewards for representative real cards across all supported reward modes.
+
+### Progress notes
+- 2026-04-12: discount/cashback rates now treat `1`, `5`, `10` as percentages instead of raw multipliers.
+- 2026-04-12: calculator now applies flat fixed-amount rewards and subcategory-aware rule matching on real transactions.
+- 2026-04-12: unsupported unit semantics (notably `won_per_liter`) still need explicit treatment before Phase 2 can be considered complete.
 
 ---
 
