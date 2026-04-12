@@ -18,7 +18,7 @@ Turn the review findings into a practical recovery sequence that restores:
 - Phase 3 — Replace category-total optimization with transaction-aware optimization: **pending**
 - Phase 4 — Unify parser logic and restore web/CLI parity: **pending**
 - Phase 5 — Security hardening: **pending**
-- Phase 6 — Release discipline / tooling cleanup: **pending**
+- Phase 6 — Release discipline / tooling cleanup: **in progress** (deploy now gates on repo verification; npm lint/typecheck pass locally, Bun-backed test execution still needs full runtime verification)
 
 ## Executive recommendation
 
@@ -334,6 +334,10 @@ Minimum regression set should include:
 ## Phase 6 — Release discipline / tooling cleanup
 
 **Priority:** high
+
+### Progress notes
+- 2026-04-12: GitHub Pages deploy now runs repo verification before build, and repo-level npm lint/typecheck succeed after aligning scraper validation with the preserved rule contract.
+- 2026-04-12: Full `verify` still depends on Bun for the test lane, so end-to-end release confidence remains blocked on source fixes plus Bun-backed execution.
 
 ### Actions
 

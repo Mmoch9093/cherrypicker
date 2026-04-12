@@ -31,19 +31,23 @@ export function validateExtractedRules(rules: unknown): ValidationResult {
 
   // 2. Business logic validation
 
-  // 2a. Reward rates should be 0 < rate <= 1
+  // 2a. Reward tiers should carry at least one reward signal.
+  // The runtime schema now preserves authored percentage-like rates as-is
+  // and also allows explicit fixed-amount / unit-based rewards.
   for (const reward of parsed.rewards) {
     for (const tier of reward.tiers) {
-      if (tier.rate <= 0) {
+      if (tier.rate === null && tier.fixedAmount === null) {
         errors.push(
-          `[비즈니스] rewards[${reward.category}].tiers[${tier.performanceTier}].rate: 혜택률은 0보다 커야 합니다 (현재: ${tier.rate})`,
+          `[비즈니스] rewards[${reward.category}].tiers[${tier.performanceTier}]: rate 또는 fixedAmount 중 하나는 필요합니다`,
         );
       }
-      if (tier.rate > 1) {
+
+      if (tier.unit !== null && tier.fixedAmount === null) {
         errors.push(
-          `[비즈니스] rewards[${reward.category}].tiers[${tier.performanceTier}].rate: 혜택률은 1(100%) 이하여야 합니다 (현재: ${tier.rate}). 퍼센트를 소수로 변환하세요.`,
+          `[비즈니스] rewards[${reward.category}].tiers[${tier.performanceTier}].unit: unit이 있으면 fixedAmount도 함께 지정해야 합니다`,
         );
       }
+
       if (tier.monthlyCap !== null && tier.monthlyCap !== undefined && tier.monthlyCap <= 0) {
         errors.push(
           `[비즈니스] rewards[${reward.category}].tiers[${tier.performanceTier}].monthlyCap: 한도는 양수여야 합니다`,
