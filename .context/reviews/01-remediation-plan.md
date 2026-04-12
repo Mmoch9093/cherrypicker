@@ -17,8 +17,8 @@ Turn the review findings into a practical recovery sequence that restores:
 - Phase 2 — Make the calculator correct on real rules: **in progress** (discount/cashback percentage rates normalize correctly, explicit fixed rewards are preserved, and unsupported unit semantics stay explicit instead of silently collapsing)
 - Phase 3 — Replace category-total optimization with transaction-aware optimization: **in progress** (optimizer constraints now preserve real transactions and greedy scoring is moving to marginal per-transaction assignment)
 - Phase 4 — Unify parser logic and restore web/CLI parity: **in progress** (bank signatures tightened, browser/backend XLSX configs aligned for newer banks, malformed amounts surface as errors instead of silently dropping rows)
-- Phase 5 — Security hardening: **pending**
-- Phase 6 — Release discipline / tooling cleanup: **in progress** (deploy now gates on repo verification; npm lint/typecheck pass locally, Bun-backed test execution still needs full runtime verification)
+- Phase 5 — Security hardening: **in progress** (browser scripts are being externalized, CSP no longer requires inline scripts, and persisted analysis storage is being reduced to non-transaction summaries)
+- Phase 6 — Release discipline / tooling cleanup: **in progress** (deploy gates on repo verification, full `npm run verify` passes, and manifest/lockfile drift is being reconciled)
 
 ## Executive recommendation
 
@@ -320,6 +320,10 @@ Minimum regression set should include:
 
 **Priority:** high
 
+### Progress notes
+- 2026-04-12: browser behavior scripts moved to same-origin static files so the CSP no longer requires `script-src 'unsafe-inline'`.
+- 2026-04-12: persisted analysis storage is being trimmed down to summary/optimization data instead of full transaction detail, reducing what survives page reloads.
+
 ### Actions
 
 1. **Bundle or self-host browser runtime dependencies**
@@ -359,7 +363,7 @@ Minimum regression set should include:
 - 2026-04-12: GitHub Pages deploy now runs repo verification before build, and repo-level npm lint/typecheck succeed after aligning scraper validation with the preserved rule contract.
 - 2026-04-12: installed Bun locally and ran targeted Bun suites for core/parser/rules; they now pass after matcher false-positive and schema-alignment fixes.
 - 2026-04-12: repo-level `npm run verify` now passes end-to-end after adding minimal CLI/viz/scraper smoke tests to packages that previously had failing empty test suites.
-- 2026-04-12: Full `verify` still depends on Bun for the test lane, so end-to-end release confidence remains blocked on source fixes plus Bun-backed execution.
+- 2026-04-12: TypeScript manifests now match the installed 5.9.x toolchain, and the web/parser XLSX dependency has been unified on SheetJS 0.20.3.
 
 ### Actions
 

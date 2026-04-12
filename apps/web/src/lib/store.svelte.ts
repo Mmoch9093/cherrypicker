@@ -84,10 +84,24 @@ export interface AnalyzeOptions {
 
 const STORAGE_KEY = 'cherrypicker:analysis';
 
+type PersistedAnalysisResult = Pick<
+  AnalysisResult,
+  'success' | 'bank' | 'format' | 'statementPeriod' | 'transactionCount' | 'optimization' | 'monthlyBreakdown'
+>;
+
 function persistToStorage(data: AnalysisResult): void {
   try {
     if (typeof sessionStorage !== 'undefined') {
-      sessionStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+      const persisted: PersistedAnalysisResult = {
+        success: data.success,
+        bank: data.bank,
+        format: data.format,
+        statementPeriod: data.statementPeriod,
+        transactionCount: data.transactionCount,
+        optimization: data.optimization,
+        monthlyBreakdown: data.monthlyBreakdown,
+      };
+      sessionStorage.setItem(STORAGE_KEY, JSON.stringify(persisted));
     }
   } catch { /* quota exceeded or SSR */ }
 }
@@ -99,7 +113,16 @@ function loadFromStorage(): AnalysisResult | null {
       if (!raw) return null;
       const parsed = JSON.parse(raw);
       if (parsed && typeof parsed === 'object' && parsed.optimization && Array.isArray(parsed.optimization.assignments)) {
-        return parsed as AnalysisResult;
+        return {
+          success: Boolean(parsed.success),
+          bank: typeof parsed.bank === 'string' || parsed.bank === null ? parsed.bank : null,
+          format: typeof parsed.format === 'string' ? parsed.format : 'unknown',
+          statementPeriod: parsed.statementPeriod,
+          transactionCount: typeof parsed.transactionCount === 'number' ? parsed.transactionCount : 0,
+          parseErrors: [],
+          optimization: parsed.optimization,
+          monthlyBreakdown: parsed.monthlyBreakdown,
+        } as AnalysisResult;
       }
       sessionStorage.removeItem(STORAGE_KEY);
     }

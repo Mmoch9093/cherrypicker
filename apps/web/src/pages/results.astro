@@ -60,29 +60,7 @@ import OptimalCardMap from '../components/dashboard/OptimalCardMap.svelte';
     <OptimalCardMap client:load />
   </div>
 
-  <script>
-    try {
-      const raw = sessionStorage.getItem('cherrypicker:analysis');
-      if (raw) {
-        const data = JSON.parse(raw);
-        const opt = data.optimization;
-        if (opt) {
-          const fmt = (n: number) => n.toLocaleString('ko-KR') + '원';
-          const el1 = document.getElementById('stat-total-spending');
-          const el2 = document.getElementById('stat-total-savings');
-          const el3 = document.getElementById('stat-cards-needed');
-          if (el1) el1.textContent = fmt(opt.totalSpending);
-          if (el2) el2.textContent = '+' + fmt(opt.savingsVsSingleCard);
-          if (el3) {
-            const uniqueCards = new Set(opt.assignments.map((a: { assignedCardId: string }) => a.assignedCardId)).size;
-            el3.textContent = uniqueCards + '장';
-          }
-        }
-      }
-    } catch {}
-
-    document.getElementById('download-report')?.addEventListener('click', () => window.print());
-  </script>
+  <script src="scripts/results.js"></script>
 
   <!-- Action buttons -->
   <div

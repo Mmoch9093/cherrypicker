@@ -298,4 +298,8 @@
       </div>
     {/if}
   </div>
+{:else if analysisStore.result}
+  <div class="mt-4 rounded-xl border border-dashed border-[var(--color-border)] bg-[var(--color-surface)] px-4 py-3 text-xs text-[var(--color-text-muted)]">
+    거래 상세 내역은 현재 브라우저 세션 메모리에만 보관되고, 페이지 이동 후에는 다시 불러오지 않아요.
+  </div>
 {/if}

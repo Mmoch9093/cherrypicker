@@ -35,20 +35,11 @@ function isActive(href: string) {
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content={description} />
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; worker-src 'self' blob:; connect-src 'self';" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; worker-src 'self' blob:; connect-src 'self';" />
     <meta name="referrer" content="strict-origin-when-cross-origin" />
     <link rel="icon" type="image/svg+xml" href={`${base}favicon.svg`} />
     <title>{title} | CherryPicker</title>
-    <script is:inline>
-      (function () {
-        try {
-          var theme = localStorage.getItem('theme');
-          if (theme === 'dark' || (!theme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-            document.documentElement.classList.add('dark');
-          }
-        } catch (e) {}
-      })();
-    </script>
+    <script src="scripts/layout.js"></script>
   </head>
   <body class="min-h-screen bg-[var(--color-bg)] text-[var(--color-text)] transition-colors duration-200">
     <nav class="sticky top-0 z-50 border-b border-[var(--color-border)] bg-[var(--color-surface)]/95 backdrop-blur-sm">
@@ -128,22 +119,22 @@ function isActive(href: string) {
         <div class="flex flex-col px-6 py-4 gap-1">
           <a
             href={`${base}`}
-            onclick="document.getElementById('mobile-menu')?.classList.add('hidden')"
+            data-mobile-nav-link
             class={`rounded-lg px-3 py-2.5 text-sm transition-colors hover:bg-[var(--color-primary-light)] hover:text-[var(--color-primary)] ${isActive(base) ? 'bg-[var(--color-primary-light)] font-semibold text-[var(--color-primary)]' : 'text-[var(--color-text-muted)]'}`}
           >홈</a>
           <a
             href={`${base}dashboard`}
-            onclick="document.getElementById('mobile-menu')?.classList.add('hidden')"
+            data-mobile-nav-link
             class={`rounded-lg px-3 py-2.5 text-sm transition-colors hover:bg-[var(--color-primary-light)] hover:text-[var(--color-primary)] ${isActive(`${base}dashboard`) ? 'bg-[var(--color-primary-light)] font-semibold text-[var(--color-primary)]' : 'text-[var(--color-text-muted)]'}`}
           >대시보드</a>
           <a
             href={`${base}cards`}
-            onclick="document.getElementById('mobile-menu')?.classList.add('hidden')"
+            data-mobile-nav-link
             class={`rounded-lg px-3 py-2.5 text-sm transition-colors hover:bg-[var(--color-primary-light)] hover:text-[var(--color-primary)] ${isActive(`${base}cards`) ? 'bg-[var(--color-primary-light)] font-semibold text-[var(--color-primary)]' : 'text-[var(--color-text-muted)]'}`}
           >카드 목록</a>
           <a
             href={`${base}results`}
-            onclick="document.getElementById('mobile-menu')?.classList.add('hidden')"
+            data-mobile-nav-link
             class={`rounded-lg px-3 py-2.5 text-sm transition-colors hover:bg-[var(--color-primary-light)] hover:text-[var(--color-primary)] ${isActive(`${base}results`) ? 'bg-[var(--color-primary-light)] font-semibold text-[var(--color-primary)]' : 'text-[var(--color-text-muted)]'}`}
           >추천 결과</a>
         </div>
@@ -183,38 +174,6 @@ function isActive(href: string) {
       </div>
     </footer>
 
-    <script>
-      // Dark mode toggle
-      function syncThemeIcons() {
-        const isDark = document.documentElement.classList.contains('dark');
-        const sunEl = document.getElementById('theme-icon-sun');
-        const moonEl = document.getElementById('theme-icon-moon');
-        const sunElM = document.getElementById('theme-icon-sun-mobile');
-        const moonElM = document.getElementById('theme-icon-moon-mobile');
-        if (sunEl) sunEl.classList.toggle('hidden', !isDark);
-        if (moonEl) moonEl.classList.toggle('hidden', isDark);
-        if (sunElM) sunElM.classList.toggle('hidden', !isDark);
-        if (moonElM) moonElM.classList.toggle('hidden', isDark);
-      }
-
-      function toggleTheme() {
-        const html = document.documentElement;
-        const isDark = html.classList.toggle('dark');
-        try { localStorage.setItem('theme', isDark ? 'dark' : 'light'); } catch (e) {}
-        syncThemeIcons();
-      }
-
-      document.getElementById('theme-toggle')?.addEventListener('click', toggleTheme);
-      document.getElementById('theme-toggle-mobile')?.addEventListener('click', toggleTheme);
-      syncThemeIcons();
-
-      // Mobile menu
-      const menuBtn = document.getElementById('mobile-menu-btn');
-      const mobileMenu = document.getElementById('mobile-menu');
-      menuBtn?.addEventListener('click', () => {
-        mobileMenu?.classList.toggle('hidden');
-      });
-    </script>
   </body>
 </html>
 
