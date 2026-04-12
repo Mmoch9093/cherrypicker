@@ -192,4 +192,24 @@ describe('parseCSV - edge cases', () => {
     const result = parseCSV(shinhanContent, 'shinhan');
     expect(result.transactions[0]?.date).toBe('2026-02-01');
   });
+
+  test('generic parser preserves legitimate zero-amount rows instead of dropping them silently', () => {
+    const content = [
+      '거래일시,가맹점명,이용금액',
+      '2026-02-01,테스트 승인,0',
+    ].join('\n');
+    const result = parseCSV(content);
+    expect(result.transactions).toHaveLength(1);
+    expect(result.transactions[0]?.amount).toBe(0);
+  });
+
+  test('generic parser surfaces malformed amounts as errors', () => {
+    const content = [
+      '거래일시,가맹점명,이용금액',
+      '2026-02-01,테스트,금액오류',
+    ].join('\n');
+    const result = parseCSV(content);
+    expect(result.transactions).toHaveLength(0);
+    expect(result.errors.some((error) => error.message.includes('Cannot parse amount'))).toBe(true);
+  });
 });

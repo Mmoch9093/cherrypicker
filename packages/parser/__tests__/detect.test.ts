@@ -54,6 +54,31 @@ describe('detectBank', () => {
     expect(bank).toBe('woori');
   });
 
+  test('detects kakao from content', () => {
+    const { bank } = detectBank('카카오뱅크 체크카드 이용내역');
+    expect(bank).toBe('kakao');
+  });
+
+  test('detects toss from content', () => {
+    const { bank } = detectBank('토스뱅크 카드 이용내역');
+    expect(bank).toBe('toss');
+  });
+
+  test('does not mis-detect merchant text as toss bank', () => {
+    const { bank } = detectBank('토스페이먼츠 주식회사 결제대행');
+    expect(bank).toBeNull();
+  });
+
+  test('does not mis-detect convenience-store merchant text as cu bank', () => {
+    const { bank } = detectBank('CU편의점 강남역점');
+    expect(bank).toBeNull();
+  });
+
+  test('does not mis-detect MG merchant aliases as mg bank', () => {
+    const { bank } = detectBank('메가MG 피트니스');
+    expect(bank).toBeNull();
+  });
+
   test('returns null for unrecognized content', () => {
     const { bank, confidence } = detectBank('거래일시,금액,가맹점');
     expect(bank).toBeNull();

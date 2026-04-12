@@ -35,25 +35,49 @@ function parseDateToISO(raw: string): string {
     return `${cleaned.slice(0, 4)}-${cleaned.slice(4, 6)}-${cleaned.slice(6, 8)}`;
   }
 
-  // YYYY.MM.DD / YYYY-MM-DD / YYYY/MM/DD
-  const fullMatch = cleaned.match(/^(\d{4})[.\-\/](\d{2})[.\-\/](\d{2})$/);
+  // YYYY.MM.DD / YYYY-MM-DD / YYYY/MM/DD (allow single-digit month/day)
+  const fullMatch = cleaned.match(/^(\d{4})[.\-\/\s](\d{1,2})[.\-\/\s](\d{1,2})/);
   if (fullMatch) {
-    return `${fullMatch[1]}-${fullMatch[2]}-${fullMatch[3]}`;
+    return `${fullMatch[1]}-${fullMatch[2]!.padStart(2, '0')}-${fullMatch[3]!.padStart(2, '0')}`;
   }
 
+  // YY-MM-DD or YY.MM.DD
+  const shortYearMatch = cleaned.match(/^(\d{2})[.\-\/](\d{2})[.\-\/](\d{2})$/);
+  if (shortYearMatch) {
+    const year = parseInt(shortYearMatch[1]!, 10);
+    const fullYear = year >= 50 ? 1900 + year : 2000 + year;
+    return `${fullYear}-${shortYearMatch[2]}-${shortYearMatch[3]}`;
+  }
+
+  // Korean: 2025년 11월 30일
+  const koreanFull = cleaned.match(/(\d{4})년\s*(\d{1,2})월\s*(\d{1,2})일/);
+  if (koreanFull) return `${koreanFull[1]}-${koreanFull[2]!.padStart(2, '0')}-${koreanFull[3]!.padStart(2, '0')}`;
+
   // MM/DD or MM.DD — assume current year
-  const shortMatch = cleaned.match(/^(\d{2})[.\-\/](\d{2})$/);
+  const shortMatch = cleaned.match(/^(\d{1,2})[.\-\/](\d{1,2})$/);
   if (shortMatch) {
     const year = new Date().getFullYear();
-    return `${year}-${shortMatch[1]}-${shortMatch[2]}`;
+    return `${year}-${shortMatch[1]!.padStart(2, '0')}-${shortMatch[2]!.padStart(2, '0')}`;
+  }
+
+  // Korean short: 1월 15일
+  const koreanShort = cleaned.match(/(\d{1,2})월\s*(\d{1,2})일/);
+  if (koreanShort) {
+    const year = new Date().getFullYear();
+    return `${year}-${koreanShort[1]!.padStart(2, '0')}-${koreanShort[2]!.padStart(2, '0')}`;
   }
 
   return cleaned;
 }
 
-function parseAmount(raw: string): number {
-  const cleaned = raw.trim().replace(/원$/, '').replace(/,/g, '');
-  return parseInt(cleaned, 10) || 0;
+function parseAmount(raw: string): number | null {
+  let cleaned = raw.trim().replace(/원$/, '').replace(/,/g, '');
+  const isNeg = cleaned.startsWith('(') && cleaned.endsWith(')');
+  if (isNeg) cleaned = cleaned.slice(1, -1);
+  if (!cleaned) return null;
+  const n = parseInt(cleaned, 10);
+  if (isNaN(n)) return null;
+  return isNeg ? -n : n;
 }
 
 function splitCSVLine(line: string, delimiter: string): string[] {
@@ -147,6 +171,9 @@ export function parseGenericCSV(content: string, bank: BankId | null): ParseResu
     const line = lines[i] ?? '';
     if (!line.trim()) continue;
 
+    // Skip summary/total rows
+    if (/합계|총계|소계|total|sum/i.test(line)) continue;
+
     const cells = splitCSVLine(line, delimiter);
 
     const dateRaw = dateCol !== -1 ? (cells[dateCol] ?? '') : '';
@@ -156,8 +183,11 @@ export function parseGenericCSV(content: string, bank: BankId | null): ParseResu
     if (!dateRaw && !merchantRaw && !amountRaw) continue;
 
     const amount = parseAmount(amountRaw);
-    if (isNaN(amount) && amountRaw) {
-      errors.push({ line: i + 1, message: `Cannot parse amount: ${amountRaw}`, raw: line });
+    if (amount === null) {
+      if (amountRaw.trim()) {
+        errors.push({ line: i + 1, message: `Cannot parse amount: ${amountRaw}`, raw: line });
+      }
+      continue;
     }
 
     const tx: RawTransaction = {

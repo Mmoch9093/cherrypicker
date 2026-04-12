@@ -16,7 +16,7 @@ Turn the review findings into a practical recovery sequence that restores:
 - Phase 1 — Repair the rule/data contract: **in progress** (runtime schema preserves `fixedAmount` / `unit` / `subcategory`, accepts current `web` / `prepaid` metadata, and `build-json` runs under Node; category taxonomy cleanup is still pending)
 - Phase 2 — Make the calculator correct on real rules: **in progress** (discount/cashback percentage rates normalize correctly, fixed-amount flat rewards work, and subcategory-aware matching has started)
 - Phase 3 — Replace category-total optimization with transaction-aware optimization: **pending**
-- Phase 4 — Unify parser logic and restore web/CLI parity: **pending**
+- Phase 4 — Unify parser logic and restore web/CLI parity: **in progress** (bank signatures tightened, browser/backend XLSX configs aligned for newer banks, malformed amounts surface as errors instead of silently dropping rows)
 - Phase 5 — Security hardening: **pending**
 - Phase 6 — Release discipline / tooling cleanup: **in progress** (deploy now gates on repo verification; npm lint/typecheck pass locally, Bun-backed test execution still needs full runtime verification)
 
@@ -250,6 +250,10 @@ Minimum regression set should include:
 ## Phase 4 — Unify parser logic and restore web/CLI parity
 
 **Priority:** high
+
+### Progress notes
+- 2026-04-12: parser hardening now rejects the noisiest bank-signature false positives (`토스`, `CU`, `MG`, `JB`-style merchant text) instead of treating them as bank headers.
+- 2026-04-12: browser/backend XLSX configs for the newer banks have been realigned, and malformed amount cells are surfaced as errors instead of being silently dropped as zero-value rows.
 
 ### Problems being fixed
 - browser and package parsers have forked,

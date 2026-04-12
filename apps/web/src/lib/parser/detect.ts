@@ -48,11 +48,11 @@ const BANK_SIGNATURES: BankSignature[] = [
   },
   {
     bankId: 'kakao',
-    patterns: [/카카오뱅크/, /카카오페이/, /kakaobank/i],
+    patterns: [/카카오뱅크/, /kakaobank/i],
   },
   {
     bankId: 'toss',
-    patterns: [/토스뱅크/, /토스/, /tossbank/i],
+    patterns: [/토스뱅크/, /tossbank/i],
   },
   {
     bankId: 'kbank',
@@ -60,11 +60,11 @@ const BANK_SIGNATURES: BankSignature[] = [
   },
   {
     bankId: 'bnk',
-    patterns: [/BNK/, /부산은행/, /경남은행/],
+    patterns: [/BNK부산은행/, /BNK경남은행/, /부산은행/, /경남은행/],
   },
   {
     bankId: 'dgb',
-    patterns: [/DGB/, /iM뱅크/, /대구은행/],
+    patterns: [/DGB대구은행/, /iM뱅크/, /대구은행/],
   },
   {
     bankId: 'suhyup',
@@ -72,7 +72,7 @@ const BANK_SIGNATURES: BankSignature[] = [
   },
   {
     bankId: 'jb',
-    patterns: [/전북은행/, /JB/, /jbbank/i],
+    patterns: [/전북은행/, /jbbank/i],
   },
   {
     bankId: 'kwangju',
@@ -88,15 +88,15 @@ const BANK_SIGNATURES: BankSignature[] = [
   },
   {
     bankId: 'mg',
-    patterns: [/새마을금고/, /MG/, /kfcc/i],
+    patterns: [/MG새마을금고/, /새마을금고/, /kfcc/i],
   },
   {
     bankId: 'cu',
-    patterns: [/신협/, /cu\b/i],
+    patterns: [/신협/],
   },
   {
     bankId: 'kdb',
-    patterns: [/산업은행/, /KDB/, /kdbbank/i],
+    patterns: [/KDB산업은행/, /산업은행/, /kdbbank/i],
   },
   {
     bankId: 'epost',

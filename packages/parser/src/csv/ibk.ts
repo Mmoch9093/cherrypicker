@@ -10,7 +10,12 @@ function parseDateToISO(raw: string): string {
 }
 
 function parseAmount(raw: string): number {
-  return parseInt(raw.trim().replace(/원$/, '').replace(/,/g, ''), 10) || 0;
+  let cleaned = raw.trim().replace(/원$/, '').replace(/,/g, '');
+  const isNeg = cleaned.startsWith('(') && cleaned.endsWith(')');
+  if (isNeg) cleaned = cleaned.slice(1, -1);
+  const n = parseInt(cleaned, 10);
+  if (isNaN(n)) return 0;
+  return isNeg ? -n : n;
 }
 
 function splitLine(line: string, delimiter: string): string[] {
@@ -65,6 +70,7 @@ export const ibkAdapter: BankAdapter = {
     for (let i = headerIdx + 1; i < lines.length; i++) {
       const line = lines[i] ?? '';
       if (!line.trim()) continue;
+      if (/합계|총계|소계|total|sum/i.test(line)) continue;
       const cells = splitLine(line, delimiter);
 
       const dateRaw = dateIdx !== -1 ? (cells[dateIdx] ?? '') : '';

@@ -88,86 +88,83 @@ const BANK_COLUMN_CONFIGS: Record<BankId, ColumnConfig> = {
   },
   kakao: {
     date: '거래일시',
-    merchant: '가맹점명',
-    amount: '거래금액',
-    installments: '할부',
+    merchant: '이용처',
+    amount: '이용금액',
   },
   toss: {
     date: '거래일',
-    merchant: '가맹점명',
-    amount: '거래금액',
-    installments: '할부',
+    merchant: '이용처',
+    amount: '이용금액',
   },
   kbank: {
     date: '거래일',
-    merchant: '가맹점명',
-    amount: '이용금액',
-    installments: '할부',
+    merchant: '이용처',
+    amount: '거래금액',
   },
   bnk: {
-    date: '이용일',
-    merchant: '가맹점명',
+    date: '거래일',
+    merchant: '가맹점',
     amount: '이용금액',
     installments: '할부',
   },
   dgb: {
-    date: '이용일',
-    merchant: '가맹점명',
-    amount: '이용금액',
+    date: '거래일',
+    merchant: '가맹점',
+    amount: '거래금액',
     installments: '할부',
   },
   suhyup: {
-    date: '이용일',
-    merchant: '가맹점명',
-    amount: '이용금액',
+    date: '거래일',
+    merchant: '가맹점',
+    amount: '거래금액',
     installments: '할부',
   },
   jb: {
-    date: '이용일',
-    merchant: '가맹점명',
-    amount: '이용금액',
+    date: '거래일',
+    merchant: '가맹점',
+    amount: '거래금액',
     installments: '할부',
   },
   kwangju: {
-    date: '이용일',
-    merchant: '가맹점명',
-    amount: '이용금액',
+    date: '거래일',
+    merchant: '가맹점',
+    amount: '거래금액',
     installments: '할부',
   },
   jeju: {
-    date: '이용일',
-    merchant: '가맹점명',
-    amount: '이용금액',
+    date: '거래일',
+    merchant: '가맹점',
+    amount: '거래금액',
     installments: '할부',
   },
   sc: {
-    date: '이용일',
-    merchant: '가맹점명',
+    date: '거래일',
+    merchant: '이용처',
     amount: '이용금액',
     installments: '할부',
   },
   mg: {
-    date: '이용일',
-    merchant: '가맹점명',
-    amount: '이용금액',
+    date: '거래일',
+    merchant: '가맹점',
+    amount: '거래금액',
     installments: '할부',
   },
   cu: {
-    date: '이용일',
-    merchant: '가맹점명',
-    amount: '이용금액',
+    date: '거래일',
+    merchant: '가맹점',
+    amount: '거래금액',
     installments: '할부',
   },
   kdb: {
-    date: '이용일',
-    merchant: '가맹점명',
-    amount: '이용금액',
+    date: '거래일',
+    merchant: '이용처',
+    amount: '거래금액',
     installments: '할부',
   },
   epost: {
-    date: '이용일',
-    merchant: '가맹점명',
-    amount: '이용금액',
+    date: '거래일',
+    merchant: '이용처',
+    amount: '거래금액',
     installments: '할부',
   },
 };
@@ -227,14 +224,20 @@ function parseDateToISO(raw: unknown): string {
   return String(raw ?? '');
 }
 
-function parseAmount(raw: unknown): number {
-  if (typeof raw === 'number') return raw;
-  if (typeof raw === 'string') {
-    const cleaned = raw.trim().replace(/원$/, '').replace(/,/g, '');
-    const parsed = parseInt(cleaned, 10);
-    return Number.isNaN(parsed) ? 0 : parsed;
+function parseAmount(raw: unknown): number | null {
+  if (typeof raw === 'number') {
+    return Number.isFinite(raw) ? raw : null;
   }
-  return 0;
+  if (typeof raw === 'string') {
+    let cleaned = raw.trim().replace(/원$/, '').replace(/,/g, '');
+    const isNegative = cleaned.startsWith('(') && cleaned.endsWith(')');
+    if (isNegative) cleaned = cleaned.slice(1, -1);
+    if (!cleaned) return null;
+    const parsed = parseInt(cleaned, 10);
+    if (Number.isNaN(parsed)) return null;
+    return isNegative ? -parsed : parsed;
+  }
+  return null;
 }
 
 function parseInstallments(raw: unknown): number | undefined {
@@ -247,11 +250,37 @@ function parseInstallments(raw: unknown): number | undefined {
 }
 
 // ---------------------------------------------------------------------------
+// HTML-as-XLS detection & normalization
+// Korean card companies often export HTML tables with .xls extension.
+// ---------------------------------------------------------------------------
+
+function isHTMLContent(buffer: ArrayBuffer): boolean {
+  const head = new TextDecoder('utf-8').decode(buffer.slice(0, 512)).trimStart().toLowerCase();
+  return head.startsWith('<!doctype') || head.startsWith('<html') || /<table[\s>]/.test(head);
+}
+
+/** Fix malformed closing tags like </td   > commonly found in Korean card exports */
+function normalizeHTML(html: string): string {
+  return html.replace(/<\/(td|th|tr|table|thead|tbody)\s+>/gi, '</$1>');
+}
+
+// ---------------------------------------------------------------------------
 // Main XLSX parser (browser: accepts ArrayBuffer)
 // ---------------------------------------------------------------------------
 
 export function parseXLSX(buffer: ArrayBuffer, bank?: BankId): ParseResult {
-  const workbook = XLSX.read(new Uint8Array(buffer), { type: 'array', cellDates: false });
+  // Detect HTML-as-XLS (Korean card companies export HTML with .xls extension)
+  let workbook: XLSX.WorkBook;
+  let htmlBankHint: BankId | null = null;
+
+  if (isHTMLContent(buffer)) {
+    const html = normalizeHTML(new TextDecoder('utf-8').decode(buffer));
+    htmlBankHint = detectBank(html).bank;
+    const normalized = new TextEncoder().encode(html);
+    workbook = XLSX.read(normalized, { type: 'array', cellDates: false });
+  } else {
+    workbook = XLSX.read(new Uint8Array(buffer), { type: 'array', cellDates: false });
+  }
 
   if (workbook.SheetNames.length === 0) {
     return { bank: bank ?? null, format: 'xlsx', transactions: [], errors: [{ message: '시트를 찾을 수 없습니다.' }] };
@@ -264,7 +293,7 @@ export function parseXLSX(buffer: ArrayBuffer, bank?: BankId): ParseResult {
     const sheet = workbook.Sheets[sheetName];
     if (!sheet) continue;
 
-    const result = parseXLSXSheet(sheet, bank);
+    const result = parseXLSXSheet(sheet, bank, htmlBankHint);
     if (result.transactions.length > 0) {
       return result; // Found transactions, use this sheet
     }
@@ -274,7 +303,7 @@ export function parseXLSX(buffer: ArrayBuffer, bank?: BankId): ParseResult {
   return bestResult ?? { bank: bank ?? null, format: 'xlsx', transactions: [], errors: [{ message: '시트 데이터를 읽을 수 없습니다.' }] };
 }
 
-function parseXLSXSheet(sheet: XLSX.WorkSheet, bank?: BankId): ParseResult {
+function parseXLSXSheet(sheet: XLSX.WorkSheet, bank?: BankId, htmlBankHint?: BankId | null): ParseResult {
   // Convert to 2D array
   const rows: unknown[][] = XLSX.utils.sheet_to_json(sheet, { header: 1, raw: true, defval: '' });
 
@@ -285,12 +314,16 @@ function parseXLSXSheet(sheet: XLSX.WorkSheet, bank?: BankId): ParseResult {
   // Detect bank from header rows if not provided
   let resolvedBank: BankId | null = bank ?? null;
   if (!resolvedBank) {
-    const headerText = rows
-      .slice(0, 10)
-      .map((r) => r.join(' '))
-      .join(' ');
-    const { bank: detected } = detectBank(headerText);
-    resolvedBank = detected;
+    if (htmlBankHint) {
+      resolvedBank = htmlBankHint;
+    } else {
+      const headerText = rows
+        .slice(0, 10)
+        .map((r) => r.join(' '))
+        .join(' ');
+      const { bank: detected } = detectBank(headerText);
+      resolvedBank = detected;
+    }
   }
 
   // Find header row — first row with known column keywords
@@ -326,24 +359,21 @@ function parseXLSXSheet(sheet: XLSX.WorkSheet, bank?: BankId): ParseResult {
   // Get column config for this bank (or auto-detect from headers)
   const config = resolvedBank ? getBankColumnConfig(resolvedBank) : null;
 
-  const dateCol = config?.date
-    ? headers.indexOf(config.date)
-    : headers.findIndex((h) => /이용일|거래일|날짜|일시|이용일자|거래일시|결제일|승인일|매출일/.test(h));
-  const merchantCol = config?.merchant
-    ? headers.indexOf(config.merchant)
-    : headers.findIndex((h) => /이용처|가맹점|이용가맹점|가맹점명|거래처|매출처|사용처|결제처|상호/.test(h));
-  const amountCol = config?.amount
-    ? headers.indexOf(config.amount)
-    : headers.findIndex((h) => /이용금액|거래금액|금액|결제금액|승인금액|매출금액|이용액/.test(h));
-  const installCol = config?.installments
-    ? headers.indexOf(config.installments)
-    : headers.findIndex((h) => /할부|할부개월|할부기간|할부월/.test(h));
-  const categoryCol = config?.category
-    ? headers.indexOf(config.category)
-    : headers.findIndex((h) => /업종|분류|카테고리|업종분류|업종명/.test(h));
-  const memoCol = config?.memo
-    ? headers.indexOf(config.memo)
-    : headers.findIndex((h) => /비고|적요|메모|내용|설명|참고/.test(h));
+  // Try bank-specific config name first; if not found, fall back to regex pattern
+  const findCol = (configName: string | undefined, pattern: RegExp): number => {
+    if (configName) {
+      const idx = headers.indexOf(configName);
+      if (idx !== -1) return idx;
+    }
+    return headers.findIndex((h) => pattern.test(h));
+  };
+
+  const dateCol = findCol(config?.date, /이용일|거래일|날짜|일시|이용일자|거래일시|결제일|승인일|매출일/);
+  const merchantCol = findCol(config?.merchant, /이용처|가맹점|이용가맹점|가맹점명|거래처|매출처|사용처|결제처|상호/);
+  const amountCol = findCol(config?.amount, /이용금액|거래금액|금액|결제금액|승인금액|매출금액|이용액/);
+  const installCol = findCol(config?.installments, /할부|할부개월|할부기간|할부월/);
+  const categoryCol = findCol(config?.category, /업종|분류|카테고리|업종분류|업종명/);
+  const memoCol = findCol(config?.memo, /비고|적요|메모|내용|설명|참고/);
 
   const transactions: RawTransaction[] = [];
   const errors: ParseError[] = [];
@@ -363,9 +393,16 @@ function parseXLSXSheet(sheet: XLSX.WorkSheet, bank?: BankId): ParseResult {
     if (!dateRaw && !merchantRaw) continue;
 
     const amount = parseAmount(amountRaw);
-
-    // Skip rows where amount is 0 or clearly not a transaction
-    if (amount === 0) continue;
+    if (amount === null) {
+      if (String(amountRaw ?? '').trim()) {
+        errors.push({
+          line: i + 1,
+          message: `금액을 해석할 수 없습니다: ${String(amountRaw)}`,
+          raw: rowText,
+        });
+      }
+      continue;
+    }
 
     const tx: RawTransaction = {
       date: parseDateToISO(dateRaw),
