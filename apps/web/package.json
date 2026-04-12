@@ -6,6 +6,8 @@
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
+    "lint": "astro check",
+    "typecheck": "astro check",
     "preview": "astro preview"
   },
   "dependencies": {

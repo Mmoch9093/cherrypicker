@@ -6,7 +6,9 @@
   "main": "src/index.ts",
   "scripts": {
     "build": "tsc",
-    "test": "bun test"
+    "test": "bun test",
+    "lint": "tsc --noEmit",
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "@cherrypicker/rules": "workspace:*"
