@@ -2,12 +2,6 @@ import { describe, test, expect } from 'bun:test';
 import { join } from 'path';
 import {
   cardRuleSetSchema,
-  cardMetaSchema,
-  performanceTierSchema,
-  rewardRuleSchema,
-  rewardTierRateSchema,
-  globalConstraintsSchema,
-  categoryNodeSchema,
   categoriesFileSchema,
 } from '../src/schema.js';
 import {
@@ -39,15 +33,22 @@ const validCardRuleSet = {
   rewards: [
     {
       category: 'dining',
+      subcategory: 'restaurant',
+      label: '외식 할인',
       type: 'discount',
       tiers: [
         { performanceTier: 'tier1', rate: 5.0, monthlyCap: 10000, perTransactionCap: null },
       ],
+      conditions: {
+        specificMerchants: ['테스트식당'],
+        note: '주말만 적용',
+      },
     },
   ],
   globalConstraints: {
     monthlyTotalDiscountCap: null,
     minimumAnnualSpending: null,
+    note: '월 통합 한도 없음',
   },
 };
 
@@ -67,6 +68,39 @@ describe('cardRuleSetSchema - valid data', () => {
     const result = cardRuleSetSchema.safeParse(validCardRuleSet);
     if (!result.success) throw new Error(result.error.message);
     expect(result.data.performanceTiers).toHaveLength(2);
+  });
+
+  test('preserves subcategory, labels, and conditions metadata', () => {
+    const result = cardRuleSetSchema.safeParse(validCardRuleSet);
+    if (!result.success) throw new Error(result.error.message);
+    expect(result.data.rewards[0]?.subcategory).toBe('restaurant');
+    expect(result.data.rewards[0]?.label).toBe('외식 할인');
+    expect(result.data.rewards[0]?.conditions?.note).toBe('주말만 적용');
+    expect(result.data.globalConstraints.note).toBe('월 통합 한도 없음');
+  });
+
+  test('preserves fixedAmount/unit tiers without coercing null rate to zero', () => {
+    const fixedAmountRule = structuredClone(validCardRuleSet);
+    fixedAmountRule.rewards[0] = {
+      category: 'transportation',
+      type: 'cashback',
+      tiers: [
+        {
+          performanceTier: 'tier1',
+          rate: null,
+          fixedAmount: 100,
+          unit: 'won_per_liter',
+          monthlyCap: 30000,
+          perTransactionCap: null,
+        },
+      ],
+    };
+
+    const result = cardRuleSetSchema.safeParse(fixedAmountRule);
+    if (!result.success) throw new Error(result.error.message);
+    expect(result.data.rewards[0]?.tiers[0]?.rate).toBeNull();
+    expect(result.data.rewards[0]?.tiers[0]?.fixedAmount).toBe(100);
+    expect(result.data.rewards[0]?.tiers[0]?.unit).toBe('won_per_liter');
   });
 });
 
@@ -181,6 +215,20 @@ describe('loadCardRule', () => {
   test('loaded card lastUpdated matches ISO format', async () => {
     const rule = await loadCardRule(join(cardsDir, 'shinhan/simple-plan.yaml'));
     expect(rule.card.lastUpdated).toMatch(/^\d{4}-\d{2}-\d{2}$/);
+  });
+
+  test('loads fixed-amount unit rewards without losing their semantics', async () => {
+    const rule = await loadCardRule(join(cardsDir, 'lotte/digiloca-auto.yaml'));
+    const tier = rule.rewards[0]?.tiers.find((entry) => entry.performanceTier === 'tier1');
+    expect(tier?.rate).toBeNull();
+    expect(tier?.fixedAmount).toBe(100);
+    expect(tier?.unit).toBe('won_per_liter');
+  });
+
+  test('loads subcategory-specific rewards intact', async () => {
+    const rule = await loadCardRule(join(cardsDir, 'mg/plus-blue.yaml'));
+    expect(rule.rewards.find((reward) => reward.subcategory === 'restaurant')).toBeDefined();
+    expect(rule.rewards.find((reward) => reward.subcategory === 'cafe')).toBeDefined();
   });
 
   test('throws on non-existent file', async () => {

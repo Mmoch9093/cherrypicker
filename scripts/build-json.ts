@@ -1,8 +1,8 @@
-#!/usr/bin/env bun
+#!/usr/bin/env node
 /**
  * build-json.ts — Validate all YAML card rules and build organized JSON output.
  *
- * Usage: bun run scripts/build-json.ts
+ * Usage: node --experimental-strip-types scripts/build-json.ts
  *
  * Reads all YAML files from packages/rules/data/,
  * validates against Zod schemas, reports errors,
@@ -10,18 +10,21 @@
  */
 
 import { readFile, readdir, writeFile, mkdir } from 'fs/promises';
-import { join, resolve, basename, dirname } from 'path';
+import { basename, dirname, join, resolve } from 'path';
+import { fileURLToPath } from 'url';
 import { parse } from 'yaml';
 import { z } from 'zod';
 
 // ── Relaxed schema for YAML files that may have extra/missing fields ──
 
-const nullableNumber = z.union([z.number(), z.null()]).transform((v) => v ?? 0);
+const nullableNumber = z.union([z.number(), z.null()]);
 const optNullableNumber = z.union([z.number(), z.null()]).optional().transform((v) => v ?? null);
 
 const rewardTierRateSchema = z.object({
   performanceTier: z.string(),
   rate: nullableNumber,
+  fixedAmount: optNullableNumber,
+  unit: z.string().nullable().optional().transform((v) => v ?? null),
   monthlyCap: optNullableNumber,
   perTransactionCap: optNullableNumber,
 });
@@ -30,14 +33,17 @@ const rewardConditionsSchema = z.object({
   minTransaction: z.union([z.number(), z.null()]).optional().transform((v) => v ?? undefined),
   excludeOnline: z.boolean().optional(),
   specificMerchants: z.array(z.string()).optional(),
-}).strip();
+  note: z.string().optional(),
+}).passthrough();
 
 const rewardRuleSchema = z.object({
   category: z.string(),
+  subcategory: z.string().optional(),
+  label: z.string().optional(),
   type: z.enum(['discount', 'points', 'cashback', 'mileage']),
   tiers: z.array(rewardTierRateSchema).min(1),
   conditions: rewardConditionsSchema.optional(),
-}).strip();
+}).passthrough();
 
 const performanceTierSchema = z.object({
   id: z.string(),
@@ -64,7 +70,8 @@ const cardMetaSchema = z.object({
 const globalConstraintsSchema = z.object({
   monthlyTotalDiscountCap: z.number().nullable().optional().default(null),
   minimumAnnualSpending: z.number().nullable().optional().default(null),
-}).strip();
+  note: z.string().optional(),
+}).passthrough();
 
 const cardRuleSetSchema = z.object({
   card: cardMetaSchema,
@@ -97,10 +104,14 @@ interface CardEntry {
   performanceExclusions: string[];
   rewards: Array<{
     category: string;
+    subcategory?: string;
+    label?: string;
     type: string;
     tiers: Array<{
       performanceTier: string;
-      rate: number;
+      rate: number | null;
+      fixedAmount: number | null;
+      unit: string | null;
       monthlyCap: number | null;
       perTransactionCap: number | null;
     }>;
@@ -109,7 +120,21 @@ interface CardEntry {
   globalConstraints: {
     monthlyTotalDiscountCap: number | null;
     minimumAnnualSpending: number | null;
+    note?: string;
   };
+}
+
+type RewardIndexValueKind = 'rate' | 'fixedAmount';
+
+interface IndexedReward {
+  cardId: string;
+  issuer: string;
+  type: string;
+  rewardValue: number;
+  rewardValueKind: RewardIndexValueKind;
+  unit: string | null;
+  monthlyCap: number | null;
+  subcategory?: string;
 }
 
 interface IssuerData {
@@ -132,10 +157,20 @@ interface OrganizedOutput {
   issuers: IssuerData[];
   categories: unknown[];
   index: {
-    byCategory: Record<string, Array<{ cardId: string; issuer: string; rate: number; type: string; monthlyCap: number | null }>>;
+    byCategory: Record<string, IndexedReward[]>;
     byType: { credit: string[]; check: string[] };
     noMinSpend: string[];
   };
+}
+
+function getTierComparableValue(tier: CardEntry['rewards'][number]['tiers'][number]): number {
+  return tier.rate ?? tier.fixedAmount ?? 0;
+}
+
+function pickBestTier(tiers: CardEntry['rewards'][number]['tiers']) {
+  return tiers.reduce((best, tier) => {
+    return getTierComparableValue(tier) > getTierComparableValue(best) ? tier : best;
+  }, tiers[0]!);
 }
 
 // ── Helpers ──
@@ -156,7 +191,7 @@ async function collectYamlFiles(dir: string): Promise<string[]> {
 
 // ── Main ──
 
-const ROOT = resolve(import.meta.dir, '..');
+const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const DATA_DIR = join(ROOT, 'packages/rules/data');
 const CARDS_DIR = join(DATA_DIR, 'cards');
 const OUTPUT_DIR = join(ROOT, 'packages/rules/data');
@@ -287,26 +322,28 @@ const issuersOutput: IssuerData[] = sortedIssuers.map(([issuerId, issuerCards]) 
 });
 
 // Build category index — which cards offer rewards in each category
-const byCategoryIndex: Record<string, Array<{ cardId: string; issuer: string; rate: number; type: string; monthlyCap: number | null }>> = {};
+const byCategoryIndex: Record<string, IndexedReward[]> = {};
 for (const card of cards) {
   for (const reward of card.rewards) {
-    const cat = reward.category;
+    const cat = reward.subcategory ? `${reward.category}.${reward.subcategory}` : reward.category;
     if (!byCategoryIndex[cat]) byCategoryIndex[cat] = [];
-    // Get the best tier rate
-    const bestTier = reward.tiers.reduce((best, t) => t.rate > best.rate ? t : best, reward.tiers[0]!);
+    const bestTier = pickBestTier(reward.tiers);
     byCategoryIndex[cat]!.push({
       cardId: card.card.id,
       issuer: card.card.issuer,
-      rate: bestTier.rate,
       type: reward.type,
+      rewardValue: getTierComparableValue(bestTier),
+      rewardValueKind: bestTier.rate !== null ? 'rate' : 'fixedAmount',
+      unit: bestTier.unit,
       monthlyCap: bestTier.monthlyCap,
+      subcategory: reward.subcategory,
     });
   }
 }
 
-// Sort each category by rate descending
+// Sort each category by comparable value descending
 for (const cat of Object.keys(byCategoryIndex)) {
-  byCategoryIndex[cat]!.sort((a, b) => b.rate - a.rate);
+  byCategoryIndex[cat]!.sort((a, b) => b.rewardValue - a.rewardValue);
 }
 
 // Build type index
@@ -316,7 +353,7 @@ const checkCards = cards.filter((c) => c.card.type === 'check').map((c) => c.car
 // Build no-min-spend index (cards with tier0 that has meaningful rewards)
 const noMinSpend = cards.filter((c) => {
   return c.rewards.some((r) =>
-    r.tiers.some((t) => t.performanceTier === 'tier0' && t.rate > 0)
+    r.tiers.some((t) => t.performanceTier === 'tier0' && getTierComparableValue(t) > 0)
   );
 }).map((c) => c.card.id);
 
@@ -364,11 +401,13 @@ const compactOutput = {
       annualFee: c.card.annualFee.domestic,
       topRewards: c.rewards
         .map((r) => ({
-          category: r.category,
+          category: r.subcategory ? `${r.category}.${r.subcategory}` : r.category,
           type: r.type,
-          bestRate: Math.max(...r.tiers.map((t) => t.rate)),
+          bestValue: getTierComparableValue(pickBestTier(r.tiers)),
+          bestValueKind: pickBestTier(r.tiers).rate !== null ? 'rate' : 'fixedAmount',
+          unit: pickBestTier(r.tiers).unit,
         }))
-        .sort((a, b) => b.bestRate - a.bestRate)
+        .sort((a, b) => b.bestValue - a.bestValue)
         .slice(0, 5),
     })),
   })),

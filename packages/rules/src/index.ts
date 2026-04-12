@@ -1,5 +1,6 @@
 export type {
   RewardType,
+  RewardUnit,
   CardType,
   PerformanceTier,
   RewardTierRate,

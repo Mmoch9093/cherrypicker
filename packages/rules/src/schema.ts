@@ -13,7 +13,9 @@ export const performanceTierSchema = z.object({
 
 export const rewardTierRateSchema = z.object({
   performanceTier: z.string(),
-  rate: z.number().nonnegative().nullable().transform((v) => v ?? 0),
+  rate: z.number().nonnegative().nullable(),
+  fixedAmount: z.number().nonnegative().nullable().optional().transform((v) => v ?? null),
+  unit: z.string().min(1).nullable().optional().transform((v) => v ?? null),
   monthlyCap: z.number().int().nonnegative().nullable().optional().transform((v) => v ?? null),
   perTransactionCap: z.number().int().nonnegative().nullable().optional().transform((v) => v ?? null),
 });
@@ -22,14 +24,17 @@ export const rewardConditionsSchema = z.object({
   minTransaction: z.number().int().nonnegative().nullable().optional().transform((v) => v ?? undefined).pipe(z.number().int().nonnegative().optional()),
   excludeOnline: z.boolean().optional(),
   specificMerchants: z.array(z.string()).optional(),
-});
+  note: z.string().optional(),
+}).passthrough();
 
 export const rewardRuleSchema = z.object({
   category: z.string(),
+  subcategory: z.string().optional(),
+  label: z.string().optional(),
   type: rewardTypeSchema,
   tiers: z.array(rewardTierRateSchema).min(1),
   conditions: rewardConditionsSchema.optional(),
-});
+}).passthrough();
 
 export const cardMetaSchema = z.object({
   id: z.string(),
@@ -49,7 +54,8 @@ export const cardMetaSchema = z.object({
 export const globalConstraintsSchema = z.object({
   monthlyTotalDiscountCap: z.number().int().nonnegative().nullable(),
   minimumAnnualSpending: z.number().int().nonnegative().nullable(),
-});
+  note: z.string().optional(),
+}).passthrough();
 
 export const cardRuleSetSchema = z.object({
   card: cardMetaSchema,

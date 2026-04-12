@@ -21,10 +21,14 @@ export interface CardRuleSet {
   performanceExclusions: string[];
   rewards: Array<{
     category: string;
+    subcategory?: string;
+    label?: string;
     type: string;
     tiers: Array<{
       performanceTier: string;
-      rate: number;
+      rate: number | null;
+      fixedAmount?: number | null;
+      unit?: string | null;
       monthlyCap: number | null;
       perTransactionCap: number | null;
     }>;
@@ -45,19 +49,25 @@ export interface PerformanceTier {
 
 export interface RewardTier {
   performanceTier: string;
-  rate: number;
+  rate: number | null;
+  fixedAmount?: number | null;
+  unit?: string | null;
   monthlyCap: number | null;
   perTransactionCap: number | null;
 }
 
 export interface RewardEntry {
   category: string;
+  subcategory?: string;
+  label?: string;
   type: string;
   tiers: RewardTier[];
   conditions?: {
     excludeOnline?: boolean;
     specificMerchants?: string[];
     minAmount?: number;
+    note?: string;
+    [key: string]: unknown;
   };
 }
 
@@ -100,7 +110,16 @@ interface CardsJson {
   issuers: IssuerData[];
   categories: unknown[];
   index: {
-    byCategory: Record<string, Array<{ cardId: string; issuer: string; rate: number; type: string; monthlyCap: number | null }>>;
+    byCategory: Record<string, Array<{
+      cardId: string;
+      issuer: string;
+      type: string;
+      rewardValue: number;
+      rewardValueKind: 'rate' | 'fixedAmount';
+      unit: string | null;
+      monthlyCap: number | null;
+      subcategory?: string;
+    }>>;
     byType: { credit: string[]; check: string[] };
     noMinSpend: string[];
   };

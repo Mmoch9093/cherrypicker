@@ -151,7 +151,7 @@ export function calculateRewards(input: CalculationInput): CalculationOutput {
       const effectiveAmount = perTxCap !== null ? Math.min(tx.amount, perTxCap) : tx.amount;
 
       // Category monthly cap
-      const catResult = calcFn(effectiveAmount, tierRate.rate, monthlyCap, catMonthUsed);
+      const catResult = calcFn(effectiveAmount, tierRate.rate ?? 0, monthlyCap, catMonthUsed);
       catMonthUsed = catResult.newMonthUsed;
       if (catResult.capReached) catCapReached = true;
 

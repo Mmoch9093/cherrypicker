@@ -1,4 +1,5 @@
 export type RewardType = 'discount' | 'points' | 'cashback' | 'mileage';
+export type RewardUnit = string;
 
 export type CardType = 'credit' | 'check';
 
@@ -11,7 +12,9 @@ export interface PerformanceTier {
 
 export interface RewardTierRate {
   performanceTier: string;
-  rate: number;
+  rate: number | null;
+  fixedAmount?: number | null;
+  unit?: string | null;
   monthlyCap: number | null;
   perTransactionCap: number | null;
 }
@@ -20,10 +23,14 @@ export interface RewardConditions {
   minTransaction?: number;
   excludeOnline?: boolean;
   specificMerchants?: string[];
+  note?: string;
+  [key: string]: unknown;
 }
 
 export interface RewardRule {
   category: string;
+  subcategory?: string;
+  label?: string;
   type: RewardType;
   tiers: RewardTierRate[];
   conditions?: RewardConditions;
@@ -47,6 +54,8 @@ export interface CardMeta {
 export interface GlobalConstraints {
   monthlyTotalDiscountCap: number | null;
   minimumAnnualSpending: number | null;
+  note?: string;
+  [key: string]: unknown;
 }
 
 export interface CardRuleSet {

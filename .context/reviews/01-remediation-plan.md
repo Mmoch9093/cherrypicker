@@ -13,7 +13,7 @@ Turn the review findings into a practical recovery sequence that restores:
 ## Progress tracker
 
 - Phase 0 — Stop-ship guardrails: **in progress** (automatic remote PDF fallback disabled by default, browser AI runtime disabled, README/license baseline corrected)
-- Phase 1 — Repair the rule/data contract: **pending**
+- Phase 1 — Repair the rule/data contract: **in progress** (runtime schema now preserves `fixedAmount` / `unit` / `subcategory`, keeps `rate: null` intact, and `build-json` can run under Node for local verification)
 - Phase 2 — Make the calculator correct on real rules: **pending**
 - Phase 3 — Replace category-total optimization with transaction-aware optimization: **pending**
 - Phase 4 — Unify parser logic and restore web/CLI parity: **pending**
@@ -132,6 +132,11 @@ This is the foundation. Do this before trying to “improve the optimizer” or 
   - subcategory survives parsing,
   - invalid category IDs fail,
   - rate semantics are deterministic.
+
+### Progress notes
+- 2026-04-12: `packages/rules` now preserves `fixedAmount`, `unit`, `subcategory`, reward labels, and notes instead of stripping or coercing them away.
+- 2026-04-12: `scripts/build-json.ts` now runs via `node --experimental-strip-types`, which removes the Bun-only runtime dependency for this data-generation lane.
+- 2026-04-12: calculator/optimizer correctness is **not fixed yet**; the current calculation path still treats `rate ?? 0` as a temporary compatibility fallback until Phase 2 lands.
 
 ### Exit criteria
 - A card rule loaded from YAML preserves all benefit semantics needed for calculation.
